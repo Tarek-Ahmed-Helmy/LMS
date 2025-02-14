@@ -1,0 +1,125 @@
+D:\edu\DEPI -.Net track\Projects\LMS\Code\LMS\LMS.Client\wwwroot\lib\bootstrap\dist\css\bootstrap.rtl.css
+D:\edu\DEPI -.Net track\Projects\LMS\Code\LMS\LMS.Client\wwwroot\lib\jquery-validation-unobtrusive\dist\jquery.validate.unobtrusive.min.js
+D:\edu\DEPI -.Net track\Projects\LMS\Code\LMS\LMS.Client\wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.min.css
+D:\edu\DEPI -.Net track\Projects\LMS\Code\LMS\LMS.Client\wwwroot\lib\bootstrap\dist\js\bootstrap.js.map
+D:\edu\DEPI -.Net track\Projects\LMS\Code\LMS\LMS.Client\wwwroot\lib\jquery-validation\dist\additional-methods.min.js
+D:\edu\DEPI -.Net track\Projects\LMS\Code\LMS\LMS.Client\wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.min.css
+D:\edu\DEPI -.Net track\Projects\LMS\Code\LMS\LMS.Client\wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.css
+D:\edu\DEPI -.Net track\Projects\LMS\Code\LMS\LMS.Client\wwwroot\lib\jquery-validation\dist\additional-methods.js
+D:\edu\DEPI -.Net track\Projects\LMS\Code\LMS\LMS.Client\wwwroot\lib\jquery\dist\jquery.slim.min.map
+D:\edu\DEPI -.Net track\Projects\LMS\Code\LMS\LMS.Client\wwwroot\lib\bootstrap\dist\css\bootstrap-grid.rtl.min.css
+D:\edu\DEPI -.Net track\Projects\LMS\Code\LMS\LMS.Client\wwwroot\lib\bootstrap\dist\js\bootstrap.esm.min.js
+D:\edu\DEPI -.Net track\Projects\LMS\Code\LMS\LMS.Client\wwwroot\lib\bootstrap\dist\css\bootstrap-grid.min.css
+D:\edu\DEPI -.Net track\Projects\LMS\Code\LMS\LMS.Client\wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.css.map
+D:\edu\DEPI -.Net track\Projects\LMS\Code\LMS\LMS.Client\wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css
+D:\edu\DEPI -.Net track\Projects\LMS\Code\LMS\LMS.Client\wwwroot\lib\bootstrap\dist\js\bootstrap.esm.min.js.map
+D:\edu\DEPI -.Net track\Projects\LMS\Code\LMS\LMS.Client\wwwroot\lib\jquery-validation-unobtrusive\LICENSE.txt
+D:\edu\DEPI -.Net track\Projects\LMS\Code\LMS\LMS.Client\wwwroot\favicon.ico
+D:\edu\DEPI -.Net track\Projects\LMS\Code\LMS\LMS.Client\wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.min.js
+D:\edu\DEPI -.Net track\Projects\LMS\Code\LMS\LMS.Client\wwwroot\lib\bootstrap\dist\js\bootstrap.esm.js.map
+D:\edu\DEPI -.Net track\Projects\LMS\Code\LMS\LMS.Client\wwwroot\js\site.js
+D:\edu\DEPI -.Net track\Projects\LMS\Code\LMS\LMS.Client\wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css.map
+D:\edu\DEPI -.Net track\Projects\LMS\Code\LMS\LMS.Client\wwwroot\lib\jquery-validation-unobtrusive\dist\jquery.validate.unobtrusive.js
+D:\edu\DEPI -.Net track\Projects\LMS\Code\LMS\LMS.Client\wwwroot\lib\jquery-validation\dist\jquery.validate.min.js
+D:\edu\DEPI -.Net track\Projects\LMS\Code\LMS\LMS.Client\wwwroot\lib\bootstrap\dist\js\bootstrap.js
+D:\edu\DEPI -.Net track\Projects\LMS\Code\LMS\LMS.Client\wwwroot\lib\jquery-validation\dist\jquery.validate.js
+D:\edu\DEPI -.Net track\Projects\LMS\Code\LMS\LMS.Client\wwwroot\lib\jquery\dist\jquery.min.map
+D:\edu\DEPI -.Net track\Projects\LMS\Code\LMS\LMS.Client\wwwroot\lib\jquery\LICENSE.txt
+D:\edu\DEPI -.Net track\Projects\LMS\Code\LMS\LMS.Client\wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.min.css.map
+D:\edu\DEPI -.Net track\Projects\LMS\Code\LMS\LMS.Client\wwwroot\lib\bootstrap\dist\css\bootstrap.rtl.min.css
+D:\edu\DEPI -.Net track\Projects\LMS\Code\LMS\LMS.Client\wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.min.css.map
+D:\edu\DEPI -.Net track\Projects\LMS\Code\LMS\LMS.Client\wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.js
+D:\edu\DEPI -.Net track\Projects\LMS\Code\LMS\LMS.Client\wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.rtl.css
+D:\edu\DEPI -.Net track\Projects\LMS\Code\LMS\LMS.Client\wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.rtl.min.css
+D:\edu\DEPI -.Net track\Projects\LMS\Code\LMS\LMS.Client\wwwroot\lib\bootstrap\dist\css\bootstrap-grid.rtl.min.css.map
+D:\edu\DEPI -.Net track\Projects\LMS\Code\LMS\LMS.Client\wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.rtl.css.map
+D:\edu\DEPI -.Net track\Projects\LMS\Code\LMS\LMS.Client\wwwroot\lib\bootstrap\dist\css\bootstrap.min.css
+D:\edu\DEPI -.Net track\Projects\LMS\Code\LMS\LMS.Client\wwwroot\lib\bootstrap\dist\css\bootstrap.min.css.map
+D:\edu\DEPI -.Net track\Projects\LMS\Code\LMS\LMS.Client\wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.rtl.min.css.map
+D:\edu\DEPI -.Net track\Projects\LMS\Code\LMS\LMS.Client\wwwroot\lib\jquery\dist\jquery.min.js
+D:\edu\DEPI -.Net track\Projects\LMS\Code\LMS\LMS.Client\wwwroot\lib\bootstrap\dist\js\bootstrap.min.js
+D:\edu\DEPI -.Net track\Projects\LMS\Code\LMS\LMS.Client\wwwroot\lib\jquery-validation\LICENSE.md
+D:\edu\DEPI -.Net track\Projects\LMS\Code\LMS\LMS.Client\wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.rtl.min.css
+D:\edu\DEPI -.Net track\Projects\LMS\Code\LMS\LMS.Client\wwwroot\css\site.css
+D:\edu\DEPI -.Net track\Projects\LMS\Code\LMS\LMS.Client\wwwroot\lib\bootstrap\dist\js\bootstrap.esm.js
+D:\edu\DEPI -.Net track\Projects\LMS\Code\LMS\LMS.Client\wwwroot\lib\bootstrap\dist\js\bootstrap.min.js.map
+D:\edu\DEPI -.Net track\Projects\LMS\Code\LMS\LMS.Client\wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.css.map
+D:\edu\DEPI -.Net track\Projects\LMS\Code\LMS\LMS.Client\wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.js.map
+D:\edu\DEPI -.Net track\Projects\LMS\Code\LMS\LMS.Client\wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.rtl.min.css.map
+D:\edu\DEPI -.Net track\Projects\LMS\Code\LMS\LMS.Client\wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.min.js.map
+D:\edu\DEPI -.Net track\Projects\LMS\Code\LMS\LMS.Client\wwwroot\lib\bootstrap\dist\css\bootstrap-grid.min.css.map
+D:\edu\DEPI -.Net track\Projects\LMS\Code\LMS\LMS.Client\wwwroot\lib\jquery\dist\jquery.slim.min.js
+D:\edu\DEPI -.Net track\Projects\LMS\Code\LMS\LMS.Client\wwwroot\lib\jquery\dist\jquery.slim.js
+D:\edu\DEPI -.Net track\Projects\LMS\Code\LMS\LMS.Client\wwwroot\lib\bootstrap\dist\css\bootstrap.css
+D:\edu\DEPI -.Net track\Projects\LMS\Code\LMS\LMS.Client\wwwroot\lib\bootstrap\dist\css\bootstrap.rtl.css.map
+D:\edu\DEPI -.Net track\Projects\LMS\Code\LMS\LMS.Client\wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.rtl.css
+D:\edu\DEPI -.Net track\Projects\LMS\Code\LMS\LMS.Client\wwwroot\lib\bootstrap\dist\css\bootstrap-grid.rtl.css
+D:\edu\DEPI -.Net track\Projects\LMS\Code\LMS\LMS.Client\wwwroot\lib\bootstrap\dist\css\bootstrap.css.map
+D:\edu\DEPI -.Net track\Projects\LMS\Code\LMS\LMS.Client\wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.rtl.css.map
+D:\edu\DEPI -.Net track\Projects\LMS\Code\LMS\LMS.Client\wwwroot\lib\jquery\dist\jquery.js
+D:\edu\DEPI -.Net track\Projects\LMS\Code\LMS\LMS.Client\wwwroot\lib\bootstrap\dist\css\bootstrap-grid.rtl.css.map
+D:\edu\DEPI -.Net track\Projects\LMS\Code\LMS\LMS.Client\wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.css
+D:\edu\DEPI -.Net track\Projects\LMS\Code\LMS\LMS.Client\wwwroot\lib\bootstrap\dist\css\bootstrap.rtl.min.css.map
+wwwroot\css\site.css
+wwwroot\favicon.ico
+wwwroot\js\site.js
+wwwroot\lib\bootstrap\dist\css\bootstrap.css
+wwwroot\lib\bootstrap\dist\css\bootstrap.css.map
+wwwroot\lib\bootstrap\dist\css\bootstrap.min.css
+wwwroot\lib\bootstrap\dist\css\bootstrap.min.css.map
+wwwroot\lib\bootstrap\dist\css\bootstrap.rtl.css
+wwwroot\lib\bootstrap\dist\css\bootstrap.rtl.css.map
+wwwroot\lib\bootstrap\dist\css\bootstrap.rtl.min.css
+wwwroot\lib\bootstrap\dist\css\bootstrap.rtl.min.css.map
+wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css
+wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css.map
+wwwroot\lib\bootstrap\dist\css\bootstrap-grid.min.css
+wwwroot\lib\bootstrap\dist\css\bootstrap-grid.min.css.map
+wwwroot\lib\bootstrap\dist\css\bootstrap-grid.rtl.css
+wwwroot\lib\bootstrap\dist\css\bootstrap-grid.rtl.css.map
+wwwroot\lib\bootstrap\dist\css\bootstrap-grid.rtl.min.css
+wwwroot\lib\bootstrap\dist\css\bootstrap-grid.rtl.min.css.map
+wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.css
+wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.css.map
+wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.min.css
+wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.min.css.map
+wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.rtl.css
+wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.rtl.css.map
+wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.rtl.min.css
+wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.rtl.min.css.map
+wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.css
+wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.css.map
+wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.min.css
+wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.min.css.map
+wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.rtl.css
+wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.rtl.css.map
+wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.rtl.min.css
+wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.rtl.min.css.map
+wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.js
+wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.js.map
+wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.min.js
+wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.min.js.map
+wwwroot\lib\bootstrap\dist\js\bootstrap.esm.js
+wwwroot\lib\bootstrap\dist\js\bootstrap.esm.js.map
+wwwroot\lib\bootstrap\dist\js\bootstrap.esm.min.js
+wwwroot\lib\bootstrap\dist\js\bootstrap.esm.min.js.map
+wwwroot\lib\bootstrap\dist\js\bootstrap.js
+wwwroot\lib\bootstrap\dist\js\bootstrap.js.map
+wwwroot\lib\bootstrap\dist\js\bootstrap.min.js
+wwwroot\lib\bootstrap\dist\js\bootstrap.min.js.map
+wwwroot\lib\bootstrap\LICENSE
+wwwroot\lib\jquery\dist\jquery.js
+wwwroot\lib\jquery\dist\jquery.min.js
+wwwroot\lib\jquery\dist\jquery.min.map
+wwwroot\lib\jquery\dist\jquery.slim.js
+wwwroot\lib\jquery\dist\jquery.slim.min.js
+wwwroot\lib\jquery\dist\jquery.slim.min.map
+wwwroot\lib\jquery\LICENSE.txt
+wwwroot\lib\jquery-validation\dist\additional-methods.js
+wwwroot\lib\jquery-validation\dist\additional-methods.min.js
+wwwroot\lib\jquery-validation\dist\jquery.validate.js
+wwwroot\lib\jquery-validation\dist\jquery.validate.min.js
+wwwroot\lib\jquery-validation\LICENSE.md
+wwwroot\lib\jquery-validation-unobtrusive\dist\jquery.validate.unobtrusive.js
+wwwroot\lib\jquery-validation-unobtrusive\dist\jquery.validate.unobtrusive.min.js
+wwwroot\lib\jquery-validation-unobtrusive\LICENSE.txt
