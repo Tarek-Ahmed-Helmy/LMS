@@ -1,0 +1,20 @@
+# Ignore bin and obj folders in all projects
+**/bin/
+**/obj/
+
+# Ignore user-specific files
+.vs/
+.vscode/
+
+# Ignore .NET Core specific files
+project.lock.json
+project.fragment.lock.json
+
+# Ignore build results
+out/
+
+# Ignore packages folder if using NuGet
+packages/
+
+
+Images/
