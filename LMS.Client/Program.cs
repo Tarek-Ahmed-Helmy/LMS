@@ -1,3 +1,7 @@
+using LMS.DataAccess.Data;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+
 namespace LMS.Client;
 
 public class Program
@@ -8,6 +12,8 @@ public class Program
 
         // Add services to the container.
         builder.Services.AddControllersWithViews();
+        builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(
+            builder.Configuration.GetConnectionString("Connection")));
 
         var app = builder.Build();
 
