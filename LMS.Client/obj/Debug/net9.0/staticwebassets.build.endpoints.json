@@ -3,13 +3,13 @@
   "ManifestType": "Build",
   "Endpoints": [
     {
-      "Route": "LMS.Client.g3e0oxd57q.styles.css",
-      "AssetFile": "LMS.Client.styles.css.gz",
+      "Route": "LMS.Web.ohwbgqbsaz.styles.css",
+      "AssetFile": "LMS.Web.styles.css.gz",
       "Selectors": [
         {
           "Name": "Content-Encoding",
           "Value": "gzip",
-          "Quality": "0.001841620626"
+          "Quality": "0.001845018450"
         }
       ],
       "ResponseHeaders": [
@@ -27,7 +27,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "542"
+          "Value": "541"
         },
         {
           "Name": "Content-Type",
@@ -35,15 +35,15 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"uNc65Zlq25Z5vi2ONlIeepdx/OMEA7oRUDopCRggWyw=\""
+          "Value": "\"A6UMrZpejqXg2TkKH5hSRQCuN3cnCx/C06rtWMtEQ2s=\""
         },
         {
           "Name": "ETag",
-          "Value": "W/\"XJNgGTvLHIMedsfNf4lq4CtaJmFr8t2g8R6WieKgBGc=\""
+          "Value": "W/\"POHxKAepQoZXscdsNexOFHiHJY/0EehdtHwbNiwA3VI=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Sat, 08 Feb 2025 14:11:16 GMT"
+          "Value": "Fri, 14 Feb 2025 12:48:34 GMT"
         },
         {
           "Name": "Vary",
@@ -53,21 +53,21 @@
       "EndpointProperties": [
         {
           "Name": "fingerprint",
-          "Value": "g3e0oxd57q"
+          "Value": "ohwbgqbsaz"
         },
         {
           "Name": "integrity",
-          "Value": "sha256-XJNgGTvLHIMedsfNf4lq4CtaJmFr8t2g8R6WieKgBGc="
+          "Value": "sha256-POHxKAepQoZXscdsNexOFHiHJY/0EehdtHwbNiwA3VI="
         },
         {
           "Name": "label",
-          "Value": "LMS.Client.styles.css"
+          "Value": "LMS.Web.styles.css"
         }
       ]
     },
     {
-      "Route": "LMS.Client.g3e0oxd57q.styles.css",
-      "AssetFile": "LMS.Client.styles.css",
+      "Route": "LMS.Web.ohwbgqbsaz.styles.css",
+      "AssetFile": "LMS.Web.styles.css",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -80,7 +80,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "1128"
+          "Value": "1125"
         },
         {
           "Name": "Content-Type",
@@ -88,31 +88,31 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"XJNgGTvLHIMedsfNf4lq4CtaJmFr8t2g8R6WieKgBGc=\""
+          "Value": "\"POHxKAepQoZXscdsNexOFHiHJY/0EehdtHwbNiwA3VI=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Sat, 08 Feb 2025 14:11:16 GMT"
+          "Value": "Fri, 14 Feb 2025 12:48:34 GMT"
         }
       ],
       "EndpointProperties": [
         {
           "Name": "fingerprint",
-          "Value": "g3e0oxd57q"
+          "Value": "ohwbgqbsaz"
         },
         {
           "Name": "integrity",
-          "Value": "sha256-XJNgGTvLHIMedsfNf4lq4CtaJmFr8t2g8R6WieKgBGc="
+          "Value": "sha256-POHxKAepQoZXscdsNexOFHiHJY/0EehdtHwbNiwA3VI="
         },
         {
           "Name": "label",
-          "Value": "LMS.Client.styles.css"
+          "Value": "LMS.Web.styles.css"
         }
       ]
     },
     {
-      "Route": "LMS.Client.g3e0oxd57q.styles.css.gz",
-      "AssetFile": "LMS.Client.styles.css.gz",
+      "Route": "LMS.Web.ohwbgqbsaz.styles.css.gz",
+      "AssetFile": "LMS.Web.styles.css.gz",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -129,7 +129,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "542"
+          "Value": "541"
         },
         {
           "Name": "Content-Type",
@@ -137,11 +137,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"uNc65Zlq25Z5vi2ONlIeepdx/OMEA7oRUDopCRggWyw=\""
+          "Value": "\"A6UMrZpejqXg2TkKH5hSRQCuN3cnCx/C06rtWMtEQ2s=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Sat, 08 Feb 2025 14:11:16 GMT"
+          "Value": "Fri, 14 Feb 2025 12:48:34 GMT"
         },
         {
           "Name": "Vary",
@@ -151,26 +151,26 @@
       "EndpointProperties": [
         {
           "Name": "fingerprint",
-          "Value": "g3e0oxd57q"
+          "Value": "ohwbgqbsaz"
         },
         {
           "Name": "integrity",
-          "Value": "sha256-uNc65Zlq25Z5vi2ONlIeepdx/OMEA7oRUDopCRggWyw="
+          "Value": "sha256-A6UMrZpejqXg2TkKH5hSRQCuN3cnCx/C06rtWMtEQ2s="
         },
         {
           "Name": "label",
-          "Value": "LMS.Client.styles.css.gz"
+          "Value": "LMS.Web.styles.css.gz"
         }
       ]
     },
     {
-      "Route": "LMS.Client.styles.css",
-      "AssetFile": "LMS.Client.styles.css.gz",
+      "Route": "LMS.Web.styles.css",
+      "AssetFile": "LMS.Web.styles.css.gz",
       "Selectors": [
         {
           "Name": "Content-Encoding",
           "Value": "gzip",
-          "Quality": "0.001841620626"
+          "Quality": "0.001845018450"
         }
       ],
       "ResponseHeaders": [
@@ -188,7 +188,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "542"
+          "Value": "541"
         },
         {
           "Name": "Content-Type",
@@ -196,15 +196,15 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"uNc65Zlq25Z5vi2ONlIeepdx/OMEA7oRUDopCRggWyw=\""
+          "Value": "\"A6UMrZpejqXg2TkKH5hSRQCuN3cnCx/C06rtWMtEQ2s=\""
         },
         {
           "Name": "ETag",
-          "Value": "W/\"XJNgGTvLHIMedsfNf4lq4CtaJmFr8t2g8R6WieKgBGc=\""
+          "Value": "W/\"POHxKAepQoZXscdsNexOFHiHJY/0EehdtHwbNiwA3VI=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Sat, 08 Feb 2025 14:11:16 GMT"
+          "Value": "Fri, 14 Feb 2025 12:48:34 GMT"
         },
         {
           "Name": "Vary",
@@ -214,13 +214,13 @@
       "EndpointProperties": [
         {
           "Name": "integrity",
-          "Value": "sha256-XJNgGTvLHIMedsfNf4lq4CtaJmFr8t2g8R6WieKgBGc="
+          "Value": "sha256-POHxKAepQoZXscdsNexOFHiHJY/0EehdtHwbNiwA3VI="
         }
       ]
     },
     {
-      "Route": "LMS.Client.styles.css",
-      "AssetFile": "LMS.Client.styles.css",
+      "Route": "LMS.Web.styles.css",
+      "AssetFile": "LMS.Web.styles.css",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -233,7 +233,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "1128"
+          "Value": "1125"
         },
         {
           "Name": "Content-Type",
@@ -241,23 +241,23 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"XJNgGTvLHIMedsfNf4lq4CtaJmFr8t2g8R6WieKgBGc=\""
+          "Value": "\"POHxKAepQoZXscdsNexOFHiHJY/0EehdtHwbNiwA3VI=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Sat, 08 Feb 2025 14:11:16 GMT"
+          "Value": "Fri, 14 Feb 2025 12:48:34 GMT"
         }
       ],
       "EndpointProperties": [
         {
           "Name": "integrity",
-          "Value": "sha256-XJNgGTvLHIMedsfNf4lq4CtaJmFr8t2g8R6WieKgBGc="
+          "Value": "sha256-POHxKAepQoZXscdsNexOFHiHJY/0EehdtHwbNiwA3VI="
         }
       ]
     },
     {
-      "Route": "LMS.Client.styles.css.gz",
-      "AssetFile": "LMS.Client.styles.css.gz",
+      "Route": "LMS.Web.styles.css.gz",
+      "AssetFile": "LMS.Web.styles.css.gz",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -274,7 +274,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "542"
+          "Value": "541"
         },
         {
           "Name": "Content-Type",
@@ -282,11 +282,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"uNc65Zlq25Z5vi2ONlIeepdx/OMEA7oRUDopCRggWyw=\""
+          "Value": "\"A6UMrZpejqXg2TkKH5hSRQCuN3cnCx/C06rtWMtEQ2s=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Sat, 08 Feb 2025 14:11:16 GMT"
+          "Value": "Fri, 14 Feb 2025 12:48:34 GMT"
         },
         {
           "Name": "Vary",
@@ -296,7 +296,7 @@
       "EndpointProperties": [
         {
           "Name": "integrity",
-          "Value": "sha256-uNc65Zlq25Z5vi2ONlIeepdx/OMEA7oRUDopCRggWyw="
+          "Value": "sha256-A6UMrZpejqXg2TkKH5hSRQCuN3cnCx/C06rtWMtEQ2s="
         }
       ]
     },
