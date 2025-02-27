@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace LMS.Entities.Models;
 
-public class Students
+public class Student
 {
     [Key]
     [ForeignKey("ApplicationUser")]
