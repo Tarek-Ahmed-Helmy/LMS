@@ -7,13 +7,19 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\LMS.DataAccess\LMS.DataAccess.csproj" />
-    <ProjectReference Include="..\LMS.Utilities\LMS.Utilities.csproj" />
+    <Compile Remove="Areas\**" />
+    <Compile Remove="ViewModels\**" />
+    <Content Remove="Areas\**" />
+    <Content Remove="ViewModels\**" />
+    <EmbeddedResource Remove="Areas\**" />
+    <EmbeddedResource Remove="ViewModels\**" />
+    <None Remove="Areas\**" />
+    <None Remove="ViewModels\**" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Areas\" />
-    <Folder Include="ViewModels\" />
+    <ProjectReference Include="..\LMS.DataAccess\LMS.DataAccess.csproj" />
+    <ProjectReference Include="..\LMS.Utilities\LMS.Utilities.csproj" />
   </ItemGroup>
 
   <ItemGroup>
