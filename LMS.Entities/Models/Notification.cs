@@ -22,14 +22,16 @@ public class Notification
     [ForeignKey("Receiver")]
     public required string ReceiverId { get; set; }
 
-    public DateTime CreatedAt { get; set; } = DateTime.Now;
+    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
-    public DateTime UpdatedAt { get; set; } = DateTime.Now;
+    public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
 
     [ValidateNever]
+    [InverseProperty("SentNotifications")]
     public ApplicationUser? Sender { get; set; }
 
     [ValidateNever]
+    [InverseProperty("ReceivedNotifications")]
     public ApplicationUser? Receiver { get; set; }
 }
 

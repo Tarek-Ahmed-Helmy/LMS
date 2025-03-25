@@ -15,9 +15,10 @@ public class ApplicationUser : IdentityUser
     [Display(Name = "Profile Picture")]
     public string? ProfilePictureURL { get; set; }
 
-    public DateTime CreatedAt { get; set; } = DateTime.Now;
+    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
-    public DateTime UpdatedAt { get; set; } = DateTime.Now;
+    public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
     public ICollection<Meeting>? Meetings { get; set; }
-    public ICollection<Notification>? Notifications { get; set; }
+    public ICollection<Notification>? SentNotifications { get; set; }
+    public ICollection<Notification>? ReceivedNotifications { get; set; }
 }

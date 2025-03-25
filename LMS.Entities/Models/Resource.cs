@@ -27,9 +27,9 @@ namespace LMS.Entities.Models;
     public int SubjectId { get; set; }
 
     [Required]
-    public int TeacherId { get; set; }
-    public DateTime CreatedAt { get; set; } = DateTime.Now;
-    public DateTime UpdatedAt { get; set; } = DateTime.Now;
+    public required string TeacherId { get; set; }
+    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+    public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
 
     [ForeignKey("SubjectId")]
     public virtual Subject? Subject { get; set; }

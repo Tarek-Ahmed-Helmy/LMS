@@ -17,18 +17,18 @@ public class Schedule
     [Required]
     public TimeSpan EndTime { get; set; }
 
-    public DateTime AssignedDate { get; set; } = DateTime.Now;
+    public DateTime AssignedDate { get; set; } = DateTime.UtcNow;
 
     [Required]
     public int ClassId { get; set; }
 
     [Required]
-    public int TeacherId { get; set; }
+    public required string TeacherId { get; set; }
 
     [Required]
     public int SubjectId { get; set; }
-    public DateTime CreatedAt { get; set; } = DateTime.Now;
-    public DateTime UpdatedAt { get; set; } = DateTime.Now;
+    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+    public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
 
     [ForeignKey("ClassId")]
     public virtual Class? Class { get; set; }

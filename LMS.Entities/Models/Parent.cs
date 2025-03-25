@@ -8,8 +8,8 @@ public class Parent
     [ForeignKey("ApplicationUser")]
     public required string ParentId { get; set; }
     public string? Occupation { get; set; }
-    public DateTime CreatedAt { get; set; } = DateTime.Now;
-    public DateTime UpdatedAt { get; set; } = DateTime.Now;
+    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+    public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
 
     [ValidateNever]
     public ApplicationUser? ApplicationUser { get; set; }

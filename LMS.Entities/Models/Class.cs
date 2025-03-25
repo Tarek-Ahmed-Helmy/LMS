@@ -17,8 +17,8 @@ public class Class
     [Required]
     [StringLength(255)]
     public required string ClassNumber { get; set; }
-    public DateTime CreatedAt { get; set; } = DateTime.Now;
-    public DateTime UpdatedAt { get; set; } = DateTime.Now;
+    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+    public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
 
     [ValidateNever]
     public ICollection<Student>? Students { get; set; }

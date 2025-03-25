@@ -1,6 +1,4 @@
-using LMS.DataAccess.Data;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
+using LMS.DataAccess.DependencyInjection;
 
 namespace LMS.Client;
 
@@ -12,8 +10,7 @@ public class Program
 
         // Add services to the container.
         builder.Services.AddControllersWithViews();
-        builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(
-            builder.Configuration.GetConnectionString("Connection")));
+        builder.Services.AddDataAccessServices(builder.Configuration);
 
         var app = builder.Build();
 
@@ -22,8 +19,10 @@ public class Program
         {
             app.UseExceptionHandler("/Home/Error");
         }
+        app.UseStaticFiles();
         app.UseRouting();
 
+        app.UseAuthentication();
         app.UseAuthorization();
 
         app.MapStaticAssets();

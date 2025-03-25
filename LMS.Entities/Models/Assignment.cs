@@ -26,12 +26,12 @@ public class Assignment
     public SubmissionType SubmissionType { get; set; }
 
     [ForeignKey("Teacher")]
-    public int TeacherId { get; set; }
+    public required string TeacherId { get; set; }
 
     [ForeignKey("Subject")]
     public int SubjectId { get; set; }
-    public DateTime CreatedAt { get; set; } = DateTime.Now;
-    public DateTime UpdatedAt { get; set; } = DateTime.Now;
+    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+    public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
 
     [ValidateNever]
     public Teacher? Teacher { get; set; }

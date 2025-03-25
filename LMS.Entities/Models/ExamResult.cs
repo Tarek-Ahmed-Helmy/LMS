@@ -5,7 +5,7 @@ namespace LMS.Entities.Models;
 
 public class ExamResult
 {
-    public int ResultID { get; set; }
+    public int ExamResultID { get; set; }
     public string? Remarks { get; set; }
     public int Score { get; set; }
 
@@ -13,9 +13,9 @@ public class ExamResult
     public int ExamId { get; set; }
 
     [ForeignKey("Student")]    
-    public int StudentID { get; set; }
-    public DateTime CreatedAt { get; set; } = DateTime.Now;
-    public DateTime UpdatedAt { get; set; } = DateTime.Now;
+    public required string StudentID { get; set; }
+    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+    public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
 
     [ValidateNever]
     public Exam? Exam { get; set; }

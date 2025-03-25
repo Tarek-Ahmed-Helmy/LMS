@@ -22,11 +22,11 @@ public class Meeting
 
     [EnumDataType(typeof(MeetingStatus))]
     public MeetingStatus MeetingStatus { get; set; } = MeetingStatus.Pending;
-    public DateTime CreatedAt { get; set; } = DateTime.Now;
-    public DateTime UpdatedAt { get; set; } = DateTime.Now;
+    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+    public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
 
     [ValidateNever]
-    public ICollection<Attende>? Attendees { get; set; }
+    public ICollection<Attendee>? Attendees { get; set; }
 }
 
 public enum MeetingStatus

@@ -8,8 +8,9 @@ public class Attendance
 {
     public int AttendanceID { get; set; }
 
+    [Required]
     [ForeignKey("ApplicationUser")]
-    public string StudentId { get; set; }
+    public required string StudentId { get; set; }
     public DateTime Date { get; set; }
 
     [Required]
@@ -19,8 +20,8 @@ public class Attendance
     [Required]
     [StringLength(255)]
     public string? Notes { get; set; }
-    public DateTime CreatedAt { get; set; } = DateTime.Now;
-    public DateTime UpdatedAt { get; set; } = DateTime.Now;
+    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+    public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
 
     [ValidateNever]
     public ApplicationUser? ApplicationUser { get; set; }
