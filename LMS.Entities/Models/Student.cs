@@ -21,7 +21,7 @@ public class Student
     public required string EmergencyContact { get; set; }
 
     [Required]
-    public DateTime AdmissionDate { get; set; } = DateTime.Now;
+    public DateTime AdmissionDate { get; set; } = DateTime.UtcNow;
 
     [Required]
     [StringLength(255)]
@@ -35,8 +35,8 @@ public class Student
 
     [ForeignKey("Bus")]
     public int? BusId { get; set; }
-    public DateTime CreatedAt { get; set; } = DateTime.Now;
-    public DateTime UpdatedAt { get; set; } = DateTime.Now;
+    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+    public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
 
     [ValidateNever]
     public ApplicationUser? ApplicationUser { get; set; }

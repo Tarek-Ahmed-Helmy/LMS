@@ -23,9 +23,9 @@ public class Submission
     public int AssignmentId { get; set; }
 
     [ForeignKey("Student")]
-    public int StudentId { get; set; }
-    public DateTime CreatedAt { get; set; } = DateTime.Now;
-    public DateTime UpdatedAt { get; set; } = DateTime.Now;
+    public required string StudentId { get; set; }
+    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+    public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
 
     [ValidateNever]
     public Assignment? Assignment { get; set; }

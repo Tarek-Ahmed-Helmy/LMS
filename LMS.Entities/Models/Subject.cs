@@ -19,8 +19,8 @@ public class Subject
     [Required]
     [DisplayName("Description")]
     public required string SubjectDescription { get; set; }
-    public DateTime CreatedAt { get; set; } = DateTime.Now; 
-    public DateTime UpdatedAt { get; set; } = DateTime.Now;
+    public DateTime CreatedAt { get; set; } = DateTime.UtcNow; 
+    public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
 
     [ValidateNever]
     public ICollection<Resource>? Resources { get; set; }

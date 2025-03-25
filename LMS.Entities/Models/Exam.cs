@@ -30,9 +30,9 @@ public class Exam
     public int ClassID { get; set; }
 
     [ForeignKey("Teacher")]
-    public int TeacherID { get; set; }
-    public DateTime CreatedAt { get; set; } = DateTime.Now;
-    public DateTime UpdatedAt { get; set; } = DateTime.Now;
+    public required string TeacherID { get; set; }
+    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+    public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
 
     [ValidateNever]
     public Subject? Subject { get; set; }
