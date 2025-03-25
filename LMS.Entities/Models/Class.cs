@@ -1,32 +1,48 @@
 ﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
-using Microsoft.Extensions.Options;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace LMS.Entities.Models;
 
 public class Class
 {
-    [Key]
     public int ClassId { get; set; }
 
     [Required]
-    public int GradeLevel { get; set; }
+    [EnumDataType(typeof(GradeLevel))]
+    public GradeLevel GradeLevel { get; set; }
 
     [Required]
     public int Capacity { get; set; }
 
     [Required]
     [StringLength(255)]
-    public string ClassNum { get; set; }
-
+    public required string ClassNumber { get; set; }
     public DateTime CreatedAt { get; set; } = DateTime.Now;
-
     public DateTime UpdatedAt { get; set; } = DateTime.Now;
+
+    [ValidateNever]
+    public ICollection<Student>? Students { get; set; }
+
+    [ValidateNever]
+    public ICollection<Schedule>? Schedules { get; set; }
+
+    [ValidateNever]
+    public ICollection<Exam>? Exams { get; set; }
 }
 
+public enum GradeLevel
+{
+    Kindergarten = 0,
+    Grade1 = 1,
+    Grade2 = 2,
+    Grade3 = 3,
+    Grade4 = 4,
+    Grade5 = 5,
+    Grade6 = 6,
+    Grade7 = 7,
+    Grade8 = 8,
+    Grade9 = 9,
+    Grade10 = 10,
+    Grade11 = 11,
+    Grade12 = 12
+}

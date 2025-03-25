@@ -1,64 +1,57 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 
-namespace LMS.Entities.Models
+namespace LMS.Entities.Models;
+
+public class Payment
 {
-    public class Payment
-    {
-        [Key]
-        public int PaymentId { get; set; }
+    public int PaymentId { get; set; }
 
-        [Required]
-        [Column(TypeName = "decimal(10,2)")]
-        public decimal Amount { get; set; }
+    [Required]
+    [Column(TypeName = "decimal(10,2)")]
+    public decimal Amount { get; set; }
 
-        [Required]
-        public DateTime PaymentDate { get; set; }
+    [Required]
+    public DateTime PaymentDate { get; set; }
 
-        [Required, MaxLength(20)]
-        [EnumDataType(typeof(PaymentMethod))]
-        public PaymentMethod PaymentMethod { get; set; }
+    [Required, MaxLength(20)]
+    [EnumDataType(typeof(PaymentMethod))]
+    public PaymentMethod PaymentMethod { get; set; }
 
-        [Required, MaxLength(20)]
-        [EnumDataType(typeof(PaymentStatus))]
-        public PaymentStatus PaymentStatus { get; set; }
+    [Required, MaxLength(20)]
+    [EnumDataType(typeof(PaymentStatus))]
+    public PaymentStatus PaymentStatus { get; set; }
 
-        [MaxLength(255)]
-        [Required]
-        public string ReceiptPath { get; set; }
+    [MaxLength(255)]
+    [Required]
+    [Display(Name = "Attached Receipt")]
+    public required string ReceiptPath { get; set; }
 
-        [Required]
-        public int StudentId { get; set; }
+    [Required]
+    public int StudentId { get; set; }
 
-        [Required]
-        public int ParentId { get; set; }
+    [Required]
+    public int ParentId { get; set; }
+    public DateTime CreatedAt { get; set; } = DateTime.Now;
+    public DateTime UpdatedAt { get; set; } = DateTime.Now;
 
-        public DateTime CreatedAt { get; set; } = DateTime.Now;
+    [ValidateNever]
+    public virtual Parent? Parent { get; set; }
 
-        public DateTime UpdatedAt { get; set; } = DateTime.Now;
+    [ValidateNever]
+    public virtual Student? Student { get; set; }
+}
+public enum PaymentMethod
+{
+    Cash,
+    Card,
+    BankTransfer
+}
 
-        [ForeignKey("ParentId")]
-        public virtual Parent Parent { get; set; }
-
-        [ForeignKey("StudentId")]
-        public virtual Student Student { get; set; }
-    }
-    public enum PaymentMethod
-    {
-        Cash,
-        Card,
-        BankTransfer
-    }
-
-    public enum PaymentStatus
-    {
-        Paid,
-        Pending,
-        Overdue
-    }
+public enum PaymentStatus
+{
+    Paid,
+    Pending,
+    Overdue
 }

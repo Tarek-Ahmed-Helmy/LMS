@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace LMS.Entities.Models;
@@ -7,20 +8,22 @@ namespace LMS.Entities.Models;
 public class Assignment
 {
     public int AssignmentId { get; set; }
-    public string Title { get; set; }
 
+    [Required]
+    public required string Title { get; set; }
+
+    [Required]
     [DisplayName("Description")]
-    public string AssignmentDescription { get; set; }
+    public required string AssignmentDescription { get; set; }
     public DateTime Deadline { get; set; }
 
+    [Required]
     [DisplayName("Total Marks")]
     public int TotalMarks { get; set; }
 
     [DisplayName("Submission Type")]
-    public string SubmissionType { get; set; }
-
-    [DisplayName("Status")]
-    public string AssignmentStatus { get; set; }
+    [EnumDataType(typeof(SubmissionType))]
+    public SubmissionType SubmissionType { get; set; }
 
     [ForeignKey("Teacher")]
     public int TeacherId { get; set; }
@@ -35,7 +38,13 @@ public class Assignment
 
     [ValidateNever]
     public Subject? Subject { get; set; }
+
+    [ValidateNever]
+    public ICollection<Submission>? Submissions { get; set; }
 }
 
-// SubmissionType CHECK ('Online', 'Offline')
-// AssignmentStatus CHECK ('Pending', 'Completed', 'Overdue')
+public enum SubmissionType
+{
+    Online,
+    Offline
+}

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 
@@ -11,9 +12,12 @@ public class Submission
 
     [DisplayName("Submission Date")]
     public DateTime SubmissionDate { get; set; }
-    public string FilePath { get; set; }
+
+    [Required]
+    [DisplayName("Attached File")]
+    public required string FilePath { get; set; }
     public int Score { get; set; }
-    public string Feedback { get; set; }
+    public string? Feedback { get; set; }
 
     [ForeignKey("Assignment")]
     public int AssignmentId { get; set; }

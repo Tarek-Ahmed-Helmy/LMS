@@ -1,4 +1,6 @@
-﻿using System.ComponentModel;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
 namespace LMS.Entities.Models;
 
@@ -6,17 +8,26 @@ public class Subject
 {
     public int SubjectId { get; set; }
 
+    [Required]
     [DisplayName("Subject Name")]
-    public string SubjectName { get; set; }
+    public required string SubjectName { get; set; }
 
+    [Required]
     [DisplayName("Code")]
-    public string SubjectCode { get; set; }
+    public required string SubjectCode { get; set; } // Unique (custom validation)
 
+    [Required]
     [DisplayName("Description")]
-    public string SubjectDescription { get; set; }
+    public required string SubjectDescription { get; set; }
     public DateTime CreatedAt { get; set; } = DateTime.Now; 
     public DateTime UpdatedAt { get; set; } = DateTime.Now;
 
-}
+    [ValidateNever]
+    public ICollection<Resource>? Resources { get; set; }
 
-//SubjectCode (Unique)
+    [ValidateNever]
+    public ICollection<Assignment>? Assignments { get; set; }
+
+    [ValidateNever]
+    public ICollection<Exam>? Exams { get; set; }
+}
