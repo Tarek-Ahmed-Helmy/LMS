@@ -1,24 +1,35 @@
 ﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
-using Microsoft.Extensions.Options;
-using System;
-using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace LMS.Entities.Models;
 
 public class Teacher
 {
     [ForeignKey("ApplicationUser")]
-    public string TeacherId { get; set; }
+    public required string TeacherId { get; set; }
     public DateTime HireDate { get; set; } = DateTime.Now;
-    public string Qualification { get; set; }
+
+    [Required]
+    public required string Qualification { get; set; }
+
+    [Display(Name = "Experience (in years)")]
     public int Experience { get; set; }
     public DateTime CreatedAt { get; set; } = DateTime.Now;
     public DateTime UpdatedAt { get; set; } = DateTime.Now;
 
     [ValidateNever]
-    public ApplicationUser ApplicationUser { get; set; }
+    public ApplicationUser? ApplicationUser { get; set; }
+
+    [ValidateNever]
+    public ICollection<Schedule>? Schedules { get; set; }
+
+    [ValidateNever]
+    public ICollection<Resource>? Resources { get; set; }
+
+    [ValidateNever]
+    public ICollection<Assignment>? Assignments { get; set; }
+
+    [ValidateNever]
+    public ICollection<Exam>? Exams { get; set; }
 }

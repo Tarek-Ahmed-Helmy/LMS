@@ -1,43 +1,31 @@
 ﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
-using Microsoft.Extensions.Options;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Security.Claims;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace LMS.Entities.Models;
 
 public class Student
 {
-    [Key]
     [ForeignKey("ApplicationUser")]
-    public string StudentId { get; set; }
+    public required string StudentId { get; set; }
 
     [Required]
     public DateTime DateOfBirth { get; set; }
 
     [Required]
-    [StringLength(10)]
-    [RegularExpression("^(Male|Female)$", ErrorMessage = "Gender must be either 'Male' or 'Female'.")]
-    public string Gender { get; set; }
-
-    [Required]
-    public int GradeLevel { get; set; }
+    [EnumDataType(typeof(Gender))]
+    public Gender Gender { get; set; }
 
     [Required]
     [StringLength(20)]
-    public string EmergencyContact { get; set; }
+    public required string EmergencyContact { get; set; }
 
     [Required]
-    public DateTime AdmissionDate { get; set; }
+    public DateTime AdmissionDate { get; set; } = DateTime.Now;
 
     [Required]
     [StringLength(255)]
-    public string StudentNum { get; set; }
+    public required string StudentNumber { get; set; }
 
     [ForeignKey("Class")]
     public int? ClassId { get; set; }
@@ -47,9 +35,7 @@ public class Student
 
     [ForeignKey("Bus")]
     public int? BusId { get; set; }
-
     public DateTime CreatedAt { get; set; } = DateTime.Now;
-
     public DateTime UpdatedAt { get; set; } = DateTime.Now;
 
     [ValidateNever]
@@ -63,4 +49,22 @@ public class Student
 
     [ValidateNever]
     public Bus? Bus { get; set; }
+
+    [ValidateNever]
+    public ICollection<Attendance>? Attendances { get; set; }
+
+    [ValidateNever]
+    public ICollection<Payment>? Payments { get; set; }
+
+    [ValidateNever]
+    public ICollection<ExamResult>? ExamResults { get; set; }
+
+    [ValidateNever]
+    public ICollection<Submission>? Submissions { get; set; }
+}
+
+public enum Gender
+{
+    male,
+    female
 }

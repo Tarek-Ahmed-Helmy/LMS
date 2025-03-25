@@ -1,28 +1,34 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace LMS.Entities.Models;
 
 public class Attendance
 {
-    [Key]
     public int AttendanceID { get; set; }
 
     [ForeignKey("ApplicationUser")]
-    public int UserID { get; set; }
-    public DateTime? Date { get; set; }
+    public string StudentId { get; set; }
+    public DateTime Date { get; set; }
 
     [Required]
-    [StringLength(50)]
-    [RegularExpression("Present|Absent|Late", ErrorMessage = "Status must be 'Present', 'Absent', or 'Late'.")]
-    public string Status { get; set; }
+    [EnumDataType(typeof(AttendanceStatus))]
+    public AttendanceStatus Status { get; set; }
 
     [Required]
     [StringLength(255)]
-    public string? Remarks { get; set; }
+    public string? Notes { get; set; }
+    public DateTime CreatedAt { get; set; } = DateTime.Now;
+    public DateTime UpdatedAt { get; set; } = DateTime.Now;
+
+    [ValidateNever]
+    public ApplicationUser? ApplicationUser { get; set; }
+}
+
+public enum AttendanceStatus
+{
+    Present,
+    Absent,
+    Late
 }
