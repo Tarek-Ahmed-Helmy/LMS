@@ -7,48 +7,48 @@ public class UnitOfWork : IUnitOfWork
 {
     private readonly ApplicationDbContext _context;
 
-    public IApplicationUserRepository ApplicationUserRepository { get; }
-    public IAssignmentRepository AssignmentRepository { get; }
-    public IAttendanceRepository AttendanceRepository { get; }
-    public IAttendeeRepository AttendeeRepository { get; }
-    public IBusRepository BusRepository { get; }
-    public IClassRepository ClassRepository { get; }
-    public IEventRepository EventRepository { get; }
-    public IExamRepository ExamRepository { get; }
-    public IExamResultRepository ExamResultRepository { get; }
-    public IMeetingRepository MeetingRepository { get; }
-    public INotificationRepository NotificationRepository { get; }
-    public IParentRepository ParentRepository { get; }
-    public IPaymentRepository PaymentRepository { get; }
-    public IResourceRepository ResourceRepository { get; }
-    public IScheduleRepository ScheduleRepository { get; }
-    public IStudentRepository StudentRepository { get; }
-    public ISubjectRepository SubjectRepository { get; }
-    public ISubmissionRepository SubmissionRepository { get; }
-    public ITeacherRepository TeacherRepository { get; }
+    public IApplicationUserRepository ApplicationUser { get; }
+    public IAssignmentRepository Assignment { get; }
+    public IAttendanceRepository Attendance { get; }
+    public IAttendeeRepository Attendee { get; }
+    public IBusRepository Bus { get; }
+    public IClassRepository Class { get; }
+    public IEventRepository Event { get; }
+    public IExamRepository Exam { get; }
+    public IExamResultRepository ExamResult { get; }
+    public IMeetingRepository Meeting { get; }
+    public INotificationRepository Notification { get; }
+    public IParentRepository Parent { get; }
+    public IPaymentRepository Payment { get; }
+    public IResourceRepository Resource { get; }
+    public IScheduleRepository Schedule { get; }
+    public IStudentRepository Student { get; }
+    public ISubjectRepository Subject { get; }
+    public ISubmissionRepository Submission { get; }
+    public ITeacherRepository Teacher { get; }
 
     public UnitOfWork(ApplicationDbContext context)
     {
         _context = context;
-        ApplicationUserRepository = new ApplicationUserRepository(_context);
-        AssignmentRepository = new AssignmentRepository(_context);
-        AttendanceRepository = new AttendanceRepository(_context);
-        AttendeeRepository = new AttendeeRepository(_context);
-        BusRepository = new BusRepository(_context);
-        ClassRepository = new ClassRepository(_context);
-        EventRepository = new EventRepository(_context);
-        ExamRepository = new ExamRepository(_context);
-        ExamResultRepository = new ExamResultRepository(_context);
-        MeetingRepository = new MeetingRepository(_context);
-        NotificationRepository = new NotificationRepository(_context);
-        ParentRepository = new ParentRepository(_context);
-        PaymentRepository = new PaymentRepository(_context);
-        ResourceRepository = new ResourceRepository(_context);
-        ScheduleRepository = new ScheduleRepository(_context);
-        StudentRepository = new StudentRepository(_context);
-        SubjectRepository = new SubjectRepository(_context);
-        SubmissionRepository = new SubmissionRepository(_context);
-        TeacherRepository = new TeacherRepository(_context);
+        ApplicationUser = new ApplicationUserRepository(_context);
+        Assignment = new AssignmentRepository(_context);
+        Attendance = new AttendanceRepository(_context);
+        Attendee = new AttendeeRepository(_context);
+        Bus = new BusRepository(_context);
+        Class = new ClassRepository(_context);
+        Event = new EventRepository(_context);
+        Exam = new ExamRepository(_context);
+        ExamResult = new ExamResultRepository(_context);
+        Meeting = new MeetingRepository(_context);
+        Notification = new NotificationRepository(_context);
+        Parent = new ParentRepository(_context);
+        Payment = new PaymentRepository(_context);
+        Resource = new ResourceRepository(_context);
+        Schedule = new ScheduleRepository(_context);
+        Student = new StudentRepository(_context);
+        Subject = new SubjectRepository(_context);
+        Submission = new SubmissionRepository(_context);
+        Teacher = new TeacherRepository(_context);
     }
 
     public async Task<int> SaveChangesAsync()

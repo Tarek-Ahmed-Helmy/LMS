@@ -5,6 +5,7 @@ namespace LMS.Entities.Interfaces;
 public interface IGenericRepository<T> where T : class
 {
     Task<T> GetByIdAsync(int id);
+    Task<T> GetByIdAsync(string id);
     Task<IEnumerable<T>> GetAllAsync();
     Task<List<string>> GetDistinctAsync(Expression<Func<T, string>> col);
 
