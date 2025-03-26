@@ -2,24 +2,24 @@
 
 public interface IUnitOfWork : IDisposable
 {
-    IApplicationUserRepository ApplicationUserRepository { get; }
-    IAssignmentRepository AssignmentRepository { get; }
-    IAttendanceRepository AttendanceRepository { get; }
-    IAttendeeRepository AttendeeRepository { get; }
-    IBusRepository BusRepository { get; }
-    IClassRepository ClassRepository { get; }
-    IEventRepository EventRepository { get; }
-    IExamRepository ExamRepository { get; }
-    IExamResultRepository ExamResultRepository { get; }
-    IMeetingRepository MeetingRepository { get; }
-    INotificationRepository NotificationRepository { get; }
-    IParentRepository ParentRepository { get; }
-    IPaymentRepository PaymentRepository { get; }
-    IResourceRepository ResourceRepository { get; }
-    IScheduleRepository ScheduleRepository { get; }
-    IStudentRepository StudentRepository { get; }
-    ISubjectRepository SubjectRepository { get; }
-    ISubmissionRepository SubmissionRepository { get; }
-    ITeacherRepository TeacherRepository { get; }
+    IApplicationUserRepository ApplicationUser { get; }
+    IAssignmentRepository Assignment { get; }
+    IAttendanceRepository Attendance { get; }
+    IAttendeeRepository Attendee { get; }
+    IBusRepository Bus { get; }
+    IClassRepository Class { get; }
+    IEventRepository Event { get; }
+    IExamRepository Exam { get; }
+    IExamResultRepository ExamResult { get; }
+    IMeetingRepository Meeting { get; }
+    INotificationRepository Notification { get; }
+    IParentRepository Parent { get; }
+    IPaymentRepository Payment { get; }
+    IResourceRepository Resource { get; }
+    IScheduleRepository Schedule { get; }
+    IStudentRepository Student { get; }
+    ISubjectRepository Subject { get; }
+    ISubmissionRepository Submission { get; }
+    ITeacherRepository Teacher { get; }
     Task<int> SaveChangesAsync();
 }
