@@ -26,10 +26,7 @@ public class Program
         app.UseAuthorization();
 
         app.MapStaticAssets();
-        app.MapControllerRoute(
-            name: "default",
-            pattern: "{controller=Home}/{action=Index}/{id?}")
-            .WithStaticAssets();
+        
         app.MapControllerRoute(
             name: "Admin",
             pattern: "{area=Admin}/{controller=Home}/{action=Index}/{id?}");
@@ -45,6 +42,11 @@ public class Program
         app.MapControllerRoute(
             name: "Parent",
             pattern: "{area=Parent}/{controller=Home}/{action=Index}/{id?}");
+
+        app.MapControllerRoute(
+            name: "default",
+            pattern: "{area=Shared}/{controller=Home}/{action=Index}/{id?}")
+            .WithStaticAssets();
 
 
         app.Run();
