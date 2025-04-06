@@ -1,7 +1,7 @@
 ﻿using LMS.Entities.Models;
 using System.ComponentModel.DataAnnotations;
 
-namespace LMS.Web.ViewModels.Student;
+namespace LMS.Web.ViewModels.StudentViewModels;
 
 public class StudentProfileViewModel
 {

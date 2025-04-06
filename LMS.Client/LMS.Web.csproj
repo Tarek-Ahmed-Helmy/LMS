@@ -20,13 +20,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Areas\Admin\Controllers\" />
-    <Folder Include="Areas\Admin\Views\" />
     <Folder Include="Areas\Parent\Controllers\" />
-    <Folder Include="Areas\Parent\Views\" />
     <Folder Include="Areas\Teacher\Controllers\" />
-    <Folder Include="Areas\Teacher\Views\" />
-    <Folder Include="ViewModels\Admin\" />
     <Folder Include="ViewModels\Parent\" />
     <Folder Include="ViewModels\Teacher\" />
   </ItemGroup>
