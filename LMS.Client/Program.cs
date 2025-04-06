@@ -1,6 +1,6 @@
 using LMS.DataAccess.DependencyInjection;
 
-namespace LMS.Client;
+namespace LMS.Web;
 
 public class Program
 {
