@@ -36,8 +36,9 @@
 							<i class="bi bi-list"></i>
 						</a>
 					</li>
-					<li class="nav-item d-none d-md-block"><a asp-controller="Home" asp-action="Index" class="nav-link">Home</a></li>
-					<li class="nav-item d-none d-md-block"><a asp-controller="Home" asp-action="Privacy" class="nav-link">Privacy</a></li>
+					<li class="nav-item d-none d-md-block"><a asp-area="Shared" asp-controller="Home" asp-action="Index" class="nav-link">Home</a></li>
+					<li class="nav-item d-none d-md-block"><a asp-area="Shared" asp-controller="Home" asp-action="Privacy" class="nav-link">Privacy</a></li>
+					<li class="nav-item d-none d-md-block"><a asp-area="Admin" asp-controller="Dashboard" asp-action="Index" class="nav-link">Admin</a></li>
 				</ul>
 				<ul class="navbar-nav ms-auto">
 					<li class="nav-item">

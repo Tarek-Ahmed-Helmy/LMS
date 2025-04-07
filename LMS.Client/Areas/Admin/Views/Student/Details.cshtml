@@ -1,0 +1,20 @@
+﻿@model StudentDetailsViewModel
+
+@{
+	ViewBag.Title = "Student Managment";
+	ViewBag.CardTitle = "Student Details";
+}
+
+<div>
+    <p><strong>Full Name:</strong> @Model.FullName</p>
+    <p><strong>Address:</strong> @Model.Address</p>
+    <p><strong>Date of Birth:</strong> @Model.DateOfBirth.ToShortDateString()</p>
+    <p><strong>Admission Date:</strong> @Model.AdmissionDate.ToShortDateString()</p>
+    <p><strong>Gender:</strong> @Model.Gender</p>
+    <p><strong>Emergency Contact:</strong> @Model.EmergencyContact</p>
+    <p><strong>Student Number:</strong> @Model.StudentNumber</p>
+    <p><strong>Grade Level:</strong> @Model.GradeLevel</p>
+	<p><strong>Class Number:</strong> @Model.ClassNumber</p>
+    <p><strong>Bus Subscription:</strong> @Model.BusSubscription</p>
+</div>
+<a asp-action="Index" class="btn btn-primary">Back to List</a>

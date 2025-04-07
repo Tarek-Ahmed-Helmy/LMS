@@ -1,6 +1,6 @@
 using LMS.DataAccess.DependencyInjection;
 
-namespace LMS.Client;
+namespace LMS.Web;
 
 public class Program
 {
@@ -26,6 +26,7 @@ public class Program
         app.UseAuthorization();
 
         app.MapStaticAssets();
+<<<<<<< HEAD
 
         //app.MapControllerRoute(
         //    name: "areas",
@@ -45,6 +46,30 @@ public class Program
         //    name: "default",
         //    pattern: "{controller=Home}/{action=Index}/{id?}")
         //    .WithStaticAssets();
+=======
+        
+        app.MapControllerRoute(
+            name: "Admin",
+            pattern: "{area=Admin}/{controller=Home}/{action=Index}/{id?}");
+
+        app.MapControllerRoute(
+            name: "Teacher",
+            pattern: "{area=Teacher}/{controller=Home}/{action=Index}/{id?}");
+
+        app.MapControllerRoute(
+            name: "Student",
+            pattern: "{area=Student}/{controller=Home}/{action=Index}/{id?}");
+
+        app.MapControllerRoute(
+            name: "Parent",
+            pattern: "{area=Parent}/{controller=Home}/{action=Index}/{id?}");
+
+        app.MapControllerRoute(
+            name: "default",
+            pattern: "{area=Shared}/{controller=Home}/{action=Index}/{id?}")
+            .WithStaticAssets();
+>>>>>>> d866c67e9fc2b4cb016af1a57d230b4ff3a15d2d
+
 
         app.Run();
     }

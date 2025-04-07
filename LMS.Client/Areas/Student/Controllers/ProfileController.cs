@@ -1,8 +1,8 @@
 ﻿using LMS.Entities.Interfaces;
-using LMS.Web.ViewModels.Student;
+using LMS.Web.ViewModels.StudentViewModels;
 using Microsoft.AspNetCore.Mvc;
 
-namespace LMS.Web.Areas.Student.Controllers;
+namespace LMS.Web.Areas.StudentArea.Controllers;
 
 [Area("Student")]
 public class ProfileController : Controller

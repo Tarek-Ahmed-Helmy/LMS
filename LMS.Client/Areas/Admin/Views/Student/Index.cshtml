@@ -1,0 +1,48 @@
+﻿@model IEnumerable<Student>
+
+@{
+	ViewBag.Title = "Student Managment";
+	ViewBag.CardTitle = "View Students";
+}
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Student Number</th>
+            <th>Full Name</th>
+            <th>Email</th>
+            <th>Date of Birth</th>
+            <th>Gender</th>
+            <th>Admission Date</th>
+            <th>GradeLevel</th>
+            <th>Actions</th>
+            <th>Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var student in Model)
+        {
+            <tr>
+                <td>@student.StudentNumber</td>
+                <td>@student.ApplicationUser?.FullName</td>
+                <td>@student.ApplicationUser?.Email</td>
+                <td>@student.DateOfBirth.ToShortDateString()</td>
+                <td>@student.Gender</td>
+                <td>@student.AdmissionDate.ToShortDateString()</td>
+				<td>@student.Class?.GradeLevel</td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@student.StudentId" class="btn btn-info btn-sm">Details</a>
+                    <a asp-action="Edit" asp-route-id="@student.StudentId" class="btn btn-warning btn-sm">Edit</a>
+                    <a asp-action="ChangeStatus" asp-route-id="@student.StudentId" class="btn btn-secondary btn-sm">Change Status</a>
+                </td>
+                <td>
+                    @(student.ApplicationUser?.LockoutEnd != null && student.ApplicationUser.LockoutEnd > DateTimeOffset.UtcNow
+                        ? "Locked"
+                        : "Active")
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<br />
+<a asp-action="Create" class="btn btn-primary">Create New Student</a>
