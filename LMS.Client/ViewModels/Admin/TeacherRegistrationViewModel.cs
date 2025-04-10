@@ -35,9 +35,5 @@ namespace LMS.Web.ViewModels.AdminViewModels
         [Required]
         public int Experience { get; set; } // In years
 
-        [Required]
-        [Phone]
-        [StringLength(20)]
-        public string EmergencyContact { get; set; }
     }
 }

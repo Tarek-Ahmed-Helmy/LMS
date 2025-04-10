@@ -1,0 +1,32 @@
+﻿@model ClassViewModel
+
+@{
+    ViewBag.Title = "Class Managment";
+    ViewBag.CardTitle = "Edit Class";
+}
+
+<div class="row">
+    <div class="col-md-8">
+        <form method="post">
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <input type="hidden" asp-for="ClassId" />
+            <div class="form-group">
+                <label asp-for="ClassNumber"></label>
+                <input asp-for="ClassNumber" class="form-control" />
+                <span asp-validation-for="ClassNumber" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="GradeLevel"></label>
+                <select asp-for="GradeLevel" class="form-control" asp-items="Html.GetEnumSelectList<GradeLevel>()"></select>
+                <span asp-validation-for="GradeLevel" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Capacity"></label>
+                <input asp-for="Capacity" class="form-control" />
+                <span asp-validation-for="Capacity" class="text-danger"></span>
+            </div>
+            <button type="submit" class="btn btn-primary mt-2">Save Changes</button>
+        </form>
+    </div>
+</div>
+<a asp-action="Classes" class="btn btn-primary">Back to List</a>
