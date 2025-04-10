@@ -1,0 +1,53 @@
+﻿@model SubjectManagementViewModel
+
+@{
+    ViewBag.Title = "Subject Managment";
+    ViewBag.CardTitle = "View Subjects";
+}
+
+<a class="btn btn-success mb-3" data-bs-toggle="collapse" href="#addSubjectForm">Add Subject</a>
+
+<div id="addSubjectForm" class="collapse">
+    <form asp-action="AddSubject" method="post">
+        <div class="form-group">
+            <label asp-for="NewSubject.SubjectCode"></label>
+            <input asp-for="NewSubject.SubjectCode" class="form-control" />
+            <span asp-validation-for="NewSubject.SubjectCode" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="NewSubject.SubjectName"></label>
+            <input asp-for="NewSubject.SubjectName" class="form-control" />
+            <span asp-validation-for="NewSubject.SubjectName" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="NewSubject.SubjectDescription"></label>
+            <textarea asp-for="NewSubject.SubjectDescription" class="form-control"></textarea>
+            <span asp-validation-for="NewSubject.SubjectDescription" class="text-danger"></span>
+        </div>
+        <button type="submit" class="btn btn-primary mt-2">Save</button>
+    </form>
+</div>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Code</th>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var subject in Model.Subjects)
+        {
+            <tr>
+                <td>@subject.SubjectCode</td>
+                <td>@subject.SubjectName</td>
+                <td>@subject.SubjectDescription</td>
+                <td>
+                    <a asp-action="UpdateSubject" asp-route-id="@subject.SubjectId" class="btn btn-warning btn-sm">Edit</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
