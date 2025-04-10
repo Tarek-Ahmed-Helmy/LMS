@@ -1,0 +1,46 @@
+﻿@model IEnumerable<LMS.Entities.Models.Teacher>
+
+@{
+    ViewBag.Title = "Teacher Management";
+    ViewBag.CardTitle = "View Teachers";
+}
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Full Name</th>
+            <th>Email</th>
+            <th>Hire Date</th>
+            <th>Qualification</th>
+            <th>Experience (Years)</th>
+            <th>Actions</th>
+            <th>Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var teacher in Model)
+        {
+            <tr>
+                <td>@teacher.ApplicationUser?.FullName</td>
+                <td>@teacher.ApplicationUser?.Email</td>
+                <td>@teacher.HireDate.ToShortDateString()</td>
+                <td>@teacher.Qualification</td>
+                <td>@teacher.Experience</td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@teacher.TeacherId" class="btn btn-info btn-sm">Details</a>
+                    <a asp-action="Edit" asp-route-id="@teacher.TeacherId" class="btn btn-warning btn-sm">Edit</a>
+                    <a asp-action="ChangeStatus" asp-route-id="@teacher.TeacherId" class="btn btn-secondary btn-sm">Change Status</a>
+                </td>
+                <td>
+                    @(teacher.ApplicationUser?.LockoutEnd != null && teacher.ApplicationUser.LockoutEnd > DateTimeOffset.UtcNow
+                        ? "Locked"
+                        : "Active")
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<br />
+<a asp-action="Create" class="btn btn-primary">Create New Teacher</a>
+
+
