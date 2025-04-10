@@ -1,0 +1,19 @@
+﻿@model LMS.Web.ViewModels.AdminViewModels.TeacherDetailsViewModel
+
+@{
+    ViewBag.Title = "Teacher Management";
+    ViewBag.CardTitle = "Teacher Details";
+}
+
+<div>
+    <p><strong>Full Name:</strong> @Model.FullName</p>
+    <p><strong>Address:</strong> @Model.Address</p>
+    <p><strong>Hire Date:</strong> @Model.HireDate.ToShortDateString()</p>
+    <p><strong>Qualification:</strong> @Model.Qualification</p>
+    <p><strong>Experience (Years):</strong> @Model.Experience</p>
+    <p><strong>Profile Picture:</strong> <img src="@Model.ProfilePictureURL" alt="Profile Picture" style="width:100px;height:100px;" /></p>
+</div>
+
+<a asp-action="Index" class="btn btn-primary">Back to List</a>
+
+
