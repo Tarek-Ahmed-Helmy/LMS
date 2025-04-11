@@ -1,0 +1,43 @@
+﻿@model IEnumerable<LMS.Entities.Models.Parent>
+
+@{
+    ViewBag.Title = "Parent Management";
+    ViewBag.CardTitle = "View Parents";
+}
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Full Name</th>
+            <th>Email</th>
+            <th>Phone Number</th>
+            <th>Occupation</th>
+            <th>Actions</th>
+            <th>Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var parent in Model)
+        {
+            <tr>
+                <td>@parent.ApplicationUser?.FullName</td>
+                <td>@parent.ApplicationUser?.Email</td>
+                <td>@parent.ApplicationUser?.PhoneNumber</td>
+                <td>@parent.Occupation</td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@parent.ParentId" class="btn btn-info btn-sm">Details</a>
+                    <a asp-action="Edit" asp-route-id="@parent.ParentId" class="btn btn-warning btn-sm">Edit</a>
+                    <a asp-action="ChangeStatus" asp-route-id="@parent.ParentId" class="btn btn-secondary btn-sm">Change Status</a>
+                </td>
+                <td>
+                    @(parent.ApplicationUser?.LockoutEnd != null && parent.ApplicationUser.LockoutEnd > DateTimeOffset.UtcNow
+                        ? "Locked"
+                        : "Active")
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<br />
+<a asp-action="Create" class="btn btn-primary">Create New Parent</a>
