@@ -1,0 +1,19 @@
+﻿@model LMS.Web.ViewModels.AdminViewModels.ParentDetailsViewModel
+
+@{
+    ViewBag.Title = "Parent Management";
+    ViewBag.CardTitle = "Parent Details";
+}
+
+<div>
+    <p><strong>Full Name:</strong> @Model.FullName</p>
+    <p><strong>Address:</strong> @Model.Address</p>
+    <p><strong>Email:</strong> @Model.Email</p>
+    <p><strong>Phone Number:</strong> @Model.PhoneNumber</p>
+    <p><strong>Occupation:</strong> @Model.Occupation</p>
+    <p><strong>Profile Picture:</strong> <img src="@Model.ProfilePictureURL" alt="Profile Picture" style="width:100px;height:100px;" /></p>
+</div>
+
+<a asp-action="Index" class="btn btn-primary">Back to List</a>
+
+
