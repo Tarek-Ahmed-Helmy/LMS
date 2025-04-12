@@ -1,7 +1,7 @@
 ﻿using LMS.Entities.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
-namespace LMS.Web.Areas.Admin.Controllers;
+namespace LMS.Web.Areas.AdminArea.Controllers;
 
 [Area("Admin")]
 public class DashboardController : Controller
