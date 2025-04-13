@@ -1,0 +1,24 @@
+﻿@model LMS.Web.ViewModels.StudentViewModels.SubmissionFeedbackViewModel
+
+@{
+    ViewData["Title"] = "Assignment Feedback";
+}
+
+<h2>Feedback for: @Model.AssignmentTitle</h2>
+
+<p><strong>Student:</strong> @Model.StudentFullName</p>
+<p><strong>Submitted At:</strong> @Model.SubmissionDate.ToString("yyyy-MM-dd HH:mm")</p>
+<p><strong>Score:</strong> @Model.Score</p>
+
+@if (!string.IsNullOrEmpty(Model.FilePath))
+{
+    <p><strong>Submitted File:</strong> <a href="@Model.FilePath" target="_blank">Download</a></p>
+}
+
+@if (!string.IsNullOrWhiteSpace(Model.Feedback))
+{
+    <div class="alert alert-info mt-3">
+        <strong>Teacher Feedback:</strong><br />
+        @Model.Feedback
+    </div>
+}

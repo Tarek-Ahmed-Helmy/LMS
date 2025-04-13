@@ -1,0 +1,51 @@
+﻿@using LMS.Web.ViewModels.StudentViewModels
+@model List<StudentAssignmentViewModel>
+
+@{
+    ViewData["Title"] = "Student Assignments";
+    ViewBag.CardTitle = "View Assignments";
+}
+
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Subject</th>
+            <th>Teacher</th>
+            <th>Deadline</th>
+            <th>Progress</th>
+            <th>Grade</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var assignment in Model)
+        {
+            <tr>
+                <td>@assignment.Title</td>
+                <td>@assignment.Subject</td>
+                <td>@assignment.Teacher</td>
+                <td>@assignment.ExpiresAt.ToString("yyyy-MM-dd HH:mm")</td>
+                <td>
+                    @if (assignment.Progress == "Graded")
+                    {
+                        <span class="badge bg-success">@assignment.Progress</span>
+                    }
+                    else if (assignment.Progress == "Submitted - Pending Grading")
+                    {
+                        <span class="badge bg-warning text-dark">@assignment.Progress</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-secondary">@assignment.Progress</span>
+                    }
+                </td>
+                <td>@assignment.Grade</td>
+                <td>
+                    <a asp-controller="Assignments" asp-action="Details" asp-route-id="@assignment.AssignmentId" class="btn btn-sm btn-primary">Details</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
