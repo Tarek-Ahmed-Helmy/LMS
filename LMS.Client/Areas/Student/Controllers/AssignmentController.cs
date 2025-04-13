@@ -17,26 +17,37 @@ public class AssignmentController : Controller
     }
     public async Task<IActionResult> Index(string studentId)
     {
-        // Get all the assignments that have not expired
+        // Step 1: Get the student along with the Class
+        var student = await _unitOfWork.Student.FindAsync(
+            s => s.StudentId == studentId,
+            includes: new[] { "Class" }
+        );
+
+        if (student == null || student.Class == null)
+            return NotFound("Student or class not found.");
+
+        var classId = student.Class.ClassId;
+
+        // Step 2: Get the schedules for the student's class (to find the related subjects)
+        var schedules = await _unitOfWork.Schedule.FindAllAsync(
+            s => s.ClassId == classId,
+            includes: new[] { "Subject" }
+        );
+
+        var subjectIds = schedules
+            .Where(s => s.Subject != null)
+            .Select(s => s.Subject.SubjectId)
+            .Distinct()
+            .ToList();
+
+        // Step 3: Get active assignments related to these subjects
         var assignments = await _unitOfWork.Assignment.FindAllAsync(
-            a => a.Deadline > DateTime.UtcNow,  // Only include assignments that are not expired
+            a => subjectIds.Contains(a.SubjectId) && a.Deadline > DateTime.UtcNow,
             includes: new[] { "Subject", "Teacher.ApplicationUser", "Submissions" }
         );
 
-        // Get all the subjects that the student is enrolled in, via the student’s submissions or a related entity
-        var studentSubjects = await _unitOfWork.Submission.FindAllAsync(
-            s => s.StudentId == studentId,  // Get submissions related to this student
-            includes: new[] { "Assignment.Subject" }
-        );
-
-        // Extract the subject IDs the student is enrolled in (based on their submissions)
-        var subjectIds = studentSubjects.Select(s => s.Assignment.SubjectId).ToList();
-
-        // Filter assignments to only those the student is enrolled in (matching subject IDs)
-        var filteredAssignments = assignments.Where(a => subjectIds.Contains(a.SubjectId)).ToList();
-
-        // Map assignments to view model
-        var viewModel = filteredAssignments.Select(a =>
+        // Step 4: Map to StudentAssignmentViewModel
+        var viewModel = assignments.Select(a =>
         {
             var submission = a.Submissions?.FirstOrDefault(s => s.StudentId == studentId);
             string progress;
@@ -72,7 +83,8 @@ public class AssignmentController : Controller
     }
 
 
-   
+
+
     public async Task<IActionResult> Details(int id, string studentId)
     {
         var assignment = await _unitOfWork.Assignment.FindAsync(
