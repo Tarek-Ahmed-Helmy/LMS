@@ -1,9 +1,12 @@
 ﻿using LMS.Entities.Interfaces;
+using LMS.Utilities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LMS.Web.Areas.AdminArea.Controllers;
 
 [Area("Admin")]
+[Authorize(Roles = SD.AdminRole)]
 public class DashboardController : Controller
 {
     private readonly IUnitOfWork _unitOfWork;
