@@ -1,4 +1,5 @@
 ﻿using LMS.Entities.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -10,7 +11,17 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
 
     }
-    
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        base.OnModelCreating(modelBuilder);
+        modelBuilder.Entity<IdentityUserRole<string>>()
+               .HasOne<IdentityRole>()
+               .WithMany()
+               .HasForeignKey(ur => ur.RoleId)
+               .OnDelete(DeleteBehavior.NoAction);
+    }
+
     public DbSet<Assignment> Assignments { get; set; }
     public DbSet<Attendance> Attendances { get; set; }
     public DbSet<Attendee> Attendees { get; set; }
