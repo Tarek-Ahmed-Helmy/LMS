@@ -29,10 +29,10 @@ public class Payment
     public required string ReceiptPath { get; set; }
 
     [Required]
-    public int StudentId { get; set; }
+    public string StudentId { get; set; }
 
     [Required]
-    public int ParentId { get; set; }
+    public string ParentId { get; set; }
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
 

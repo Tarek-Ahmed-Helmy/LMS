@@ -1,0 +1,31 @@
+﻿@model StudentScheduleViewModel
+
+@{
+    ViewData["Title"] = "Student Dashboard";
+    ViewBag.CardTitle = $"{@Model.FullName}'s Weekly Schedule";
+}
+
+@foreach (var group in Model.GroupedSchedule)
+{
+    <h4 class="mt-4">@group.Key</h4>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Time</th>
+                <th>Subject</th>
+                <th>Teacher</th>
+            </tr>
+        </thead>
+        <tbody>
+        @foreach (var item in group.Value)
+        {
+            <tr>
+                <td>@item.StartTime - @item.EndTime</td>
+                <td>@item.Subject</td>
+                <td>@item.Teacher</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}
+
