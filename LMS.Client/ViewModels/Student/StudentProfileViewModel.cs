@@ -27,11 +27,11 @@ public class StudentProfileViewModel
     public string? ProfilePictureURL { get; set; }
     [Required]
     [EnumDataType(typeof(GradeLevel))]
-    public GradeLevel GradeLevel { get; set; }
+    public GradeLevel? GradeLevel { get; set; }
     [Required]
     [StringLength(255)]
     public required string ClassNumber { get; set; }
-    [Display(Name = "Bus")]
-    public int? BusId { get; set; }
+    [Display(Name = "Bus Number")]
+    public string BusNumber { get; set; }
 
 }

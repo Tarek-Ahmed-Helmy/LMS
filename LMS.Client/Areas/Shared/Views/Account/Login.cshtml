@@ -10,6 +10,7 @@
 </div>
 
 <form asp-action="Login" method="post" novalidate>
+	<div asp-validation-summary="ModelOnly" class="text-danger small mb-3"></div>
     <div class="mb-3">
         <label asp-for="EmailOrUserName" class="form-label"></label>
         <input asp-for="EmailOrUserName" class="form-control" placeholder="Enter email or username" />

@@ -1,0 +1,56 @@
+﻿@model LMS.Web.ViewModels.StudentViewModels.StudentProfileViewModel
+
+@{
+    ViewBag.Title = "Student Profile";
+}
+
+<div class="container mt-5">
+    <div class="card shadow-lg rounded p-4">
+        <div class="row">
+            <!-- Profile Picture -->
+            <div class="col-md-4 text-center">
+                @if (!string.IsNullOrEmpty(Model.ProfilePictureURL))
+                {
+                    <img src="@Model.ProfilePictureURL" class="img-fluid rounded-circle mb-3" style="max-height: 200px;" alt="Profile Picture" />
+                }
+                else
+                {
+                    <img src="~/images/default-profile.png" class="img-fluid rounded-circle mb-3" style="max-height: 200px;" alt="Default Profile" />
+                }
+
+                <h4 class="text-primary">@Model.FullName</h4>
+                <p class="text-muted">Student Number: @Model.StudentNumber</p>
+            </div>
+
+            <!-- Profile Details -->
+            <div class="col-md-8">
+                <h5 class="mb-3">Student Details</h5>
+                <dl class="row">
+                    <dt class="col-sm-4">Date of Birth</dt>
+                    <dd class="col-sm-8">@Model.DateOfBirth.ToString("dd MMM yyyy")</dd>
+
+                    <dt class="col-sm-4">Gender</dt>
+                    <dd class="col-sm-8">@Model.Gender</dd>
+
+                    <dt class="col-sm-4">Admission Date</dt>
+                    <dd class="col-sm-8">@Model.AdmissionDate.ToString("dd MMM yyyy")</dd>
+
+                    <dt class="col-sm-4">Emergency Contact</dt>
+                    <dd class="col-sm-8">@Model.EmergencyContact</dd>
+
+                    <dt class="col-sm-4">Grade Level</dt>
+                    <dd class="col-sm-8">@Model.GradeLevel</dd>
+
+                    <dt class="col-sm-4">Class Number</dt>
+                    <dd class="col-sm-8">@Model.ClassNumber</dd>
+
+                    <dt class="col-sm-4">Address</dt>
+                    <dd class="col-sm-8">@Model.Address</dd>
+
+                    <dt class="col-sm-4">Bus Number</dt>
+                    <dd class="col-sm-8">@Model.BusNumber</dd>
+                </dl>
+            </div>
+        </div>
+    </div>
+</div>
