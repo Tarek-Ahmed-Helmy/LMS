@@ -524,10 +524,8 @@ namespace LMS.DataAccess.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("ParentId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ParentId1")
+                    b.Property<string>("ParentId")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("PaymentDate")
@@ -546,10 +544,8 @@ namespace LMS.DataAccess.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
-                    b.Property<int>("StudentId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("StudentId1")
+                    b.Property<string>("StudentId")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("UpdatedAt")
@@ -557,9 +553,9 @@ namespace LMS.DataAccess.Migrations
 
                     b.HasKey("PaymentId");
 
-                    b.HasIndex("ParentId1");
+                    b.HasIndex("ParentId");
 
-                    b.HasIndex("StudentId1");
+                    b.HasIndex("StudentId");
 
                     b.ToTable("Payments");
                 });
@@ -1082,11 +1078,15 @@ namespace LMS.DataAccess.Migrations
                 {
                     b.HasOne("LMS.Entities.Models.Parent", "Parent")
                         .WithMany("Payments")
-                        .HasForeignKey("ParentId1");
+                        .HasForeignKey("ParentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("LMS.Entities.Models.Student", "Student")
                         .WithMany("Payments")
-                        .HasForeignKey("StudentId1");
+                        .HasForeignKey("StudentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Parent");
 
@@ -1230,7 +1230,7 @@ namespace LMS.DataAccess.Migrations
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("LMS.Entities.Models.ApplicationUser", null)

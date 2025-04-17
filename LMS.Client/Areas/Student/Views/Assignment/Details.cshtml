@@ -22,7 +22,7 @@
     <hr />
     @if (Model.Progress == "Not Submitted")
     {
-        <form asp-action="Submit" asp-route-id="@Model.AssignmentId" asp-route-studentId="@User.FindFirst("Id")?.Value" method="post" enctype="multipart/form-data">
+        <form asp-action="Submit" asp-route-assignmentId="@Model.AssignmentId" method="post" enctype="multipart/form-data">
             <div class="form-group">
                 <label for="File">Upload Submission:</label>
                 <input type="file" name="File" class="form-control" required />

@@ -1,0 +1,46 @@
+﻿body, html {
+    height: 100%;
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background: #f3f6fd;
+}
+
+.auth-wrapper {
+    display: flex;
+    height: 100vh;
+}
+
+.auth-left {
+    background: linear-gradient(to right, rgb(25, 25, 25), rgb(144, 149, 144));
+    color: white;
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding: 40px;
+}
+
+.auth-right {
+    flex: 1;
+    background-color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px;
+}
+
+.auth-box {
+    width: 100%;
+    max-width: 400px;
+}
+
+@media (max-width: 768px) {
+    .auth-left {
+        display: none;
+    }
+
+    .auth-right {
+        flex: 1 1 100%;
+    }
+}

@@ -1,4 +1,6 @@
-﻿<!doctype html>
+﻿@inject SignInManager<ApplicationUser> SignInManager
+
+<!doctype html>
 <html lang="en">
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -38,7 +40,6 @@
 					</li>
 					<li class="nav-item d-none d-md-block"><a asp-area="Shared" asp-controller="Home" asp-action="Index" class="nav-link">Home</a></li>
 					<li class="nav-item d-none d-md-block"><a asp-area="Shared" asp-controller="Home" asp-action="Privacy" class="nav-link">Privacy</a></li>
-					<li class="nav-item d-none d-md-block"><a asp-area="Admin" asp-controller="Dashboard" asp-action="Index" class="nav-link">Admin</a></li>
 					<li class="nav-item d-none d-md-block"><a asp-area="Student" asp-controller="Dashboard" asp-action="Index" class="nav-link">Student</a></li>
 					<li class="nav-item d-none d-md-block"><a asp-area="Parent" asp-controller="Dashboard" asp-action="Index" class="nav-link">Parent</a></li>
 					<li class="nav-item d-none d-md-block"><a asp-area="Teacher" asp-controller="Dashboard" asp-action="Index" class="nav-link">Teacher</a></li>
@@ -58,7 +59,7 @@
 							<img src="~/dist/assets/img/user2-160x160.jpg"
 								 class="user-image rounded-circle shadow"
 								 alt="User Image" />
-							<span class="d-none d-md-inline">It Will Be Changed Later</span>
+							<span class="d-none d-md-inline">@User?.Identity?.Name</span>
 						</a>
 						<ul class="dropdown-menu dropdown-menu-lg dropdown-menu-end">
 							<!--begin::User Image-->
@@ -67,7 +68,7 @@
 									 class="rounded-circle shadow"
 									 alt="User Image" />
 								<p>
-									Alexander Pierce - Web Developer
+									@User?.Identity?.Name
 									<small>Member since Nov. 2023</small>
 								</p>
 							</li>
@@ -86,7 +87,11 @@
 							<!--begin::Menu Footer-->
 							<li class="user-footer">
 								<a href="#" class="btn btn-default btn-flat">Profile</a>
-								<a href="#" class="btn btn-default btn-flat float-end">Sign out</a>
+								<form method="post" asp-area="shared" asp-controller="account" asp-action="logout" class="float-end">
+									<button type="submit" style="width:auto" class="nav-link btn btn-default btn-flat  py-0">
+										Logout
+									</button>
+								</form>
 							</li>
 							<!--end::Menu Footer-->
 						</ul>

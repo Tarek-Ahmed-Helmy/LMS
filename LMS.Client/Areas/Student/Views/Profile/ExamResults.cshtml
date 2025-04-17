@@ -1,0 +1,32 @@
+﻿@model StudentExamResultsViewModel
+
+@{
+    ViewData["Title"] = "Student Dashboard";
+    ViewBag.CardTitle = $"Exam Results for {@Model.FullName}";
+}
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Exam</th>
+            <th>Subject</th>
+            <th>Date</th>
+            <th>Score</th>
+            <th>Total</th>
+            <th>Remarks</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var result in Model.Results)
+        {
+            <tr>
+                <td>@result.ExamType</td>
+                <td>@result.Subject</td>
+                <td>@result.ExamDate.ToShortDateString()</td>
+                <td>@result.Score</td>
+                <td>@result.TotalMarks</td>
+                <td>@result.Remarks</td>
+            </tr>
+        }
+    </tbody>
+</table>

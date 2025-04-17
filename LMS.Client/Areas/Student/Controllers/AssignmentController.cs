@@ -1,13 +1,15 @@
 ﻿using LMS.Entities.Interfaces;
 using LMS.Entities.Models;
+using LMS.Utilities;
 using LMS.Web.ViewModels.StudentViewModels;
-using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using System.Security.Claims;
 
 namespace LMS.Web.Areas.StudentArea.Controllers;
 
 [Area("Student")]
+[Authorize(Roles = SD.StudentRole)]
 public class AssignmentController : Controller
 {
     private readonly IUnitOfWork _unitOfWork;
@@ -15,57 +17,36 @@ public class AssignmentController : Controller
     {
         _unitOfWork = unitOfWork;
     }
-    public async Task<IActionResult> Index(string studentId)
+    [HttpGet]
+    public async Task<IActionResult> Index()
     {
-        // Step 1: Get the student along with the Class
+        var id = User.FindFirstValue(ClaimTypes.NameIdentifier);
         var student = await _unitOfWork.Student.FindAsync(
-            s => s.StudentId == studentId,
-            includes: new[] { "Class" }
+            s => s.StudentId == id,
+            includes: new[]
+            {
+            "Class.Schedules.Subject.Assignments.Teacher.ApplicationUser",
+            "Class.Schedules.Subject.Assignments.Submissions"
+            }
         );
 
-        if (student == null || student.Class == null)
-            return NotFound("Student or class not found.");
+        if (student?.Class?.Schedules == null || !student.Class.Schedules.Any())
+            return View(new List<StudentAssignmentViewModel>()); // No class or schedules
 
-        var classId = student.Class.ClassId;
-
-        // Step 2: Get the schedules for the student's class (to find the related subjects)
-        var schedules = await _unitOfWork.Schedule.FindAllAsync(
-            s => s.ClassId == classId,
-            includes: new[] { "Subject" }
-        );
-
-        var subjectIds = schedules
-            .Where(s => s.Subject != null)
-            .Select(s => s.Subject.SubjectId)
-            .Distinct()
+        var now = DateTime.UtcNow;
+        var assignments = student.Class.Schedules
+            .Where(s => s.Subject?.Assignments != null)
+            .SelectMany(s => s.Subject.Assignments)
+            .Where(a => a.Deadline > now)
             .ToList();
 
-        // Step 3: Get active assignments related to these subjects
-        var assignments = await _unitOfWork.Assignment.FindAllAsync(
-            a => subjectIds.Contains(a.SubjectId) && a.Deadline > DateTime.UtcNow,
-            includes: new[] { "Subject", "Teacher.ApplicationUser", "Submissions" }
-        );
+        if (!assignments.Any())
+            return View(new List<StudentAssignmentViewModel>()); // No active assignments
 
-        // Step 4: Map to StudentAssignmentViewModel
         var viewModel = assignments.Select(a =>
         {
-            var submission = a.Submissions?.FirstOrDefault(s => s.StudentId == studentId);
-            string progress;
-            string grade = "--";
-
-            if (submission == null)
-            {
-                progress = "Not Submitted";
-            }
-            else if (submission.Score > 0)
-            {
-                progress = "Graded";
-                grade = $"{submission.Score} / {a.TotalMarks}";
-            }
-            else
-            {
-                progress = "Submitted - Pending Grading";
-            }
+            var submission = a.Submissions?.FirstOrDefault(s => s.StudentId == id);
+            string progress = GetSubmissionProgress(submission, a.TotalMarks, out string grade);
 
             return new StudentAssignmentViewModel
             {
@@ -82,20 +63,20 @@ public class AssignmentController : Controller
         return View(viewModel);
     }
 
-
-
-
-    public async Task<IActionResult> Details(int id, string studentId)
+    [HttpGet]
+    public async Task<IActionResult> Details(int assignmentId)
     {
+        var id = User.FindFirstValue(ClaimTypes.NameIdentifier);
         var assignment = await _unitOfWork.Assignment.FindAsync(
-            a => a.AssignmentId == id,
+            a => a.AssignmentId == assignmentId,
             includes: new[] { "Subject", "Teacher.ApplicationUser", "Submissions" }
         );
 
         if (assignment == null)
             return NotFound();
 
-        var submission = assignment.Submissions?.FirstOrDefault(s => s.StudentId == studentId);
+        var submission = assignment.Submissions?.FirstOrDefault(s => s.StudentId == id);
+        string progress = GetSubmissionProgress(submission, assignment.TotalMarks, out string grade);
 
         var viewModel = new AssignmentDetailsViewModel
         {
@@ -105,59 +86,64 @@ public class AssignmentController : Controller
             Subject = assignment.Subject?.SubjectName ?? "N/A",
             Teacher = assignment.Teacher?.ApplicationUser?.FullName ?? "N/A",
             ExpiresAt = assignment.Deadline,
-            Progress = GetSubmissionProgress(submission),
-            Grade = GetGrade(submission, assignment.TotalMarks),
+            Progress = progress,
+            Grade = grade,
             FilePath = submission?.FilePath
         };
 
         return View(viewModel);
     }
-    private string GetSubmissionProgress(Submission? submission)
+    private static string GetSubmissionProgress(Submission? submission, int totalMarks, out string grade)
     {
+        string progress;
+        grade = "--";
+
         if (submission == null)
-            return "Not Submitted";
+        {
+            progress = "Not Submitted";
+        }
+        else if (submission.Score >= 0)
+        {
+            progress = "Graded";
+            grade = $"{submission.Score} / {totalMarks}";
+        }
+        else
+        {
+            progress = "Pending Grading";
+        }
 
-        return submission.Score > 0 ? "Graded" : "Submitted - Pending Grading";
+        return progress;
     }
-
-    private string GetGrade(Submission? submission, int totalMarks)
-    {
-        if (submission != null && submission.Score > 0)
-            return $"{submission.Score} / {totalMarks}";
-
-        return "--";
-    }
-
-
-
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Submit(int id, string studentId, Submission submission, IFormFile File)
+    public async Task<IActionResult> Submit(int assignmentId, IFormFile File)
     {
+        var id = User.FindFirstValue(ClaimTypes.NameIdentifier);
         // Validate model state first
         if (!ModelState.IsValid)
-            return View(submission);
+            return RedirectToAction(nameof(Details), new {assignmentId});
 
-        // Retrieve the assignment using the provided id
-        var assignment = await _unitOfWork.Assignment.FindAsync(a => a.AssignmentId == id);
+        // Retrieve the assignment using the provided assignmentId
+        var assignment = await _unitOfWork.Assignment.FindAsync(a => a.AssignmentId == assignmentId);
         if (assignment == null)
             return NotFound();
 
-        // Retrieve the student using the provided studentId
-        var student = await _unitOfWork.Student.FindAsync(s => s.StudentId == studentId);
+        // Retrieve the student using the provided assignmentId
+        var student = await _unitOfWork.Student.FindAsync(s => s.StudentId == id);
         if (student == null)
             return NotFound();
 
         // Check if the student has already submitted this assignment
-        var existingSubmission = await _unitOfWork.Submission.FindAsync(s => s.AssignmentId == id && s.StudentId == studentId);
+        var existingSubmission = await _unitOfWork.Submission.FindAsync(s => s.AssignmentId == assignmentId && s.StudentId == id);
         if (existingSubmission != null)
         {
             ModelState.AddModelError("", "You have already submitted this assignment.");
-            return View(submission);
+            return RedirectToAction(nameof(Details), new { assignmentId });
         }
 
         // Handle file upload only if the file is not null and has content
+        string path;
         if (File != null && File.Length > 0)
         {
             // Generate a unique file name to avoid overwriting
@@ -178,34 +164,39 @@ public class AssignmentController : Controller
             }
 
             // Set the file path in the submission model
-            submission.FilePath = "/uploads/" + fileName;
+            path = "/uploads/" + fileName;
         }
         else
         {
             // If file is required, add an error
             ModelState.AddModelError("File", "Please select a file to upload.");
-            return View(submission);
+            return RedirectToAction(nameof(Details), new { assignmentId });
         }
 
-        // Set remaining submission properties
-        submission.AssignmentId = id;
-        submission.StudentId = studentId;
-        submission.SubmissionDate = DateTime.UtcNow;
+        var submission = new Submission
+        {
+            AssignmentId = assignmentId,
+            StudentId = id,
+            Score = -1, // Default score for ungraded submissions
+            Feedback = null, // Default feedback for ungraded submissions
+            FilePath = path, // Set the file path
+            SubmissionDate = DateTime.UtcNow
+        };
 
         // Save the submission to the database
         await _unitOfWork.Submission.AddAsync(submission);
         await _unitOfWork.SaveChangesAsync();
 
         // Redirect to the student's assignments index page
-        return RedirectToAction("Index", new { studentId });
+        return RedirectToAction(nameof(Index));
     }
 
-
-
-    public async Task<IActionResult> Feedback(int id, string studentId)
+    [HttpGet]
+    public async Task<IActionResult> Feedback(int assignmentId)
     {
+        var id = User.FindFirstValue(ClaimTypes.NameIdentifier);
         var submission = await _unitOfWork.Submission.FindAsync(
-            s => s.AssignmentId == id && s.StudentId == studentId,
+            s => s.AssignmentId == assignmentId && s.StudentId == id,
             includes: new[] { "Assignment", "Student.ApplicationUser" }
         );
 
@@ -224,6 +215,4 @@ public class AssignmentController : Controller
 
         return View(viewModel);
     }
-
-
 }
