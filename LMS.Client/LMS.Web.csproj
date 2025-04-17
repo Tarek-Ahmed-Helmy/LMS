@@ -22,6 +22,7 @@
   <ItemGroup>
     <Folder Include="ViewModels\Parent\" />
     <Folder Include="ViewModels\Teacher\" />
+    <Folder Include="wwwroot\uploads\" />
   </ItemGroup>
 
 </Project>
