@@ -1,10 +1,9 @@
-﻿@model LMS.Entities.Models.Submission
+﻿@model Submission
 
 @{
     ViewData["Title"] = "Submit Assignment";
+    ViewBag.CardTitle = "Submit Assignment";
 }
-
-<h2 class="mb-4">Submit Assignment</h2>
 
 @if (TempData["Error"] != null)
 {
@@ -15,7 +14,6 @@
 
 <form asp-action="Submit" method="post" enctype="multipart/form-data">
     <input type="hidden" asp-for="AssignmentId" />
-    <input type="hidden" asp-for="StudentId" />
 
     <div class="form-group">
         <label for="File">Upload File:</label>

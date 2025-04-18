@@ -26,6 +26,8 @@ public class UnitOfWork : IUnitOfWork
     public ISubjectRepository Subject { get; }
     public ISubmissionRepository Submission { get; }
     public ITeacherRepository Teacher { get; }
+    public IQuizQuestionRepository QuizQuestion { get; }
+    public IStudentAnswerRepository StudentAnswer { get; }
 
     public UnitOfWork(ApplicationDbContext context)
     {
@@ -49,6 +51,8 @@ public class UnitOfWork : IUnitOfWork
         Subject = new SubjectRepository(_context);
         Submission = new SubmissionRepository(_context);
         Teacher = new TeacherRepository(_context);
+        QuizQuestion = new QuizQuestionRepository(_context);
+        StudentAnswer = new StudentAnswerRepository(_context);
     }
 
     public async Task<int> SaveChangesAsync()

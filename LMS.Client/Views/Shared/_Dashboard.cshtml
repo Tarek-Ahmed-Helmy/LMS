@@ -1,4 +1,12 @@
-﻿@inject SignInManager<ApplicationUser> SignInManager
+﻿@using LMS.Utilities
+@inject SignInManager<ApplicationUser> SignInManager
+
+@{
+	var role = User.IsInRole(SD.SuperAdminRole) ? SD.SuperAdminRole :
+			   User.IsInRole(SD.AdminRole) ? SD.AdminRole :
+			   User.IsInRole(SD.TeacherRole) ? SD.TeacherRole :
+			   User.IsInRole(SD.StudentRole) ? SD.StudentRole : SD.ParentRole;
+}
 
 <!doctype html>
 <html lang="en">
@@ -40,7 +48,6 @@
 					</li>
 					<li class="nav-item d-none d-md-block"><a asp-area="Shared" asp-controller="Home" asp-action="Index" class="nav-link">Home</a></li>
 					<li class="nav-item d-none d-md-block"><a asp-area="Shared" asp-controller="Home" asp-action="Privacy" class="nav-link">Privacy</a></li>
-					<li class="nav-item d-none d-md-block"><a asp-area="Student" asp-controller="Dashboard" asp-action="Index" class="nav-link">Student</a></li>
 					<li class="nav-item d-none d-md-block"><a asp-area="Parent" asp-controller="Dashboard" asp-action="Index" class="nav-link">Parent</a></li>
 					<li class="nav-item d-none d-md-block"><a asp-area="Teacher" asp-controller="Dashboard" asp-action="Index" class="nav-link">Teacher</a></li>
 				</ul>
@@ -52,7 +59,7 @@
 						</a>
 					</li>
 
-					@* it will be in section *@
+					@* it will be in viewcomponent *@
 					<!--begin::User Menu Dropdown-->
 					<li class="nav-item dropdown user-menu">
 						<a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
@@ -116,15 +123,24 @@
 						data-lte-toggle="treeview"
 						role="menu"
 						data-accordion="false">
-						@* it will be in partial view *@
-						<li class="nav-item">
-							<a href="#" class="nav-link">
-								<i class="nav-icon bi bi-speedometer"></i>
-								<p>
-									Dashboard
-								</p>
-							</a>
-						</li>
+						@switch (role)
+						{
+							case SD.SuperAdminRole:
+								<partial name="Partials/_NavbarSuperAdmin" />
+								break;
+							case SD.AdminRole:
+								<partial name="Partials/_NavbarAdmin" />
+								break;
+							case SD.TeacherRole:
+								<partial name="Partials/_NavbarTeacher" />
+								break;
+							case SD.StudentRole:
+								<partial name="Partials/_NavbarStudent" />
+								break;
+							default:
+								<partial name="Partials/_NavbarParent" />
+								break;
+						}
 					</ul>
 				</nav>
 			</div>

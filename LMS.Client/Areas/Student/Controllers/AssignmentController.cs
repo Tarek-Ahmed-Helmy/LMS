@@ -1,7 +1,7 @@
 ﻿using LMS.Entities.Interfaces;
 using LMS.Entities.Models;
 using LMS.Utilities;
-using LMS.Web.ViewModels.StudentViewModels;
+using LMS.Web.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;

@@ -1,10 +1,9 @@
-﻿@model LMS.Web.ViewModels.StudentViewModels.AssignmentDetailsViewModel
+﻿@model AssignmentDetailsViewModel
 
 @{
     ViewData["Title"] = Model.Title;
+    ViewBag.CardTitle = Model.Title;
 }
-
-<h2>@Model.Title</h2>
 
 <div class="assignment-details">
     <p><strong>Subject:</strong> @Model.Subject</p>

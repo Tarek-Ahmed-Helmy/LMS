@@ -46,6 +46,8 @@ public static class DataAccessServiceRegistration
         services.AddScoped<ISubjectRepository, SubjectRepository>();
         services.AddScoped<ISubmissionRepository, SubmissionRepository>();
         services.AddScoped<ITeacherRepository, TeacherRepository>();
+        services.AddScoped<IStudentAnswerRepository, StudentAnswerRepository>();
+        services.AddScoped<IQuizQuestionRepository, QuizQuestionRepository>();
 
         return services;
     }

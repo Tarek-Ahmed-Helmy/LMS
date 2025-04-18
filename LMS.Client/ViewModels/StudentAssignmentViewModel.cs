@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace LMS.Web.ViewModels.StudentViewModels;
+namespace LMS.Web.ViewModels;
 
 public class StudentAssignmentViewModel
 {

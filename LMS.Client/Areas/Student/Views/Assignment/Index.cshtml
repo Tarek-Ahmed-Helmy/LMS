@@ -1,5 +1,4 @@
-﻿@using LMS.Web.ViewModels.StudentViewModels
-@model List<StudentAssignmentViewModel>
+﻿@model List<StudentAssignmentViewModel>
 
 @{
     ViewData["Title"] = "Student Assignments";
@@ -48,7 +47,7 @@ else
                     </td>
                     <td>@assignment.Grade</td>
                     <td>
-                        <a asp-area="Student" asp-controller="Assignment" asp-action="Details" asp-route-assignmentId="@assignment.AssignmentId" class="btn btn-sm btn-primary">Details</a>
+                        <a asp-controller="Assignment" asp-action="Details" asp-route-assignmentId="@assignment.AssignmentId" class="btn btn-sm btn-primary">Details</a>
                     </td>
                 </tr>
             }

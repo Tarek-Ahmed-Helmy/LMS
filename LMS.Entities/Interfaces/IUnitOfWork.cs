@@ -21,5 +21,7 @@ public interface IUnitOfWork : IDisposable
     ISubjectRepository Subject { get; }
     ISubmissionRepository Submission { get; }
     ITeacherRepository Teacher { get; }
+    IQuizQuestionRepository QuizQuestion { get; }
+    IStudentAnswerRepository StudentAnswer { get; }
     Task<int> SaveChangesAsync();
 }
