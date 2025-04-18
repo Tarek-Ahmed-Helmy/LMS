@@ -45,6 +45,9 @@ public class Exam
 
     [ValidateNever]
     public ICollection<ExamResult>? ExamResults { get; set; }
+
+    [ValidateNever]
+    public ICollection<QuizQuestion>? quizQuestions { get; set; }
 }
 
 public enum ExamType

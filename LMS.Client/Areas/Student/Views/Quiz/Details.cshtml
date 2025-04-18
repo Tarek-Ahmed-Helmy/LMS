@@ -1,0 +1,30 @@
+﻿@model QuizDetailsViewModel
+
+@{
+    ViewData["Title"] = "Student Dashboard";
+    ViewBag.CardTitle = "Quiz Details";
+}
+
+<div class="card">
+    <div class="card-body">
+        <p><strong>Subject:</strong> @Model.SubjectName</p>
+        <p><strong>Teacher:</strong> @Model.TeacherName</p>
+        <p><strong>Date:</strong> @Model.ExamDate.ToShortDateString()</p>
+        <p><strong>Total Marks:</strong> @Model.TotalMarks</p>
+        <p><strong>Duration:</strong> @Model.DurationInMinutes minutes</p>
+        <p><strong>Status:</strong> @(Model.IsSubmitted ? "Submitted" : "Not Submitted")</p>
+
+        @if (!Model.IsSubmitted)
+        {
+            <a href="@Url.Action("Submit", "Quiz", new { quizId = Model.ExamId })" class="btn btn-success">
+                Start / Submit Quiz
+            </a>
+        }
+        else
+        {
+            <a href="@Url.Action("Feedback", "Quiz", new { quizId = Model.ExamId })" class="btn btn-primary">
+                View Feedback
+            </a>
+        }
+    </div>
+</div>

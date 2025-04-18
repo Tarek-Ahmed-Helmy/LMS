@@ -1,0 +1,40 @@
+﻿@model List<AssignedQuizViewModel>
+
+@{
+    ViewData["Title"] = "Student Dashboard";
+    ViewBag.CardTitle = $"{ViewBag.StudentName}'s Assigned Quizzes";
+}
+
+@if (!Model.Any())
+{
+    <div class="alert alert-info">No quizzes found.</div>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Subject</th>
+                <th>Date</th>
+                <th>Total Marks</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var quiz in Model)
+            {
+                <tr>
+                    <td>@quiz.SubjectName</td>
+                    <td>@quiz.ExamDate.ToShortDateString()</td>
+                    <td>@quiz.TotalMarks</td>
+                    <td>@(quiz.IsSubmitted ? "Submitted" : "Pending")</td>
+                    <td>
+                        <a href="@Url.Action("Details", "Quiz", new {quizId = quiz.ExamId })" class="btn btn-info">Details</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+

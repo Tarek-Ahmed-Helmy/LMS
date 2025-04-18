@@ -56,7 +56,7 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class
             foreach (var include in includes)
                 query = query.Include(include);
         }
-        if (criteria != null) query.Where(criteria);
+        if (criteria != null) query = query.Where(criteria);
 
         return await query.ToListAsync();
     }

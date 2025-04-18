@@ -1,6 +1,6 @@
 ﻿using LMS.Entities.Models;
 
-namespace LMS.Web.ViewModels.StudentViewModels;
+namespace LMS.Web.ViewModels;
 
 public class NotificationViewModel
 {

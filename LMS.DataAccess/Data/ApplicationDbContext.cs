@@ -40,4 +40,6 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     public DbSet<Subject> Subjects { get; set; }
     public DbSet<Submission> Submissions { get; set; }
     public DbSet<Teacher> Teachers { get; set; }
+    public DbSet<QuizQuestion> QuizQuestions { get; set; }
+    public DbSet<StudentAnswer> StudentAnswers { get; set; }
 }

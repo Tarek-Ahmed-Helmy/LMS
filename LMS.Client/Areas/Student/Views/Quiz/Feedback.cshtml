@@ -1,0 +1,17 @@
+﻿@model QuizFeedbackViewModel
+
+@{
+    ViewData["Title"] = "Student Dashboard";
+    ViewBag.CardTitle = $"Quiz Feedback - {Model.SubjectName}";
+}
+
+<p><strong>Your Score:</strong> @Model.StudentScore / @Model.TotalMarks</p>
+
+@foreach (var item in Model.FeedbackItems)
+{
+    <div class="mb-4 p-3 border rounded @(item.IsCorrect ? "bg-success-subtle" : "bg-danger-subtle")">
+        <p><strong>Q:</strong> @item.QuestionText</p>
+        <p><strong>Your Answer:</strong> @item.SelectedAnswer</p>
+        <p><strong>Correct Answer:</strong> @item.CorrectAnswer</p>
+    </div>
+}

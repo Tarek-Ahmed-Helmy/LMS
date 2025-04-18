@@ -5,34 +5,41 @@
     ViewBag.CardTitle = $"Payments - {@Model.FullName}";
 }
 
-<table class="table table-striped">
-    <thead>
-        <tr>
-            <th>Date</th>
-            <th>Amount</th>
-            <th>Method</th>
-            <th>Status</th>
-            <th>Receipt</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var p in Model.Payments)
-        {
+@if (!Model.Payments.Any())
+{
+    <div class="alert alert-info">No payments found.</div>
+}
+else
+{
+    <table class="table table-striped">
+        <thead>
             <tr>
-                <td>@p.PaymentDate.ToShortDateString()</td>
-                <td>@p.Amount.ToString("C")</td>
-                <td>@p.Method</td>
-                <td>
-                    <span class="badge bg-@(p.Status == "Paid" ? "success" : p.Status == "Pending" ? "warning" : "danger")">
-                        @p.Status
-                    </span>
-                </td>
-                <td>
-                    <a href="@p.ReceiptPath" target="_blank" class="btn btn-sm btn-outline-primary">
-                        View Receipt
-                    </a>
-                </td>
+                <th>Date</th>
+                <th>Amount</th>
+                <th>Method</th>
+                <th>Status</th>
+                <th>Receipt</th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var p in Model.Payments)
+            {
+                <tr>
+                    <td>@p.PaymentDate.ToShortDateString()</td>
+                    <td>@p.Amount.ToString("C")</td>
+                    <td>@p.Method</td>
+                    <td>
+                        <span class="badge bg-@(p.Status == "Paid" ? "success" : p.Status == "Pending" ? "warning" : "danger")">
+                            @p.Status
+                        </span>
+                    </td>
+                    <td>
+                        <a href="@p.ReceiptPath" target="_blank" class="btn btn-sm btn-outline-primary">
+                            View Receipt
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

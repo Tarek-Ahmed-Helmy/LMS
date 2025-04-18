@@ -1,13 +1,13 @@
-﻿@model LMS.Web.ViewModels.StudentViewModels.StudentProfileViewModel
+﻿@model StudentProfileViewModel
 
 @{
     ViewBag.Title = "Student Profile";
+    ViewBag.CardTitle = "Your Profile";
 }
 
 <div class="container mt-5">
     <div class="card shadow-lg rounded p-4">
         <div class="row">
-            <!-- Profile Picture -->
             <div class="col-md-4 text-center">
                 @if (!string.IsNullOrEmpty(Model.ProfilePictureURL))
                 {
@@ -22,7 +22,6 @@
                 <p class="text-muted">Student Number: @Model.StudentNumber</p>
             </div>
 
-            <!-- Profile Details -->
             <div class="col-md-8">
                 <h5 class="mb-3">Student Details</h5>
                 <dl class="row">

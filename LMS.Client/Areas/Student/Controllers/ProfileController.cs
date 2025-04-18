@@ -1,9 +1,9 @@
 ﻿using LMS.Entities.Interfaces;
 using LMS.Utilities;
 using LMS.Web.ViewModels;
-using LMS.Web.ViewModels.StudentViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace LMS.Web.Areas.StudentArea.Controllers;
 
@@ -18,10 +18,9 @@ public class ProfileController : Controller
     }
 
     [HttpGet]
-    public async Task<IActionResult> Index(string id)
+    public async Task<IActionResult> Index()
     {
-        if (string.IsNullOrEmpty(id))
-            return NotFound();
+        var id = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
         var student = await _unitOfWork.Student.FindAsync(s => s.StudentId == id, ["ApplicationUser", "Class", "Bus"]);
 
@@ -47,9 +46,9 @@ public class ProfileController : Controller
     }
 
     [HttpGet]
-    public async Task<IActionResult> ReceivedNotifications(string id)
+    public async Task<IActionResult> ReceivedNotifications()
     {
-        if (string.IsNullOrEmpty(id)) return NotFound();
+        var id = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
         var student = await _unitOfWork.Student.FindAsync(s => s.StudentId == id, ["ApplicationUser.ReceivedNotifications.Sender"]);
 
@@ -85,8 +84,9 @@ public class ProfileController : Controller
     }
 
     [HttpGet]
-    public async Task<IActionResult> ExamResults(string id)
+    public async Task<IActionResult> ExamResults()
     {
+        var id = User.FindFirstValue(ClaimTypes.NameIdentifier);
         var student = await _unitOfWork.Student.FindAsync(s => s.StudentId == id, ["ApplicationUser", "ExamResults.Exam", "ExamResults.Exam.Subject"]);
 
         if (student == null)
@@ -111,8 +111,9 @@ public class ProfileController : Controller
     }
 
     [HttpGet]
-    public async Task<IActionResult> Payments(string id)
+    public async Task<IActionResult> Payments()
     {
+        var id = User.FindFirstValue(ClaimTypes.NameIdentifier);
         var student = await _unitOfWork.Student.FindAsync(s => s.StudentId == id, ["ApplicationUser", "Payments"]);
 
         if (student == null)
@@ -136,8 +137,9 @@ public class ProfileController : Controller
     }
 
     [HttpGet]
-    public async Task<IActionResult> ClassSchedule(string id)
+    public async Task<IActionResult> ClassSchedule()
     {
+        var id = User.FindFirstValue(ClaimTypes.NameIdentifier);
         var student = await _unitOfWork.Student.FindAsync(s => s.StudentId == id, ["ApplicationUser", "Class"]);
         
 
@@ -172,8 +174,9 @@ public class ProfileController : Controller
     }
 
     [HttpGet]
-    public async Task<IActionResult> ExamSchedule(string id, DateTime? fromDate, DateTime? toDate)
+    public async Task<IActionResult> ExamSchedule(DateTime? fromDate, DateTime? toDate)
     {
+        var id = User.FindFirstValue(ClaimTypes.NameIdentifier);
         var student = await _unitOfWork.Student.FindAsync(s => s.StudentId == id, ["ApplicationUser", "Class"]);
 
 
@@ -207,6 +210,4 @@ public class ProfileController : Controller
 
         return View(vm);
     }
-
-
 }
