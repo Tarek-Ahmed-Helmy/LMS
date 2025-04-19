@@ -1,0 +1,76 @@
+﻿@using LMS.Entities.Models
+@model Dictionary<string, List<AssignmentViewModel>>
+
+@{
+	ViewData["Title"] = "Student Monitoring";
+	ViewBag.CardTitle = "Children's Assignments";
+	var children = ViewBag.Children as IEnumerable<dynamic>;
+	var selectedId = ViewBag.SelectedStudentId as string;
+}
+
+@if (children == null || !children.Any())
+{
+	<div class="alert alert-info">No children found.</div>
+}
+else
+{
+	<form method="get" asp-action="Assignments" class="mb-4">
+		<div class="form-group">
+			<label for="studentId">Filter by Child:</label>
+			<select name="studentId" id="studentId" class="form-control" onchange="this.form.submit()">
+				<option value="">All Children</option>
+				@foreach (var child in children)
+				{
+					@if (child.Id == selectedId)
+					{
+						<option value="@child.Id" selected>@child.Name</option>
+					}
+					else
+					{
+						<option value="@child.Id">@child.Name</option>
+					}
+				}
+			</select>
+		</div>
+	</form>
+
+	@if (!Model.Any())
+	{
+		<div class="alert alert-warning">No assignments found for the selected child.</div>
+	}
+	else
+	{
+		@foreach (var group in Model)
+		{
+			<h4 class="mt-4">@group.Key</h4> <!-- Student Name -->
+
+			<table class="table table-bordered">
+				<thead class="thead-light">
+					<tr>
+						<th>Subject</th>
+						<th>Title</th>
+						<th>Description</th>
+						<th>Due Date</th>
+						<th>Status</th>
+					</tr>
+				</thead>
+				<tbody>
+					@foreach (var item in group.Value)
+					{
+						<tr>
+							<td>@item.Subject</td>
+							<td>@item.Title</td>
+							<td>@item.Description</td>
+							<td>@item.DueDate.ToLocalTime().ToString("dd MMM yyyy")</td>
+							<td>
+								<span class="badge @(item.Status == "Overdue" ? "bg-danger" : "bg-success")">
+									@item.Status
+								</span>
+							</td>
+						</tr>
+					}
+				</tbody>
+			</table>
+		}
+	}
+}

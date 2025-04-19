@@ -1,0 +1,64 @@
+﻿@using LMS.Entities.Models
+@model List<FeeBreakdownViewModel>
+
+@{
+    ViewData["Title"] = "Fees & Payments";
+}
+
+<h2 class="mb-4">My Children's Fee Records</h2>
+
+@if (!Model.Any())
+{
+    <div class="alert alert-info">No payment records found.</div>
+}
+else
+{
+    <table class="table table-hover">
+        <thead class="table-dark">
+            <tr>
+                <th>Student</th>
+                <th>Amount</th>
+                <th>Date</th>
+                <th>Method</th>
+                <th>Status</th>
+                <th>Receipt</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var p in Model)
+            {
+                <tr>
+                    <td>@p.StudentName</td>
+                    <td>@p.TotalFees.ToString("C")</td>
+                    <td>@p.PaymentDate.ToShortDateString()</td>
+                    <td>@p.PaymentMethod</td>
+                    <td>
+                        <span class="badge @GetStatusBadge(p.PaymentStatus)">
+                            @p.PaymentStatus
+                        </span>
+                    </td>
+                    <td>
+                        <a class="btn btn-sm btn-outline-primary"
+                           href="@Url.Action("DownloadReceipt", "Finance", new { paymentId = p.PaymentId })"
+                           target="_blank">
+                            <i class="bi bi-download"></i> Receipt
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@functions {
+    string GetStatusBadge(PaymentStatus status)
+    {
+        return status switch
+        {
+            PaymentStatus.Paid => "bg-success text-white",
+            PaymentStatus.Pending => "bg-warning text-dark",
+            PaymentStatus.Overdue => "bg-danger text-white",
+            _ => "bg-secondary"
+        };
+    }
+}

@@ -46,7 +46,7 @@ public class AssignmentController : Controller
         var viewModel = assignments.Select(a =>
         {
             var submission = a.Submissions?.FirstOrDefault(s => s.StudentId == id);
-            string progress = GetSubmissionProgress(submission, a.TotalMarks, out string grade);
+            string progress = Helpers.GetSubmissionProgress(submission, a.TotalMarks, out string grade);
 
             return new StudentAssignmentViewModel
             {
@@ -76,7 +76,7 @@ public class AssignmentController : Controller
             return NotFound();
 
         var submission = assignment.Submissions?.FirstOrDefault(s => s.StudentId == id);
-        string progress = GetSubmissionProgress(submission, assignment.TotalMarks, out string grade);
+        string progress = Helpers.GetSubmissionProgress(submission, assignment.TotalMarks, out string grade);
 
         var viewModel = new AssignmentDetailsViewModel
         {
@@ -92,27 +92,6 @@ public class AssignmentController : Controller
         };
 
         return View(viewModel);
-    }
-    private static string GetSubmissionProgress(Submission? submission, int totalMarks, out string grade)
-    {
-        string progress;
-        grade = "--";
-
-        if (submission == null)
-        {
-            progress = "Not Submitted";
-        }
-        else if (submission.Score >= 0)
-        {
-            progress = "Graded";
-            grade = $"{submission.Score} / {totalMarks}";
-        }
-        else
-        {
-            progress = "Pending Grading";
-        }
-
-        return progress;
     }
 
     [HttpPost]
