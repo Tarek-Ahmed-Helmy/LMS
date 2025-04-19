@@ -1,0 +1,41 @@
+﻿@model List<ScheduleViewModel>
+
+@{
+    ViewData["Title"] = "Parent Dashboard";
+    ViewBag.CardTitle = "Children's Weekly Schedule";
+}
+
+@if (!Model.Any())
+{
+    <div class="alert alert-info">No children found.</div>
+}
+else
+{
+<table class="table">
+    <thead>
+        <tr>
+            <th>Student</th>
+            <th>Class</th>
+            <th>Subject</th>
+            <th>Teacher</th>
+            <th>Day</th>
+            <th>Start</th>
+            <th>End</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Student</td>
+                <td>@item.ClassName</td>
+                <td>@item.Subject</td>
+                <td>@item.Teacher</td>
+                <td>@item.DayOfWeek</td>
+                <td>@item.StartTime.ToString("hh\\:mm")</td>
+                <td>@item.EndTime.ToString("hh\\:mm")</td>
+            </tr>
+        }
+    </tbody>
+</table>
+}

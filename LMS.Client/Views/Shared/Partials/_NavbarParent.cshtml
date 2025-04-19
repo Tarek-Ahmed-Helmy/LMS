@@ -1,4 +1,89 @@
-﻿@page
-@model LMS.Web.Views.Shared.Partials._NavbarParentModel
-@{
-}
+﻿<li class="nav-item">
+	<a asp-area="Parent" asp-controller="Dashboard" asp-action="Index" class="nav-link">
+		<i class="nav-icon bi bi-circle-fill"></i>
+		<p>
+			Dashboard
+		</p>
+	</a>
+</li>
+<li class="nav-item menu-open">
+	<a href="#" class="nav-link">
+		<i class="nav-icon bi bi-circle-fill"></i>
+		<p>
+			Profile
+			<i class="nav-arrow bi bi-chevron-right"></i>
+		</p>
+	</a>
+	<ul class="nav nav-treeview" style="box-sizing: border-box; display: block;">
+		<li class="nav-item">
+			<a asp-area="Parent" asp-controller="Profile" asp-action="Index" class="nav-link">
+				<i class="nav-icon bi bi-circle"></i>
+				<p>My Profile</p>
+			</a>
+		</li>
+		<li class="nav-item">
+			<a asp-area="Student" asp-controller="Profile" asp-action="ReceivedNotifications" class="nav-link">
+				<i class="nav-icon bi bi-circle"></i>
+				<p>Notifications</p>
+			</a>
+		</li>
+	</ul>
+</li>
+<li class="nav-item menu-open">
+	<a href="#" class="nav-link">
+		<i class="nav-icon bi bi-circle-fill"></i>
+		<p>
+			Academics
+			<i class="nav-arrow bi bi-chevron-right"></i>
+		</p>
+	</a>
+	<ul class="nav nav-treeview" style="box-sizing: border-box; display: block;">
+		<li class="nav-item">
+			<a asp-area="Parent" asp-controller="Student" asp-action="Assignments" class="nav-link">
+				<i class="nav-icon bi bi-circle"></i>
+				<p>Children Assignments</p>
+			</a>
+		</li>
+		<li class="nav-item">
+			<a asp-area="Parent" asp-controller="Student" asp-action="Grades" class="nav-link">
+				<i class="nav-icon bi bi-circle"></i>
+				<p>Children Grades</p>
+			</a>
+		</li>
+		<li class="nav-item">
+			<a asp-area="Parent" asp-controller="Student" asp-action="ExamResults" class="nav-link">
+				<i class="nav-icon bi bi-circle"></i>
+				<p>Exam Results</p>
+			</a>
+		</li>
+		<li class="nav-item">
+			<a asp-area="Parent" asp-controller="Student" asp-action="Schedule" class="nav-link">
+				<i class="nav-icon bi bi-circle"></i>
+				<p>Schedule</p>
+			</a>
+		</li>
+	</ul>
+</li>
+<li class="nav-item menu-open">
+	<a href="#" class="nav-link">
+		<i class="nav-icon bi bi-circle-fill"></i>
+		<p>
+			Finance
+			<i class="nav-arrow bi bi-chevron-right"></i>
+		</p>
+	</a>
+	<ul class="nav nav-treeview" style="box-sizing: border-box; display: block;">
+		<li class="nav-item">
+			<a asp-area="Parent" asp-controller="Finance" asp-action="Fees" class="nav-link">
+				<i class="nav-icon bi bi-circle"></i>
+				<p>Fees</p>
+			</a>
+		</li>
+		<li class="nav-item">
+			<a asp-area="Parent" asp-controller="Finance" asp-action="MakePayment" class="nav-link">
+				<i class="nav-icon bi bi-circle"></i>
+				<p>Make Payment</p>
+			</a>
+		</li>
+	</ul>
+</li>

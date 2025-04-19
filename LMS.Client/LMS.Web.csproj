@@ -7,6 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="ViewModels\Parent\**" />
+    <Content Remove="ViewModels\Parent\**" />
+    <EmbeddedResource Remove="ViewModels\Parent\**" />
+    <None Remove="ViewModels\Parent\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\LMS.DataAccess\LMS.DataAccess.csproj" />
     <ProjectReference Include="..\LMS.Utilities\LMS.Utilities.csproj" />
   </ItemGroup>
@@ -20,9 +27,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="ViewModels\Parent\" />
     <Folder Include="ViewModels\Teacher\" />
-    <Folder Include="wwwroot\uploads\" />
+    <Folder Include="wwwroot\uploads\receipts\" />
   </ItemGroup>
 
 </Project>

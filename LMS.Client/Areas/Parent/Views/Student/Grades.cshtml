@@ -1,0 +1,37 @@
+﻿@model List<GradeViewModel>
+
+@{
+    ViewData["Title"] = "Parent Dashboard";
+    ViewBag.CardTitle = "Children's Grades";
+}
+
+@if (!Model.Any())
+{
+    <div class="alert alert-info">No children found.</div>
+}
+else
+{
+<table class="table">
+    <thead>
+        <tr>
+            <th>Student</th>
+            <th>Subject</th>
+            <th>Marks</th>
+            <th>Out Of</th>
+            <th>Teacher Feedback</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Student</td>
+                <td>@item.Subject</td>
+                <td>@item.Score</td>
+                <td>@item.TotalMarks</td>
+                <td>@item.Feedback</td>
+            </tr>
+        }
+    </tbody>
+</table>
+}
