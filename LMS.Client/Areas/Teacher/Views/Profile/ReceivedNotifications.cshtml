@@ -1,0 +1,74 @@
+﻿@model IEnumerable<NotificationViewModel>
+
+@{
+    ViewBag.Title = "Notifications";
+    ViewBag.CardTitle = "Your Notifications";
+}
+
+@if (!Model.Any())
+{
+    <div class="alert alert-info">No notifications found.</div>
+}
+else
+{
+    @foreach (var item in Model)
+    {
+        var bgClass = item.NotificationType switch
+        {
+            LMS.Entities.Models.NotificationType.Alert => "bg-danger text-white",
+            LMS.Entities.Models.NotificationType.Reminder => "bg-warning text-dark",
+            LMS.Entities.Models.NotificationType.Announcement => "bg-info text-white",
+            _ => "bg-light"
+        };
+
+        <div class="notification-item p-3 mb-2 rounded @bgClass d-flex justify-content-between align-items-center"
+             id="notification-@item.NotificationId">
+            <div>
+                <strong>@item.SenderName:</strong> @item.Message <br />
+                <small>@item.CreatedAt.ToString("g")</small>
+            </div>
+
+            @if (!item.IsRead)
+            {
+                <button class="btn btn-sm btn-outline-light ms-3 mark-as-read"
+                        data-id="@item.NotificationId">
+                    Mark as Read
+                </button>
+            }
+            else
+            {
+                <span class="badge bg-success ms-3">Read</span>
+            }
+        </div>
+    }
+}
+
+@section Scripts {
+    <script>
+        document.querySelectorAll('.mark-as-read').forEach(button => {
+            button.addEventListener('click', async function () {
+                const notificationId = this.dataset.id;
+
+                const response = await fetch('@Url.Action("MarkNotificationAsRead", "Profile", new { area = "Student" })', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                        'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]').value
+                    },
+                    body: `notificationId=${notificationId}`
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    const container = document.getElementById(`notification-${notificationId}`);
+                    container.querySelector('.mark-as-read').remove();
+                    const badge = document.createElement('span');
+                    badge.className = 'badge bg-success ms-3';
+                    badge.textContent = 'Read';
+                    container.appendChild(badge);
+                }
+            });
+        });
+    </script>
+}
