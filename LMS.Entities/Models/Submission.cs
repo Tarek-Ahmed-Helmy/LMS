@@ -11,12 +11,12 @@ public class Submission
     public int SubmissionId { get; set; }
 
     [DisplayName("Submission Date")]
-    public DateTime SubmissionDate { get; set; }
+    public DateTime SubmissionDate { get; set; } = DateTime.UtcNow;
 
     [Required]
     [DisplayName("Attached File")]
     public required string FilePath { get; set; }
-    public int Score { get; set; }
+    public int Score { get; set; } = 0;
     public string? Feedback { get; set; }
 
     [ForeignKey("Assignment")]
