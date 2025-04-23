@@ -1,0 +1,25 @@
+﻿@model List<QuizResultViewModel>
+@{
+    ViewData["Title"] = "Quiz Results";
+}
+<h2>@ViewData["Title"]</h2>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Student Name</th>
+            <th>Score</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var result in Model)
+        {
+            <tr>
+                <td>@result.StudentFullName</td>
+                <td>@result.Score</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<a asp-action="Index" class="btn btn-secondary mt-3">Back to Quiz List</a>
