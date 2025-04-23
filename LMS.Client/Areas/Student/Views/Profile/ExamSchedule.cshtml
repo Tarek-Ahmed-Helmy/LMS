@@ -1,0 +1,51 @@
+﻿@model StudentExamScheduleViewModel
+
+@{
+    ViewData["Title"] = "Student Dashboard";
+    ViewBag.CardTitle = $"{@Model.FullName}'s Exam Schedule";
+}
+
+<form method="get">
+    <input type="hidden" name="id" value="@Model.StudentId" />
+    <div class="row mb-3">
+        <div class="col-md-3">
+            <label>From:</label>
+            <input type="date" class="form-control" name="fromDate" value="@Model.FromDate?.ToString("yyyy-MM-dd")" />
+        </div>
+        <div class="col-md-3">
+            <label>To:</label>
+            <input type="date" class="form-control" name="toDate" value="@Model.ToDate?.ToString("yyyy-MM-dd")" />
+        </div>
+        <div class="col-md-3 align-self-end">
+            <button type="submit" class="btn btn-primary">Filter</button>
+        </div>
+    </div>
+</form>
+
+@foreach (var group in Model.GroupedExams)
+{
+    <h4 class="mt-4">@group.Key Exams</h4>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Subject</th>
+                <th>Teacher</th>
+                <th>Total Marks</th>
+                <th>Duration (min)</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in group.Value)
+            {
+                <tr>
+                    <td>@item.Date</td>
+                    <td>@item.Subject</td>
+                    <td>@item.Teacher</td>
+                    <td>@item.TotalMarks</td>
+                    <td>@item.DurationMinutes</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

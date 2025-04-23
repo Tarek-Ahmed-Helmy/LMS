@@ -1,0 +1,39 @@
+﻿@model TeacherProfileViewModel
+
+@{
+    ViewBag.Title = "Teacher Profile";
+    ViewBag.CardTitle = "Your Profile";
+}
+
+<div class="container mt-5">
+    <div class="card shadow-lg rounded p-4">
+        <div class="row">
+            <div class="col-md-4 text-center">
+                @if (!string.IsNullOrEmpty(Model.ProfilePictureURL))
+                {
+                    <img src="@Model.ProfilePictureURL" class="img-fluid rounded-circle mb-3" style="max-height: 200px;" alt="Profile Picture" />
+                }
+                else
+                {
+                    <img src="~/images/default-profile.png" class="img-fluid rounded-circle mb-3" style="max-height: 200px;" alt="Default Profile" />
+                }
+
+                <h4 class="text-primary">@Model.FullName</h4>
+            </div>
+
+            <div class="col-md-8">
+                <h5 class="mb-3">Teacher Details</h5>
+                <dl class="row">
+                    <dt class="col-sm-4">Qualification</dt>
+                    <dd class="col-sm-8">@Model.Qualification</dd>
+
+                    <dt class="col-sm-4">Experience</dt>
+                    <dd class="col-sm-8">@Model.Experience</dd>
+
+                    <dt class="col-sm-4">Address</dt>
+                    <dd class="col-sm-8">@Model.Address</dd>
+                </dl>
+            </div>
+        </div>
+    </div>
+</div>

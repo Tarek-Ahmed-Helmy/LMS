@@ -1,0 +1,39 @@
+﻿@model List<ExamResultViewModel>
+
+@{
+    ViewData["Title"] = "Parent Dashboard";
+    ViewBag.CardTitle = "Children's Exam Results";
+}
+
+@if (!Model.Any())
+{
+    <div class="alert alert-info">No children found.</div>
+}
+else
+{
+<table class="table">
+    <thead>
+        <tr>
+            <th>Student</th>
+            <th>Subject</th>
+            <th>Exam</th>
+            <th>Exam Date</th>
+            <th>Marks</th>
+            <th>Out Of</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.StudentName</td>
+                <td>@item.Subject</td>
+                <td>@item.ExamType</td>
+                <td>@item.ExamDate.ToString("yyyy-MM-dd")</td>
+                <td>@item.Score</td>
+                <td>@item.TotalMarks</td>
+            </tr>
+        }
+    </tbody>
+</table>
+}

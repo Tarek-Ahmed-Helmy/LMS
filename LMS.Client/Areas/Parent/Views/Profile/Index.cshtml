@@ -1,0 +1,12 @@
+﻿@model ParentProfileViewModel
+
+<h2>My Profile</h2>
+
+<div class="profile-card">
+    <img src="@Model.ProfilePictureURL" alt="Profile Picture" class="img-thumbnail" style="width: 150px;" />
+    <h4>@Model.FullName</h4>
+    <p><strong>Email:</strong> @Model.Email</p>
+    <p><strong>Phone:</strong> @Model.PhoneNumber</p>
+    <p><strong>Address:</strong> @Model.Address</p>
+    <p><strong>Occupation:</strong> @Model.Occupation</p>
+</div>

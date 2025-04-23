@@ -1,0 +1,96 @@
+﻿@model RoleClaimsViewModel
+
+<form method="post" asp-controller="Administration" asp-action="ManageRoleClaims">
+    <div class="card">
+        <div class="card-header">
+            <h2>Manage Role Claims</h2>
+            <h2>Role Name: @ViewBag.RoleName</h2>
+        </div>
+        <div class="card-body">
+            <input type="hidden" asp-for="@Model.RoleId" />
+
+            <!-- Global Select All -->
+            <div class="mb-3">
+                <input type="checkbox" id="selectAllGlobal" class="form-check-input" />
+                <label for="selectAllGlobal" class="form-check-label fw-bold">Select All</label>
+            </div>
+
+            <!-- Tabs Navigation -->
+            <ul class="nav nav-tabs" id="claimsTabs">
+                @foreach (var category in Model.Claims.GroupBy(c => c.Category))
+                {
+                    <li class="nav-item">
+                        <a class="nav-link @(category.Key == Model.Claims.First().Category ? "active" : "")" data-bs-toggle="tab"
+                           href="#@category.Key.Replace(".", "")">
+                            @category.Key
+                        </a>
+                    </li>
+                }
+            </ul>
+
+            <!-- Tabs Content -->
+            <div class="tab-content mt-3">
+                @foreach (var category in Model.Claims.GroupBy(c => c.Category))
+                {
+                    <div class="tab-pane fade @(category.Key == Model.Claims.First().Category ? "show active" : "")"
+                         id="@category.Key.Replace(".", "")">
+
+                        <!-- Select All for this Category -->
+                        <div class="mb-2">
+                            <input type="checkbox" class="form-check-input selectAllCategory"
+                                   data-category="@category.Key.Replace(".", "")" />
+                            <label class="form-check-label fw-bold">Select All in @category.Key</label>
+                        </div>
+
+                        @for (int i = 0; i < Model.Claims.Count; i++)
+                        {
+                            if (Model.Claims[i].Category == category.Key)
+                            {
+                                <div class="form-check m-1">
+                                    <input type="hidden" asp-for="@Model.Claims[i].ClaimType" />
+                                    <input asp-for="@Model.Claims[i].IsSelected" class="form-check-input category-@category.Key.Replace(".", "")" />
+                                    <label class="form-check-label">
+                                        @Model.Claims[i].ClaimType.Split('.')[1]
+                                    </label>
+                                </div>
+                            }
+                        }
+                    </div>
+                }
+            </div>
+        </div>
+
+        <div class="card-footer">
+            <input type="submit" value="Update" class="btn btn-primary" />
+            <a asp-action="EditRole" asp-route-roleId="@Model.RoleId"
+               class="btn btn-secondary">Cancel</a>
+        </div>
+    </div>
+</form>
+
+@section Scripts {
+<!-- JavaScript for Select All Functionality -->
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const selectAllGlobal = document.getElementById("selectAllGlobal");
+        const selectAllCategoryCheckboxes = document.querySelectorAll(".selectAllCategory");
+
+        // Global Select All
+        selectAllGlobal.addEventListener("change", function () {
+            document.querySelectorAll(".form-check-input").forEach(checkbox => {
+                checkbox.checked = selectAllGlobal.checked;
+            });
+        });
+
+        // Category-specific Select All
+        selectAllCategoryCheckboxes.forEach(categoryCheckbox => {
+            categoryCheckbox.addEventListener("change", function () {
+                const category = this.dataset.category;
+                document.querySelectorAll(`.category-${category}`).forEach(checkbox => {
+                    checkbox.checked = this.checked;
+                });
+            });
+        });
+    });
+</script>
+}

@@ -1,0 +1,37 @@
+﻿@model Submission
+
+@{
+    ViewData["Title"] = "Submit Assignment";
+    ViewBag.CardTitle = "Submit Assignment";
+}
+
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["Error"]
+    </div>
+}
+
+<form asp-action="Submit" method="post" enctype="multipart/form-data">
+    <input type="hidden" asp-for="AssignmentId" />
+
+    <div class="form-group">
+        <label for="File">Upload File:</label>
+        <input type="file" name="File" class="form-control" required />
+    </div>
+
+    <button type="submit" class="btn btn-success mt-2">Submit</button>
+</form>
+
+@if (!ViewData.ModelState.IsValid)
+{
+    <div class="alert alert-danger mt-3">
+        Please correct the errors and try again.
+    </div>
+}
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

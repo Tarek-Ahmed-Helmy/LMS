@@ -1,0 +1,37 @@
+﻿@model ResourceDetailsViewModel
+
+@{
+    ViewData["Title"] = "Student Dashboard";
+    ViewBag.CardTitle = $"{Model.Title} ({Model.ResourceType})";
+}
+
+<p><strong>Subject:</strong> @Model.SubjectName</p>
+<p><strong>Teacher:</strong> @Model.TeacherName</p>
+<p><strong>Uploaded on:</strong> @Model.CreatedAt.ToShortDateString()</p>
+
+@if (!string.IsNullOrEmpty(Model.ResourceDescription))
+{
+    <p><strong>Description:</strong> @Model.ResourceDescription</p>
+}
+
+<hr />
+
+@if (Model.ResourceType == ResourceType.Link)
+{
+    <p><a href="@Model.ResourcePath" target="_blank" class="btn btn-success">Open Link</a></p>
+}
+else if (Model.ResourceType == ResourceType.Video)
+{
+    <video width="600" controls>
+        <source src="@Model.ResourcePath" type="video/mp4" />
+        Your browser does not support the video tag.
+    </video>
+}
+else
+{
+    <p>
+        <a href="@Model.ResourcePath" target="_blank" class="btn btn-primary">Download/View Resource</a>
+    </p>
+}
+
+<a href="@Url.Action("Index")" class="btn btn-secondary">Back to Resources</a>

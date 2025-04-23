@@ -1,0 +1,35 @@
+﻿@model SubmitQuizViewModel
+
+@{
+    ViewData["Title"] = "Student Dashboard";
+    ViewBag.CardTitle = "Quiz Submission";
+}
+
+<form asp-action="Submit" method="post">
+    <input type="hidden" asp-for="QuizId" />
+
+    @for (int i = 0; i < Model.Questions.Count; i++)
+    {
+        <div class="mb-4">
+            <p><strong>Q@(@i + 1):</strong> @Model.Questions[i].QuestionText</p>
+            <div>
+                @foreach (var option in new[] { "A", "B", "C", "D" })
+                {
+                    var optionText = Model.Questions[i].GetType().GetProperty($"Option{option}").GetValue(Model.Questions[i])?.ToString();
+                    <label>
+                        <input type="radio"
+                               name="Questions[@i].SelectedAnswer"
+                               value="@option"
+                               required />
+                        @option) @optionText
+                    </label>
+
+                    <br />
+                }
+            </div>
+            <input type="hidden" asp-for="Questions[@i].QuestionId" />
+        </div>
+    }
+
+    <button type="submit" class="btn btn-success">Submit Quiz</button>
+</form>

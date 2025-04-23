@@ -1,12 +1,15 @@
 ﻿using LMS.Entities.Interfaces;
 using LMS.Entities.Models;
+using LMS.Utilities;
 using LMS.Web.ViewModels.AdminViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LMS.Web.Areas.AdminArea.Controllers;
 
 [Area("Admin")]
+[Authorize(Roles = SD.AdminRole)]
 public class StudentController : Controller
 {
     private readonly IUnitOfWork _unitOfWork;
