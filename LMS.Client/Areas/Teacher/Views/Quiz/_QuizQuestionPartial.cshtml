@@ -1,0 +1,48 @@
+﻿@model QuizQuestionViewModel
+
+<div class="card mb-3 p-3 border question-item">
+    <input type="hidden" name="Questions.Index" value="@Model.Index" />
+
+    @if (Model.QuizQuestionId.HasValue)
+    {
+        <input type="hidden" name="Questions[@Model.Index].QuizQuestionId" value="@Model.QuizQuestionId" />
+    }
+
+    <div class="form-group mb-2">
+        <label>Question</label>
+        <input class="form-control" name="Questions[@Model.Index].QuestionText" value="@Model.QuestionText" />
+        <span class="text-danger" asp-validation-for="QuestionText"></span>
+    </div>
+
+    <div class="row">
+        <div class="col-md-3">
+            <label>A</label>
+            <input class="form-control" name="Questions[@Model.Index].OptionA" value="@Model.OptionA" />
+        </div>
+        <div class="col-md-3">
+            <label>B</label>
+            <input class="form-control" name="Questions[@Model.Index].OptionB" value="@Model.OptionB" />
+        </div>
+        <div class="col-md-3">
+            <label>C</label>
+            <input class="form-control" name="Questions[@Model.Index].OptionC" value="@Model.OptionC" />
+        </div>
+        <div class="col-md-3">
+            <label>D</label>
+            <input class="form-control" name="Questions[@Model.Index].OptionD" value="@Model.OptionD" />
+        </div>
+    </div>
+
+    <div class="form-group mt-2">
+        <label>Correct Answer</label>
+        <select class="form-control" name="Questions[@Model.Index].CorrectAnswer" asp-for="CorrectAnswer">
+            <option value="">-- Select --</option>
+            <option value="A">A</option>
+            <option value="B">B</option>
+            <option value="C">C</option>
+            <option value="D">D</option>
+        </select>
+        <span class="text-danger" asp-validation-for="CorrectAnswer"></span>
+    </div>
+</div>
+
