@@ -1,0 +1,37 @@
+﻿@model ResourceDetailsViewModel
+
+@{
+    ViewData["Title"] = "Resource Details";
+    ViewBag.CardTitle = "Resource Details";
+}
+
+<h2>Resource Details</h2>
+
+<div class="mb-3">
+    <strong>Title:</strong> @Model.Title
+</div>
+
+<div class="mb-3">
+    <strong>Description:</strong> @Model.ResourceDescription
+</div>
+
+<div class="mb-3">
+    <strong>Subject:</strong> @Model.SubjectName
+</div>
+
+<div class="mb-3">
+    <strong>Type:</strong> @Model.ResourceType
+</div>
+
+<div class="mb-3">
+    <strong>Created At:</strong> @Model.CreatedAt.ToString("yyyy-MM-dd HH:mm")
+</div>
+
+@if (!string.IsNullOrEmpty(Model.ResourcePath))
+{
+    <div class="mb-3">
+        <a href="@Model.ResourcePath" download class="btn btn-success">Download File</a>
+    </div>
+}
+
+<a asp-action="Index" class="btn btn-secondary">Back to List</a>

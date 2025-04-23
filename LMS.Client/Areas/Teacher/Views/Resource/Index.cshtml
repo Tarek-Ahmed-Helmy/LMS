@@ -1,0 +1,40 @@
+﻿@model List<TeacherResourceItemViewModel>
+
+@{
+    ViewData["Title"] = "Teacher Resources";
+    ViewBag.CardTitle = "View Resources";
+}
+
+<h2>Teacher Resources</h2>
+
+<a asp-action="Create" class="btn btn-primary mb-3">Upload New Resource</a>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Subject</th>
+            <th>Type</th>
+            <th>Created At</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var resource in Model)
+        {
+            <tr>
+                <td>@resource.Title</td>
+                <td>@resource.SubjectName</td>
+                <td>@resource.ResourceType</td>
+                <td>@resource.CreatedAt.ToString("yyyy-MM-dd")</td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@resource.ResourceId" class="btn btn-sm btn-info">Details</a>
+                    <a asp-action="Edit" asp-route-id="@resource.ResourceId" class="btn btn-sm btn-warning">Edit</a>
+                    <form asp-action="Delete" asp-route-id="@resource.ResourceId" method="post" class="d-inline">
+                        <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure?')">Delete</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

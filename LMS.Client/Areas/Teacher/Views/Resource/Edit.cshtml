@@ -1,0 +1,45 @@
+﻿@model EditResourceViewModel
+
+@{
+    ViewData["Title"] = "Resource Edit";
+    ViewBag.CardTitle = "Resources Edit";
+}
+
+<h2>Edit Resource</h2>
+
+<form asp-action="Edit" enctype="multipart/form-data" method="post">
+    <input type="hidden" asp-for="ResourceId" />
+
+    <div class="mb-3">
+        <label asp-for="Title" class="form-label"></label>
+        <input asp-for="Title" class="form-control" />
+        <span asp-validation-for="Title" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="ResourceDescription" class="form-label"></label>
+        <textarea asp-for="ResourceDescription" class="form-control"></textarea>
+        <span asp-validation-for="ResourceDescription" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="SubjectId" class="form-label"></label>
+        <select asp-for="SubjectId" asp-items="@(new SelectList(ViewBag.Subjects, "SubjectId", "SubjectName"))" class="form-select"></select>
+        <span asp-validation-for="SubjectId" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="ResourceType" class="form-label"></label>
+        <select asp-for="ResourceType" asp-items="@(new SelectList(ViewBag.ResourceTypes))" class="form-select"></select>
+        <span asp-validation-for="ResourceType" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label>Replace File (optional)</label>
+        <input asp-for="ResourceFile" type="file" class="form-control" />
+        <input type="hidden" asp-for="ExistingFilePath" />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Save</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+</form>
