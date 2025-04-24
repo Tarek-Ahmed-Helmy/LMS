@@ -1,0 +1,37 @@
+﻿@model IEnumerable<ExamResultVM>
+@{
+    ViewData["Title"] = "Exam Results";
+}
+
+<h3>@ViewBag.ExamInfo – Results</h3>
+<hr />
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Student</th>
+            <th>Score</th>
+            <th>Remarks</th>
+            <th class="text-end"></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var r in Model)
+        {
+            <tr>
+                <td>@r.StudentName</td>
+                <td>@r.Score</td>
+                <td>@r.Remarks</td>
+                <td class="text-end">
+                    <a asp-action="Grade"
+                       asp-route-examResultId="@r.ExamResultId"
+                       class="btn btn-sm btn-outline-primary">
+                        Grade / Edit
+                    </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<a asp-action="Index" class="btn btn-secondary">Back to Exams</a>

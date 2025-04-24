@@ -1,0 +1,73 @@
+﻿@using LMS.Web.ViewModels
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model IEnumerable<AssignmentGroupViewModel>
+
+@{
+    ViewData["Title"] = "Assignments";
+}
+
+<h3 class="mb-3">All assignments</h3>
+
+@foreach (var group in Model)
+{
+    <div class="card mb-4">
+        <div class="card-header fw-bold">
+            @group.SubjectName
+            <a asp-action="Upload" class="btn btn-sm btn-primary float-end">Add assignment</a>
+        </div>
+
+        <div class="card-body p-0">
+            <table class="table table-hover mb-0">
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Description</th>
+                        <th>Deadline</th>
+                        <th>Status</th>
+                        <th class="text-end"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var a in group.Assignments)
+                    {
+                        <tr>
+                            <td>@a.Title</td>
+                            <td class="text-truncate" style="max-width: 280px">@a.Description</td>
+                            <td>@a.Deadline.ToLocalTime().ToString("yyyy-MM-dd HH:mm")</td>
+                            <td>
+                                <span class="badge @(a.Status == "Open" ? "bg-success" : "bg-danger")">
+                                    @a.Status
+                                </span>
+                            </td>
+                            <td class="text-end">
+                                <a asp-action="Edit"
+                                   asp-route-assignmentId="@a.AssignmentId"
+                                   class="btn btn-sm btn-outline-secondary">Edit</a>
+
+                                <a asp-action="Submissions"
+                                   asp-route-assignmentId="@a.AssignmentId"
+                                   class="btn btn-sm btn-info text-white">Submissions</a>
+
+                                <form asp-action="Delete"
+                                      asp-route-assignmentId="@a.AssignmentId"
+                                      method="post"
+                                      class="d-inline"
+                                      onsubmit="return confirm('Delete this assignment?');">
+                                    @Html.AntiForgeryToken()
+                                    <button type="submit"
+                                            class="btn btn-sm btn-danger">
+                                        Delete
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+}
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -1,0 +1,44 @@
+﻿@model LMS.Web.ViewModels.TeacherExamVM
+@{
+    ViewData["Title"] = "Delete Exam";
+}
+
+<div class="card shadow-sm mt-4">
+    <div class="card-header bg-danger text-white fw-semibold">
+        Delete exam – @Model.Type
+    </div>
+
+    <div class="card-body">
+        <p class="mb-3 text-danger">
+            Are you sure you want to permanently delete this exam?
+            <br />
+            <strong>This cannot be undone.</strong>
+        </p>
+
+        <table class="table table-sm">
+            <tr>
+                <th>Subject:</th>
+                <td>@ViewBag.SubjectName</td>
+            </tr>
+            <tr>
+                <th>Date:</th>
+                <td>@Model.ExamDate.ToLocalTime():yyyy-MM-dd HH:mm</td>
+            </tr>
+            <tr>
+                <th>Total Marks:</th>
+                <td>@Model.TotalMarks</td>
+            </tr>
+        </table>
+
+        <form asp-action="Delete"
+              asp-route-examId="@Model.ExamId"
+              method="post">
+            @Html.AntiForgeryToken()
+
+            <button type="submit" class="btn btn-danger">
+                <i class="bi bi-trash me-1"></i> Yes, delete
+            </button>
+            <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+        </form>
+    </div>
+</div>

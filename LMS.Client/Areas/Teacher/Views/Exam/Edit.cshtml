@@ -1,0 +1,91 @@
+﻿@using LMS.Entities.Models
+@model LMS.Web.ViewModels.EditExamVM  
+
+@{
+    ViewData["Title"] = "Edit Exam";
+}
+
+<div class="card shadow-sm">
+    <div class="card-header bg-success text-white fw-semibold">
+        Edit exam – @Model.ExamType
+    </div>
+
+    <div class="card-body">
+        <form asp-action="Edit"
+              asp-route-examId="@Model.ExamId"
+              method="post"
+              enctype="multipart/form-data">
+            @Html.AntiForgeryToken()
+            <input type="hidden" asp-for="ExamId" />
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <!-- ExamType -->
+            <div class="mb-3">
+                <label asp-for="ExamType" class="form-label"></label>
+                <select asp-for="ExamType"
+                        asp-items="Html.GetEnumSelectList<ExamType>()"
+                        class="form-select"></select>
+            </div>
+
+            <div class="row">
+                <!-- ExamDate -->
+                <div class="col-md-4 mb-3">
+                    <label asp-for="ExamDate" class="form-label"></label>
+                    <input asp-for="ExamDate" type="datetime-local"
+                           value="@Model.ExamDate.ToLocalTime():yyyy-MM-ddTHH:mm"
+                           class="form-control" />
+                    <span asp-validation-for="ExamDate" class="text-danger"></span>
+                </div>
+
+                <!-- Duration -->
+                <div class="col-md-4 mb-3">
+                    <label asp-for="ExamDuration" class="form-label"></label>
+                    <input asp-for="ExamDuration" class="form-control" />
+                    <span asp-validation-for="ExamDuration" class="text-danger"></span>
+                </div>
+
+                <!-- TotalMarks -->
+                <div class="col-md-4 mb-3">
+                    <label asp-for="TotalMarks" class="form-label"></label>
+                    <input asp-for="TotalMarks" class="form-control" />
+                    <span asp-validation-for="TotalMarks" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="row">
+                <!-- Subject -->
+                <div class="col-md-6 mb-3">
+                    <label asp-for="SubjectId" class="form-label"></label>
+                    <select asp-for="SubjectId"
+                            asp-items="@(new SelectList(Model.Subjects ?? Enumerable.Empty<Subject>(),
+                                                        "SubjectId","SubjectName",Model.SubjectId))"
+                            class="form-select"></select>
+                    <span asp-validation-for="SubjectId" class="text-danger"></span>
+                </div>
+
+                <!-- Class -->
+                <div class="col-md-6 mb-3">
+                    <label asp-for="ClassId" class="form-label"></label>
+                    <select asp-for="ClassId" class="form-select">
+                        <option value="">-- Select class --</option>
+                        @foreach (var c in Model.Classes ?? Enumerable.Empty<Class>())
+                        {
+                            var id = c.GetType().GetProperty("ClassId")?.GetValue(c);
+                            <option value="@id" selected="@(id?.Equals(Model.ClassId) ?? false)">
+                                Class @id
+                            </option>
+                        }
+                    </select>
+                    <span asp-validation-for="ClassId" class="text-danger"></span>
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-success">Save changes</button>
+            <a asp-action="Index" class="btn btn-secondary">Back</a>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

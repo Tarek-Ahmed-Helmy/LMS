@@ -1,0 +1,31 @@
+﻿@model GradeSubmissionViewModel
+@{
+    ViewData["Title"] = "Grade";
+}
+
+<h3>Grade</h3>
+<hr />
+
+<form asp-action="Grade" method="post">
+    @Html.AntiForgeryToken()
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <div class="mb-3">
+        <label asp-for="Score" class="form-label"></label>
+        <input asp-for="Score" class="form-control" />
+        <span asp-validation-for="Score" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Feedback" class="form-label"></label>
+        <textarea asp-for="Feedback" rows="4" class="form-control"></textarea>
+        <span asp-validation-for="Feedback" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">حفظ</button>
+    <a asp-action="Submissions" asp-route-assignmentId="@Context.Request.RouteValues["assignmentId"]"
+       class="btn btn-secondary">Back</a>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
