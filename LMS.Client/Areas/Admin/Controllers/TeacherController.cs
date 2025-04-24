@@ -75,7 +75,7 @@ public class TeacherController : Controller
             if (result.Succeeded)
             {
                 // Add the Teacher role to the user later (handled after role system setup)
-                var teacher = new Teacher
+                var teacher = new LMS.Entities.Models.Teacher
                 {
                     TeacherId = user.Id,
                     HireDate = newTeacher.HireDate,

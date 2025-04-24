@@ -1,10 +1,12 @@
-﻿@{
-    ViewData["Title"] = "Student Dashboard";
+@{
+    ViewData["Title"] = "Teacher Dashboard";
     ViewBag.CardTitle = "Welcome to Your Dashboard";
 }
 
 <div class="container-fluid">
     <div class="row">
+
+        <!-- ===== Profile / Personal ===== -->
         <div class="col-lg-3 col-md-6 mb-4">
             <div class="card border-0 shadow-sm h-100">
                 <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
@@ -13,12 +15,14 @@
                 <div class="card-body">
                     <ul class="list-unstyled">
                         <li class="mb-2">
-                            <a asp-controller="Profile" asp-action="Index" class="text-decoration-none d-flex align-items-center">
+                            <a asp-area="Teacher" asp-controller="Profile" asp-action="Index"
+                               class="text-decoration-none d-flex align-items-center">
                                 <i class="bi bi-person me-2"></i> My Profile
                             </a>
                         </li>
                         <li class="mb-2">
-                            <a asp-controller="Profile" asp-action="ReceivedNotifications" class="text-decoration-none d-flex align-items-center">
+                            <a asp-area="Teacher" asp-controller="Profile" asp-action="ReceivedNotifications"
+                               class="text-decoration-none d-flex align-items-center">
                                 <i class="bi bi-bell me-2"></i> Notifications
                             </a>
                         </li>
@@ -31,56 +35,86 @@
                 </div>
             </div>
         </div>
-        @* <div class="col-lg-3 col-md-6 mb-4">
+
+        <!-- ===== Teaching Tasks (NEW card with Assignments) ===== -->
+        <div class="col-lg-3 col-md-6 mb-4">
             <div class="card border-0 shadow-sm h-100">
                 <div class="card-header bg-success text-white d-flex justify-content-between align-items-center">
-                    <h5 class="mb-0"><i class="bi bi-pencil-square me-2"></i>Academics</h5>
+                    <h5 class="mb-0"><i class="bi bi-pencil-square me-2"></i>Teaching Tasks</h5>
                 </div>
                 <div class="card-body">
                     <ul class="list-unstyled">
+
+                        <!-- List assignments -->
                         <li class="mb-2">
-                            <a asp-controller="Profile" asp-action="ExamResults" class="text-decoration-none d-flex align-items-center">
-                                <i class="bi bi-clipboard-data me-2"></i> Exam Results
+                            <a asp-area="Teacher" asp-controller="Assignment" asp-action="Index"
+                               class="text-decoration-none d-flex align-items-center">
+                                <i class="bi bi-list-task me-2"></i> My Assignments
                             </a>
                         </li>
-                        <li>
-                            <a asp-controller="Profile" asp-action="ExamSchedule" class="text-decoration-none d-flex align-items-center">
-                                <i class="bi bi-calendar-check me-2"></i> Exam Schedule
-                            </a>
-                        </li>
-                        <li>
-                            <a asp-controller="Assignment" asp-action="Index" class="text-decoration-none d-flex align-items-center">
-                                <i class="bi bi-list-task me-2"></i> Assignments
-                            </a>
-                        </li>
-                        <li>
-                            <a asp-controller="Quiz" asp-action="Index" class="text-decoration-none d-flex align-items-center">
-                                <i class="bi bi-card-checklist me-2"></i> My Quizzes
+
+                        <!-- Create assignment shortcut -->
+                        <li class="mb-2">
+                            <a asp-area="Teacher" asp-controller="Assignment" asp-action="Upload"
+                               class="text-decoration-none d-flex align-items-center">
+                                <i class="bi bi-plus-circle me-2"></i> Create Assignment
                             </a>
                         </li>
                     </ul>
                 </div>
             </div>
         </div>
+        <!-- ===== NEW Exams card ===== -->
+        <div class="col-lg-3 col-md-6 mb-4">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-header bg-warning text-white d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0"><i class="bi bi-journal-text me-2"></i>Exams</h5>
+                </div>
+                <div class="card-body">
+                    <ul class="list-unstyled">
+                        <li class="mb-2">
+                            <a asp-area="Teacher" asp-controller="Exam" asp-action="Index"
+                               class="text-decoration-none d-flex align-items-center">
+                                <i class="bi bi-list-ul me-2"></i> My Exams
+                            </a>
+                        </li>
+                        <li class="mb-2">
+                            <a asp-area="Teacher" asp-controller="Exam" asp-action="Upload"
+                               class="text-decoration-none d-flex align-items-center">
+                                <i class="bi bi-plus-circle me-2"></i> Create Exam
+                            </a>
+                        </li>
+                        <li>
+                            <a asp-area="Teacher" asp-controller="Exam" asp-action="Upcoming"
+                               class="text-decoration-none d-flex align-items-center">
+                                <i class="bi bi-clock me-2"></i> Upcoming Exams
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!-- ===== Resources / Materials ===== -->
         <div class="col-lg-3 col-md-6 mb-4">
             <div class="card border-0 shadow-sm h-100">
                 <div class="card-header bg-secondary text-white d-flex justify-content-between align-items-center">
-                    <h5 class="mb-0"><i class="bi bi-folder me-2"></i>Resources & Tools</h5>
+                    <h5 class="mb-0"><i class="bi bi-folder me-2"></i>Resources</h5>
                 </div>
                 <div class="card-body">
                     <ul class="list-unstyled">
                         <li>
-                            <a asp-controller="Resource" asp-action="Index" class="text-decoration-none d-flex align-items-center">
+                            <a asp-area="Teacher" asp-controller="Resource" asp-action="Index"
+                               class="text-decoration-none d-flex align-items-center">
                                 <i class="bi bi-file-earmark-text me-2"></i> Course Materials
                             </a>
                         </li>
                     </ul>
                 </div>
             </div>
-        </div> *@
-    </div>
-</div>
+        </div>
 
+
+<!-- ===== (optional) your existing style block ===== -->
 <style>
     .card {
         transition: transform 0.2s ease-in-out;
@@ -98,4 +132,3 @@
         border-bottom: none;
     }
 </style>
-

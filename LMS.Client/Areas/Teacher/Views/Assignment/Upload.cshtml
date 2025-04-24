@@ -1,0 +1,71 @@
+﻿@using LMS.Entities.Models;
+
+@model CreateAssignmentViewModel
+@{
+    ViewData["Title"] = "Create Assignment";
+}
+
+<h3 class="mb-3">Create a new assignment</h3>
+<hr />
+
+<form asp-action="Upload" method="post">
+    @Html.AntiForgeryToken()
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <!-- Title -->
+    <div class="mb-3">
+        <label asp-for="Title" class="form-label"></label>
+        <input asp-for="Title" class="form-control" />
+        <span asp-validation-for="Title" class="text-danger"></span>
+    </div>
+
+    <!-- Description -->
+    <div class="mb-3">
+        <label asp-for="Description" class="form-label"></label>
+        <textarea asp-for="Description" rows="4" class="form-control"></textarea>
+        <span asp-validation-for="Description" class="text-danger"></span>
+    </div>
+
+    <div class="row">
+        <!-- Deadline -->
+        <div class="col-md-4 mb-3">
+            <label asp-for="Deadline" class="form-label"></label>
+            <input asp-for="Deadline" type="datetime-local" class="form-control" />
+            <span asp-validation-for="Deadline" class="text-danger"></span>
+        </div>
+
+        <!-- Total Marks -->
+        <div class="col-md-4 mb-3">
+            <label asp-for="TotalMarks" class="form-label"></label>
+            <input asp-for="TotalMarks" class="form-control" />
+            <span asp-validation-for="TotalMarks" class="text-danger"></span>
+        </div>
+
+        <!-- Submission Type -->
+        <div class="col-md-4 mb-3">
+            <label asp-for="SubmissionType" class="form-label"></label>
+            <select asp-for="SubmissionType"
+                    asp-items="Html.GetEnumSelectList<SubmissionType>()"
+                    class="form-select">
+            </select>
+        </div>
+    </div>
+
+    <!-- Subject dropdown -->
+    <div class="mb-3">
+        <label asp-for="SubjectId" class="form-label"></label>
+        <select asp-for="SubjectId"
+                asp-items="@(new SelectList(Model.Subjects, "SubjectId", "SubjectName"))"
+                class="form-select">
+        </select>
+        <span asp-validation-for="SubjectId" class="text-danger"></span>
+    </div>
+
+    <!-- Buttons -->
+    <button type="submit" class="btn btn-primary">Save</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

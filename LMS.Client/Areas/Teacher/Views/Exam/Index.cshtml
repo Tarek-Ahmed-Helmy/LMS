@@ -1,0 +1,57 @@
+﻿@model IEnumerable<ExamGroupVM>
+@{
+    ViewData["Title"] = "Exams";
+}
+
+<h3 class="mb-3">My Exams</h3>
+
+@foreach (var group in Model)
+{
+    <div class="card mb-4">
+        <div class="card-header fw-bold">
+            @group.SubjectName
+            <a asp-action="Upload" class="btn btn-sm btn-primary float-end">Create Exam</a>
+        </div>
+
+        <div class="card-body p-0">
+            <table class="table table-hover mb-0">
+                <thead>
+                    <tr>
+                        <th>Type</th>
+                        <th>Date</th>
+                        <th>Total Marks</th>
+                        <th>Status</th>
+                        <th class="text-end"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var e in group.Exams)
+                    {
+                        <tr>
+                            <td>@e.Type</td>
+                            <td>@e.ExamDate.ToLocalTime():yyyy-MM-dd HH:mm</td>
+                            <td>@e.TotalMarks</td>
+                            <td>
+                                <span class="badge @(e.Status=="Upcoming"?"bg-success":"bg-secondary")">@e.Status</span>
+                            </td>
+                            <td class="text-end">
+                                <a asp-action="Edit" asp-route-examId="@e.ExamId"
+                                   class="btn btn-sm btn-outline-secondary">Edit</a>
+
+                                <a asp-action="ExamResult" asp-route-examId="@e.ExamId"
+                                   class="btn btn-sm btn-info text-white">Results</a>
+
+                                <form asp-action="Delete" asp-route-examId="@e.ExamId"
+                                      method="post" class="d-inline"
+                                      onsubmit="return confirm('Delete this exam?');">
+                                    @Html.AntiForgeryToken()
+                                    <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+}

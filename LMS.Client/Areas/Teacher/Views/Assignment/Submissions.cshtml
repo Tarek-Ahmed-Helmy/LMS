@@ -1,0 +1,37 @@
+﻿@model IEnumerable<SubmissionViewModel>
+@{
+    ViewData["Title"] = "Submissions";
+}
+
+<h3>Submissions: @ViewBag.AssignmentTitle</h3>
+<hr />
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Student</th>
+            <th>Date</th>
+            <th>Score</th>
+            <th>File</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var s in Model)
+        {
+            <tr>
+                <td>@s.StudentName</td>
+                <td>@s.SubmissionDate.ToLocalTime().ToString("yyyy-MM-dd HH:mm")</td>
+                <td>@(s.Score == 0 ? "—" : s.Score)</td>
+                <td>
+                    <a href="@Url.Content($"~/{s.FilePath}")" target="_blank">Download</a>
+                </td>
+                <td>
+                    <a asp-action="Grade" asp-route-submissionId="@s.SubmissionId" class="btn btn-sm btn-success">Grade</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<a asp-action="Index" class="btn btn-secondary">Back</a>
