@@ -1,7 +1,6 @@
-﻿@model string
 @{
     ViewData["Title"] = "Teacher Dashboard";
-    ViewBag.CardTitle = "Welcome back!";
+    ViewBag.CardTitle = "Welcome to Your Dashboard";
 }
 
 <div class="container-fluid">
@@ -27,10 +26,9 @@
                                 <i class="bi bi-bell me-2"></i> Notifications
                             </a>
                         </li>
-                        <li>
-                            <a asp-area="Teacher" asp-controller="Schedule" asp-action="Index"
-                               class="text-decoration-none d-flex align-items-center">
-                                <i class="bi bi-calendar-event me-2"></i> My Schedule
+                        <li class="mb-2">
+                            <a asp-controller="Resource" asp-action="Index" class="text-decoration-none d-flex align-items-center">
+                                <i class="bi bi-folder me-2"></i> Resources
                             </a>
                         </li>
                     </ul>

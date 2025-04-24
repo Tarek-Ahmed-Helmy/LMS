@@ -1,0 +1,40 @@
+﻿@model IEnumerable<QuizListViewModel>
+@{
+    ViewData["Title"] = "My Quizzes";
+}
+<h2>@ViewData["Title"]</h2>
+
+<a asp-action="AddQuiz" class="btn btn-success mb-3">+ Add New Quiz</a>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Subject</th>
+            <th>Class</th>
+            <th>Date</th>
+            <th>Total Marks</th>
+            <th>Duration (mins)</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var quiz in Model)
+        {
+            <tr>
+                <td>@quiz.SubjectName</td>
+                <td>@quiz.ClassNumber</td>
+                <td>@quiz.ExamDate.ToShortDateString()</td>
+                <td>@quiz.TotalMarks</td>
+                <td>@quiz.Duration</td>
+                <td>
+                    <a asp-action="EditQuiz" asp-route-quizId="@quiz.ExamID" class="btn btn-primary btn-sm">Edit</a>
+                    <a asp-action="QuizResults" asp-route-quizId="@quiz.ExamID" class="btn btn-info btn-sm">Results</a>
+                    <form asp-action="DeleteQuiz" asp-route-quizId="@quiz.ExamID" method="post" class="d-inline">
+                        @Html.AntiForgeryToken()
+                        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Delete this quiz?')">Delete</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

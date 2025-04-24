@@ -1,0 +1,67 @@
+﻿@model AddEditQuizViewModel
+@{
+    ViewData["Title"] = "Edit Quiz";
+}
+<h2>@ViewData["Title"]</h2>
+
+<form asp-action="EditQuiz" method="post">
+    @Html.AntiForgeryToken()
+    <input type="hidden" asp-for="ExamID" />
+
+    <div class="form-group mb-3">
+        <label>Subject Name</label>
+        <select asp-for="SubjectID" class="form-control" asp-items="@(new SelectList(Model.Subjects, "SubjectId", "SubjectName", Model.SubjectID))" disabled>
+        </select>
+        <span asp-validation-for="SubjectID" class="text-danger"></span>
+    </div>
+
+    <div class="form-group mb-3">
+        <label>Class Number</label>
+        <select asp-for="ClassID" class="form-control" asp-items="@(new SelectList(Model.Classes, "ClassId", "ClassNumber", Model.ClassID))" disabled>
+        </select>
+        <span asp-validation-for="ClassID" class="text-danger"></span>
+    </div>
+
+    <div class="row mb-3">
+        <div class="col">
+            <label asp-for="ExamDate"></label>
+            <input asp-for="ExamDate" class="form-control" type="date" />
+        </div>
+        <div class="col">
+            <label asp-for="TotalMarks"></label>
+            <input asp-for="TotalMarks" class="form-control" />
+        </div>
+        <div class="col">
+            <label asp-for="ExamDuration"></label>
+            <input asp-for="ExamDuration" class="form-control" />
+        </div>
+    </div>
+
+    <hr />
+    <h4>Questions</h4>
+    <div id="questions-container">
+        @for (int i = 0; i < Model.Questions.Count; i++)
+        {
+            <partial name="_QuizQuestionPartial" for="@Model.Questions[i]" />
+        }
+    </div>
+    <button type="button" class="btn btn-secondary mb-3" onclick="addQuestion()">+ Add Question</button>
+
+    <button type="submit" class="btn btn-primary">Update Quiz</button>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        let questionIndex = @Model.Questions.Count;
+
+        function addQuestion() {
+            fetch('/Teacher/Quiz/AddEmptyQuestion?index=' + questionIndex)
+                .then(res => res.text())
+                .then(html => {
+                    document.getElementById('questions-container').insertAdjacentHTML('beforeend', html);
+                    questionIndex++;
+                });
+        }
+    </script>
+}

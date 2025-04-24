@@ -1,0 +1,122 @@
+﻿@using LMS.Web.ViewModels.Teacher;
+@model LMS.Web.ViewModels.Teacher.TeacherStudentProfileViewModel
+
+
+
+@{
+    ViewData["Title"] = "Student Profile";
+}
+
+<div class="container mt-4">
+    <h2>Student Profile: @Model.FullName</h2>
+    <div class="row">
+        <!-- Profile Section -->
+        <div class="col-md-4">
+            <div class="card">
+                <img src="@Model.ProfilePictureURL" class="card-img-top" alt="Profile Picture" style="max-height: 200px; object-fit: cover;" />
+                <div class="card-body">
+                    <h5 class="card-title">@Model.FullName</h5>
+                    <p class="card-text"><strong>@Html.DisplayNameFor(m => m.StudentId):</strong> @Model.StudentId</p>
+                    <p class="card-text"><strong>@Html.DisplayNameFor(m => m.StudentNumber):</strong> @Model.StudentNumber</p>
+                    <p class="card-text"><strong>@Html.DisplayNameFor(m => m.ClassName):</strong> @Model.ClassName</p>
+                    <p class="card-text"><strong>@Html.DisplayNameFor(m => m.DateOfBirth):</strong> @Model.DateOfBirth</p>
+                    <p class="card-text"><strong>@Html.DisplayNameFor(m => m.Gender):</strong> @Model.Gender</p>
+                    <p class="card-text"><strong>@Html.DisplayNameFor(m => m.EmergencyContact):</strong> @Model.EmergencyContact</p>
+                    <p class="card-text"><strong>@Html.DisplayNameFor(m => m.AdmissionDate):</strong> @Model.AdmissionDate</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Performance Section -->
+        <div class="col-md-8">
+            <!-- Performance Summary -->
+            <div class="card mb-3">
+                <div class="card-header"><h5>Performance Summary</h5></div>
+                <div class="card-body">
+                    <p><strong>@Html.DisplayNameFor(m => m.AverageExamScore):</strong> @Model.AverageExamScore</p>
+                    <p><strong>@Html.DisplayNameFor(m => m.AverageAssignmentScore):</strong> @Model.AverageAssignmentScore</p>
+                </div>
+            </div>
+
+
+            <!-- Exam Results -->
+            <div class="card mb-3">
+                <div class="card-header"><h5>@Html.DisplayNameFor(m => m.ExamResults)</h5></div>
+                <div class="card-body">
+                    @if (Model.ExamResults.Any())
+                    {
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>@Html.DisplayNameFor(m => m.ExamResults[0].ExamType)</th>
+                                        <th>@Html.DisplayNameFor(m => m.ExamResults[0].SubjectName)</th>
+                                        <th>@Html.DisplayNameFor(m => m.ExamResults[0].Score)</th>
+                                        <th>@Html.DisplayNameFor(m => m.ExamResults[0].TotalMarks)</th>
+                                        <th>@Html.DisplayNameFor(m => m.ExamResults[0].Remarks)</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                @foreach (var exam in Model.ExamResults)
+                                {
+                                            <tr>
+                                                <td>@exam.ExamType</td>
+                                                <td>@exam.SubjectName</td>
+                                                <td>@exam.Score</td>
+                                                <td>@exam.TotalMarks</td>
+                                                <td>@exam.Remarks</td>
+                                            </tr>
+                                }
+                                </tbody>
+                            </table>
+                    }
+                    else
+                    {
+                            <p>No exam results available.</p>
+                    }
+                </div>
+            </div>
+
+            <!-- Assignment Submissions -->
+            <div class="card mb-3">
+                <div class="card-header"><h5>@Html.DisplayNameFor(m => m.Submissions)</h5></div>
+                <div class="card-body">
+                    @if (Model.Submissions.Any())
+                    {
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>@Html.DisplayNameFor(m => m.Submissions[0].AssignmentTitle)</th>
+                                        <th>@Html.DisplayNameFor(m => m.Submissions[0].SubmissionDate)</th>
+                                        <th>@Html.DisplayNameFor(m => m.Submissions[0].Score)</th>
+                                        <th>@Html.DisplayNameFor(m => m.Submissions[0].TotalMarks)</th>
+                                        <th>@Html.DisplayNameFor(m => m.Submissions[0].Feedback)</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                @foreach (var submission in Model.Submissions)
+                                {
+                                            <tr>
+                                                <td>@submission.AssignmentTitle</td>
+                                                <td>@submission.SubmissionDate</td>
+                                                <td>@submission.Score</td>
+                                                <td>@submission.TotalMarks</td>
+                                                <td>@submission.Feedback</td>
+                                            </tr>
+                                }
+                                </tbody>
+                            </table>
+                    }
+                    else
+                    {
+                            <p>No submissions available.</p>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Back Button -->
+    <div class="mt-3">
+        <a asp-action="Index" class="btn btn-secondary">Back to Student List</a>
+    </div>
+</div>
