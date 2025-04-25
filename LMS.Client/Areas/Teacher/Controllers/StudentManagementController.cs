@@ -1,12 +1,12 @@
 ﻿// File: LMS.Web/Areas/Teacher/Controllers/StudentManagement.cs
 using LMS.Entities.Interfaces;
 using LMS.Entities.Models;
-using LMS.Web.ViewModels.Teacher;
+using LMS.Web.ViewModels.TeacherViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
-namespace LMS.Web.Areas.Teacher.Controllers;
+namespace LMS.Web.Areas.TeacherArea.Controllers;
 
 [Area("Teacher")]
 //[Authorize(Roles = "Teacher")]
