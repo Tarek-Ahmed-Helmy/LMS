@@ -1,0 +1,57 @@
+﻿@model IEnumerable<LMS.Web.ViewModels.AdminViewModels.BusListViewModel>
+
+<h2>Bus Fleet</h2>
+
+@if (TempData["StatusMessage"] != null)
+{
+    <div class="alert alert-info">@TempData["StatusMessage"]</div>
+}
+
+<div class="mb-3">
+    <a asp-action="Create" class="btn btn-primary">Add Bus</a>
+    <a asp-action="Routes" class="btn btn-secondary">View Routes</a>
+</div>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Driver Name</th>
+            <th>Capacity</th>
+            <th>Route</th>
+            <th>Driver Contact</th>
+            <th>Student Count</th>
+            <th>Classes</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var bus in Model)
+        {
+            <tr>
+                <td>@bus.DriverName</td>
+                <td>@bus.Capacity</td>
+                <td>@bus.Route</td>
+                <td>@bus.DriverContact</td>
+                <td>@bus.StudentCount</td>
+                <td>
+                    @if (bus.Classes.Any())
+                    {
+                        <ul>
+                            @foreach (var cls in bus.Classes)
+                            {
+                                <li>Grade @cls.GradeLevel - Class @cls.ClassNumber (@cls.StudentCount students)</li>
+                            }
+                        </ul>
+                    }
+                    else
+                    {
+                        <span>No classes assigned.</span>
+                    }
+                </td>
+                <td>
+                    <a asp-action="Schedule" asp-route-id="@bus.BusId" class="btn btn-info btn-sm">View Schedule</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
