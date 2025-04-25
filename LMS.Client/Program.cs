@@ -2,6 +2,7 @@ using LMS.DataAccess.DependencyInjection;
 using LMS.Entities.Models;
 using LMS.Utilities;
 using Microsoft.AspNetCore.Identity;
+using System.Text.Json.Serialization;
 
 namespace LMS.Web;
 
@@ -13,6 +14,8 @@ public class Program
 
         // Add services to the container.
         builder.Services.AddControllersWithViews();
+    //        .AddJsonOptions(x =>
+    //x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve);
         builder.Services.AddDataAccessServices(builder.Configuration);
         builder.Services.AddAuthorization(options =>
         {
@@ -78,7 +81,7 @@ public class Program
             name: "Parent",
             pattern: "{area=Parent}/{controller=Home}/{action=Index}/{id?}");
 
-        
+
 
 
         app.Run();

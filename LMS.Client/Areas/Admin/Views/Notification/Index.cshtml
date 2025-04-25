@@ -1,0 +1,34 @@
+﻿@{
+	ViewData["Title"] = "Admin Dashboard";
+	ViewBag.CardTitle = "Users and Notifications";
+}
+
+<h4>Select User to Notify</h4>
+<table id="usersTable" class="table table-hover" width="100%">
+	<thead class="text-bold">
+		<tr>
+			<th>Name</th>
+			<th>Phone Number</th>
+			<th>Email</th>
+			<th>Actions</th>
+		</tr>
+	</thead>
+</table>
+<br />
+<hr />
+<br />
+<h4>Notifications</h4>
+<table id="notificationsTable" class="table table-hover" width="100%">
+	<thead class="text-bold">
+		<tr>
+			<th>Type</th>
+			<th>Message</th>
+			<th>Reciver</th>
+			<th>Actions</th>
+		</tr>
+	</thead>
+</table>
+
+@section Scripts {
+	<script src="~/js/notification.js"></script>
+}
