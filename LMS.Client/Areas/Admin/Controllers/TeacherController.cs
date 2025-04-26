@@ -1,10 +1,12 @@
 ﻿using LMS.Entities.Interfaces;
 using LMS.Entities.Models;
 using LMS.Utilities;
+using LMS.Web.ViewModels;
 using LMS.Web.ViewModels.AdminViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace LMS.Web.Areas.AdminArea.Controllers;
 
@@ -62,6 +64,8 @@ public class TeacherController : Controller
             Qualification = teacher.Qualification,
             Experience = teacher.Experience
         };
+
+        ViewBag.TeacherId = id;
 
         return View(model);
     }
@@ -184,5 +188,68 @@ public class TeacherController : Controller
 
         return RedirectToAction(nameof(Index));
     }
+
+    [HttpGet]
+    public async Task<IActionResult> AddSchedule(string id)
+    {
+        if (string.IsNullOrEmpty(id))
+        {
+            return NotFound();
+        }
+
+        var teacher = await _unitOfWork.Teacher.GetByIdAsync(id);
+        if (teacher == null)
+        {
+            return NotFound();
+        }
+
+        ViewBag.Classes = new SelectList(await _unitOfWork.Class.GetAllAsync(), "ClassId", "ClassNumber");
+        ViewBag.Subjects = new SelectList(await _unitOfWork.Subject.GetAllAsync(), "SubjectId", "SubjectName");
+
+        var model = new AddScheduleViewModel
+        {
+            TeacherId = teacher.TeacherId
+        };
+
+        return View(model);
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> AddSchedule(AddScheduleViewModel model)
+    {
+        if (!ModelState.IsValid)
+        {
+            ViewBag.Classes = new SelectList(await _unitOfWork.Class.GetAllAsync(), "ClassId", "ClassNumber");
+            ViewBag.Subjects = new SelectList(await _unitOfWork.Subject.GetAllAsync(), "SubjectId", "SubjectName");
+            return View(model);
+        }
+
+        var teacher = await _unitOfWork.Teacher.GetByIdAsync(model.TeacherId);
+        if (teacher == null)
+        {
+            return NotFound();
+        }
+
+        var schedule = new Schedule
+        {
+            TeacherId = model.TeacherId,
+            ClassId = model.ClassId,
+            SubjectId = model.SubjectId,
+            DayOfWeek = model.DayOfWeek, 
+            StartTime = model.StartTime,
+            EndTime = model.EndTime
+        };
+
+        await _unitOfWork.Schedule.AddAsync(schedule);
+        await _unitOfWork.SaveChangesAsync();
+
+        TempData["SuccessMessage"] = "Schedule added successfully!";
+
+        return RedirectToAction(nameof(Details), new { id = model.TeacherId });
+    }
+
+
+
 }
 
