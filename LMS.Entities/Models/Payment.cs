@@ -26,7 +26,7 @@ public class Payment
     [MaxLength(255)]
     [Required]
     [Display(Name = "Attached Receipt")]
-    public required string ReceiptPath { get; set; }
+    public  string ReceiptPath { get; set; }
 
     [Required]
     public string StudentId { get; set; }

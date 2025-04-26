@@ -1,0 +1,65 @@
+﻿@{
+    ViewBag.Title = "Payments Management";
+    ViewBag.CardTitle = "View Payments";
+}
+
+<table id="paymentsTable" class="table table-hover" width="100%">
+    <thead class="text-bold">
+        <tr>
+            <th>Student</th>
+            <th>Parent</th>
+            <th>Amount</th>
+            <th>Payment Date</th>
+            <th>Method</th>
+            <th>Status</th>
+            <th class="text-center">Actions</th>
+        </tr>
+    </thead>
+</table>
+
+<br />
+<a asp-action="Create" class="btn btn-primary">Record New Payment</a>
+
+@section Scripts {
+    <script>
+        $(function() {
+            $("#paymentsTable").DataTable({
+                ajax: {
+                    url: "@Url.Action("GetPaymentList", "Payment", new { area = "Admin" })",
+                    dataSrc: "data"
+                },
+                columns: [
+                    { data: "studentName" },
+                    { data: "parentName" },
+                    { data: "amount" },
+                    {
+                        data: "paymentDate",
+                        render: d => d ? new Date(d).toLocaleDateString() : ""
+                    },
+                    { data: "method" },
+                    {
+                        data: "status",
+                        render: s => {
+                            var cls = s==="Paid" ? "bg-success" :
+                                      s==="Overdue" ? "bg-danger" : "bg-warning";
+                            return `<span class="badge ${cls}">${s}</span>`;
+                        }
+                    },
+                    {
+                        data: "paymentId",
+                        orderable: false,
+                        className: "text-center",
+                        render: id => `
+          <div class="d-flex gap-2 justify-content-center">
+            <a href="/Admin/Payment/Details/${id}" class="btn btn-info btn-sm">Details</a>
+            <a href="/Admin/Payment/Edit/${id}"    class="btn btn-warning btn-sm">Edit</a>
+          </div>`
+                    }
+                ],
+                order: [[3,"desc"]],
+                responsive: true,
+                autoWidth: true
+            });
+        });
+    </script>
+}
