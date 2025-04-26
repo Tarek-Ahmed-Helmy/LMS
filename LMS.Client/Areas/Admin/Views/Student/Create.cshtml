@@ -10,6 +10,11 @@
         <form method="post">
             <div asp-validation-summary="All" class="text-danger"></div>
             <div class="form-group">
+                <label asp-for="StudentNumber"></label>
+                <input asp-for="StudentNumber" class="form-control" />
+                <span asp-validation-for="StudentNumber" class="text-danger"></span>
+            </div>
+            <div class="form-group">
                 <label asp-for="FullName"></label>
                 <input asp-for="FullName" class="form-control" />
                 <span asp-validation-for="FullName" class="text-danger"></span>
@@ -41,6 +46,18 @@
                 <span asp-validation-for="Email" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <label asp-for="ClassId" class="form-label"></label>
+                <select asp-for="ClassId" asp-items="ViewBag.Classes" class="form-select">
+                    <option value="">-- Select Class --</option>
+                </select>
+                <span asp-validation-for="ClassId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="AdmissionDate"></label>
+                <input asp-for="AdmissionDate" class="form-control" />
+                <span asp-validation-for="AdmissionDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
                 <label asp-for="Password"></label>
                 <input asp-for="Password" class="form-control" />
                 <span asp-validation-for="Password" class="text-danger"></span>
@@ -50,17 +67,11 @@
                 <input asp-for="ConfirmPassword" class="form-control" />
                 <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="AdmissionDate"></label>
-                <input asp-for="AdmissionDate" class="form-control" />
-                <span asp-validation-for="AdmissionDate" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="StudentNumber"></label>
-                <input asp-for="StudentNumber" class="form-control" />
-                <span asp-validation-for="StudentNumber" class="text-danger"></span>
-            </div>
+            
+            
             <button type="submit" class="btn btn-primary">Register</button>
         </form>
     </div>
 </div>
+<hr />
+<a asp-action="Index" class="btn btn-primary">Cancel</a>

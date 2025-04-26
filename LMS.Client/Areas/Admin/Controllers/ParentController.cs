@@ -95,7 +95,7 @@ namespace LMS.Web.Areas.AdminArea.Controllers
                     Address = newParent.Address,
                     PhoneNumber = newParent.PhoneNumber 
                 };
-
+                await _userManager.AddToRoleAsync(user, SD.ParentRole);
                 var result = await _userManager.CreateAsync(user, newParent.Password);
                 if (result.Succeeded)
                 {

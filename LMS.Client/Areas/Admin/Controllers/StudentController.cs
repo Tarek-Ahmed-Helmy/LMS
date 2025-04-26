@@ -1,10 +1,11 @@
 ﻿using LMS.Entities.Interfaces;
 using LMS.Entities.Models;
 using LMS.Utilities;
-using LMS.Web.ViewModels.AdminViewModels;
+using LMS.Web.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace LMS.Web.Areas.AdminArea.Controllers;
 
@@ -21,10 +22,30 @@ public class StudentController : Controller
     }
 
     [HttpGet]
-    public async Task<IActionResult> Index()
+    public IActionResult Index()
     {
-        var students = await _unitOfWork.Student.FindAllAsync(includes: new string[] { "ApplicationUser", "Class" });
-        return View(students);
+        return View();
+    }
+
+    [HttpGet]
+    public async Task<JsonResult> GetStudentList()
+    {
+        var students = await _unitOfWork.Student.FindAllAsync(includes: ["ApplicationUser", "Class"]);
+        var studentList = students.Select(s => new
+        {
+            s.StudentId,
+            s.StudentNumber,
+            s.ApplicationUser?.FullName,
+            s.ApplicationUser?.Email,
+            s.DateOfBirth,
+            s.Gender,
+            s.AdmissionDate,
+            s.Class?.GradeLevel,
+            s.Class?.ClassNumber,
+            IsLocked = s.ApplicationUser?.LockoutEnd != null && s.ApplicationUser.LockoutEnd > DateTimeOffset.UtcNow ? "Locked" : "Active"
+
+        }).ToList();
+        return Json(new {data = studentList});
     }
 
     [HttpGet]
@@ -44,14 +65,23 @@ public class StudentController : Controller
             StudentNumber = student.StudentNumber,
             GradeLevel = student.Class?.GradeLevel,
             ClassNumber = student.Class?.ClassNumber,
-            BusSubscription = student.BusId != null
+            BusSubscription = student.BusId != null ? "Subscriped" : "Unsubscriped"
         };
         return View(model);
     }
 
     [HttpGet]
-    public IActionResult Create()
+    public async Task<IActionResult> Create()
     {
+        var classes = await _unitOfWork.Class.GetAllAsync();
+        ViewBag.Classes = classes
+            .OrderBy(c => c.GradeLevel)
+            .ThenBy(c => c.ClassNumber)
+            .Select(c => new SelectListItem
+            {
+                Value = c.ClassId.ToString(),
+                Text = $"{c.GradeLevel} - {c.ClassNumber}"
+            }).ToList();
         return View();
     }
 
@@ -72,7 +102,7 @@ public class StudentController : Controller
             var result = await _userManager.CreateAsync(user, newStudent.Password);
             if (result.Succeeded)
             {
-                //await _userManager.AddToRoleAsync(user, "Student"); --> will be handeld later
+                await _userManager.AddToRoleAsync(user, SD.StudentRole);
                 var student = new Student
                 {
                     StudentId = user.Id,
@@ -80,7 +110,8 @@ public class StudentController : Controller
                     DateOfBirth = newStudent.DateOfBirth,
                     AdmissionDate = newStudent.AdmissionDate,
                     Gender = newStudent.Gender,
-                    StudentNumber = newStudent.StudentNumber
+                    StudentNumber = newStudent.StudentNumber,
+                    ClassId = newStudent.ClassId
                 };
                 await _unitOfWork.Student.AddAsync(student);
                 await _unitOfWork.SaveChangesAsync();
@@ -101,7 +132,25 @@ public class StudentController : Controller
         var student = await _unitOfWork.Student.FindAsync(s => s.StudentId == id, includes: new string[] { "ApplicationUser" });
         if (student == null) return NotFound();
 
-        var viewModel = new StudentRegistrationViewModel
+        var classes = await _unitOfWork.Class.GetAllAsync();
+        ViewBag.Classes = classes
+            .OrderBy(c => c.GradeLevel)
+            .ThenBy(c => c.ClassNumber)
+            .Select(c => new SelectListItem
+            {
+                Value = c.ClassId.ToString(),
+                Text = $"{c.GradeLevel} - {c.ClassNumber}"
+            }).ToList();
+
+        var buses = await _unitOfWork.Bus.GetAllAsync();
+        ViewBag.Buses = buses
+            .Select(b => new SelectListItem
+            {
+                Value = b.BusId.ToString(),
+                Text = $"{b.BusId} - {b.Route}"
+            }).ToList();
+
+        var viewModel = new StudentEditViewModel
         {
             FullName = student.ApplicationUser.FullName,
             Email = student.ApplicationUser.Email,
@@ -110,14 +159,15 @@ public class StudentController : Controller
             AdmissionDate = student.AdmissionDate,
             EmergencyContact = student.EmergencyContact,
             Gender = student.Gender,
-            StudentNumber = student.StudentNumber
+            StudentNumber = student.StudentNumber,
+            ClassId = student.ClassId,
         };
         return View(viewModel);
     }
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(string id, StudentRegistrationViewModel updatedStudent)
+    public async Task<IActionResult> Edit(string id, StudentEditViewModel updatedStudent)
     {
         if (!ModelState.IsValid)
             return View(updatedStudent);
@@ -137,8 +187,13 @@ public class StudentController : Controller
         student.EmergencyContact = updatedStudent.EmergencyContact;
         student.Gender = updatedStudent.Gender;
         student.StudentNumber = updatedStudent.StudentNumber;
+        student.ClassId = updatedStudent.ClassId;
+        student.BusId = updatedStudent.BusId;
 
+        await _unitOfWork.ApplicationUser.UpdateAsync(student.ApplicationUser);
+        await _unitOfWork.Student.UpdateAsync(student);
         await _unitOfWork.SaveChangesAsync();
+
         return RedirectToAction(nameof(Index));
     }
 

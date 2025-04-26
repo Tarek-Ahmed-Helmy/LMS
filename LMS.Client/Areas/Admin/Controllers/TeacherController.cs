@@ -91,7 +91,7 @@ public class TeacherController : Controller
             var result = await _userManager.CreateAsync(user, newTeacher.Password);
             if (result.Succeeded)
             {
-                // Add the Teacher role to the user later (handled after role system setup)
+                await _userManager.AddToRoleAsync(user, SD.TeacherRole);
                 var teacher = new LMS.Entities.Models.Teacher
                 {
                     TeacherId = user.Id,

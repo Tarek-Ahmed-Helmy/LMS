@@ -6,15 +6,14 @@ using LMS.Web.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace LMS.Web.Areas.Teacher.Controllers
+namespace LMS.Web.Areas.TeacherArea.Controllers;
+
+[Area("Teacher")]
+[Authorize(Roles = SD.TeacherRole)]
+public class ExamController : Controller
 {
-    [Area("Teacher")]
-    [Authorize(Roles = SD.TeacherRole)]
-    [Route("Teacher/[controller]")]
-    public class ExamController : Controller
-    {
-        private readonly IUnitOfWork _uow;
-        public ExamController(IUnitOfWork uow) => _uow = uow;
+    private readonly IUnitOfWork _uow;
+    public ExamController(IUnitOfWork uow) => _uow = uow;
 
         // GET: /Teacher/Exam
         [HttpGet("")]

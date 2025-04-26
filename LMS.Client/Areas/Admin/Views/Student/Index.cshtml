@@ -5,44 +5,88 @@
 	ViewBag.CardTitle = "View Students";
 }
 
-<table class="table table-striped">
-    <thead>
-        <tr>
-            <th>Student Number</th>
-            <th>Full Name</th>
-            <th>Email</th>
-            <th>Date of Birth</th>
-            <th>Gender</th>
-            <th>Admission Date</th>
-            <th>GradeLevel</th>
-            <th>Actions</th>
-            <th>Status</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var student in Model)
-        {
-            <tr>
-                <td>@student.StudentNumber</td>
-                <td>@student.ApplicationUser?.FullName</td>
-                <td>@student.ApplicationUser?.Email</td>
-                <td>@student.DateOfBirth.ToShortDateString()</td>
-                <td>@student.Gender</td>
-                <td>@student.AdmissionDate.ToShortDateString()</td>
-				<td>@student.Class?.GradeLevel</td>
-                <td>
-                    <a asp-action="Details" asp-route-id="@student.StudentId" class="btn btn-info btn-sm">Details</a>
-                    <a asp-action="Edit" asp-route-id="@student.StudentId" class="btn btn-warning btn-sm">Edit</a>
-                    <a asp-action="ChangeStatus" asp-route-id="@student.StudentId" class="btn btn-secondary btn-sm">Change Status</a>
-                </td>
-                <td>
-                    @(student.ApplicationUser?.LockoutEnd != null && student.ApplicationUser.LockoutEnd > DateTimeOffset.UtcNow
-                        ? "Locked"
-                        : "Active")
-                </td>
-            </tr>
-        }
-    </tbody>
+<table id="studentsTable" class="table table-hover" width="100%">
+	<thead class="text-bold">
+		<tr>
+			<th>Student Number</th>
+			<th>Full Name</th>
+			<th>Email</th>
+			<th>Date of Birth</th>
+			<th>Gender</th>
+			<th>Admission Date</th>
+			<th>Grade Level</th>
+			<th>Class Number</th>
+			<th>Actions</th>
+			<th>Status</th>
+		</tr>
+	</thead>
 </table>
 <br />
 <a asp-action="Create" class="btn btn-primary">Create New Student</a>
+
+@section Scripts {
+	<script>
+		var studentTable;
+
+		$(document).ready(function () {
+			loadStudents();
+		});
+
+		function loadStudents() {
+			studentTable = $("#studentsTable").DataTable({
+				"ajax": {
+					"url": "/Admin/Student/GetStudentList",
+					"dataSrc": "data"
+				},
+				"columns": [
+					{ "data": "studentNumber" },
+					{ "data": "fullName" },
+					{ "data": "email" },
+					{
+						"data": "dateOfBirth",
+						"render": function(data) {
+							return data ? new Date(data).toLocaleDateString() : '';
+						}
+					},
+					{
+						"data": "gender",
+						"render": function(data) {
+							return data === 0 ? 'Male' : 'Female';
+						}
+					},
+					{
+						"data": "admissionDate",
+						"render": function(data) {
+							return data ? new Date(data).toLocaleDateString() : '';
+						}
+					},
+					{ "data": "gradeLevel" },
+					{ "data": "classNumber" },
+					{
+						"data": "studentId",
+						"render": function (data) {
+							return `
+								<div class="d-flex gap-2 justify-content-center">
+									<a href="/Admin/Student/Details/${data}" class="btn btn-info btn-sm text-center">Details</a>
+									<a href="/Admin/Student/Edit/${data}" class="btn btn-warning btn-sm text-center">Edit</a>
+									<a href="/Admin/Student/ChangeStatus/${data}" class="btn btn-secondary btn-sm text-center">Change Status</a>
+								</div>
+							`;
+						}
+					},
+					{
+						"data": "isLocked",
+						"render": function(data) {
+							return data === "Locked"
+								? '<span class="badge bg-danger">Locked</span>'
+								: '<span class="badge bg-success">Active</span>';
+						}
+					}
+				],
+				"order": [[1, "asc"]],
+				"responsive": true,
+				"autoWidth": true
+			});
+		}
+	</script>
+}
