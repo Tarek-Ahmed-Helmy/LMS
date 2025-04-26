@@ -21,14 +21,31 @@ public class TeacherController : Controller
         _userManager = userManager;
     }
 
-    // GET: /Teacher/Index
+    // GET: /Admin/Teacher
     [HttpGet]
-    public async Task<IActionResult> Index()
+    public IActionResult Index()
     {
-        var teachers = await _unitOfWork.Teacher.FindAllAsync(includes: new string[] { "ApplicationUser" });
-        return View(teachers);
+        return View();
     }
 
+    // GET: /Admin/Teacher/GetTeacherList
+    [HttpGet]
+    public async Task<JsonResult> GetTeacherList()
+    {
+        var teachers = await _unitOfWork.Teacher.FindAllAsync(includes: new[] { "ApplicationUser" });
+        var data = teachers.Select(t => new
+        {
+            t.TeacherId,
+            FullName = t.ApplicationUser?.FullName,
+            Email = t.ApplicationUser?.Email,
+            HireDate = t.HireDate,
+            Qualification = t.Qualification,
+            Experience = t.Experience,
+            IsLocked = (t.ApplicationUser?.LockoutEnd != null && t.ApplicationUser.LockoutEnd > DateTimeOffset.UtcNow) ? "Locked" : "Active"
+        }).ToList();
+
+        return Json(new { data });
+    }
     // GET: /Teacher/Details/{id}
     [HttpGet]
     public async Task<IActionResult> Details(string id)

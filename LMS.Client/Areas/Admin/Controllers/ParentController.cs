@@ -23,10 +23,31 @@ namespace LMS.Web.Areas.AdminArea.Controllers
 
         // GET: /Parent/Index
         [HttpGet]
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            var parents = await _unitOfWork.Parent.FindAllAsync(includes: new string[] { "ApplicationUser" });
-            return View(parents);
+            return View();
+        }
+
+        // GET /Admin/Parent/GetParentList
+        [HttpGet]
+        public async Task<JsonResult> GetParentList()
+        {
+            var parents = await _unitOfWork.Parent
+                .FindAllAsync(includes: new[] { "ApplicationUser" });
+
+            var data = parents.Select(p => new {
+                p.ParentId,
+                FullName = p.ApplicationUser?.FullName,
+                Email = p.ApplicationUser?.Email,
+                Phone = p.ApplicationUser?.PhoneNumber,
+                Occupation = p.Occupation,
+                Status = (p.ApplicationUser?.LockoutEnd != null
+                              && p.ApplicationUser.LockoutEnd > DateTimeOffset.UtcNow)
+                              ? "Locked"
+                              : "Active"
+            }).ToList();
+
+            return Json(new { data });
         }
 
         // GET: /Parent/Details/{id}
