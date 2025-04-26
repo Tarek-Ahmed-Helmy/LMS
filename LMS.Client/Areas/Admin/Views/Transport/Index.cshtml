@@ -1,0 +1,38 @@
+﻿@model IEnumerable<BusListViewModel>
+
+@{
+    ViewBag.Title = "Bus Managment";
+    ViewBag.CardTitle = "View Buses";
+}
+
+<div class="mb-3">
+    <a asp-action="Create" class="btn btn-primary">Add Bus</a>
+</div>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Driver Name</th>
+            <th>Capacity</th>
+            <th>Route</th>
+            <th>Driver Contact</th>
+            <th>Student Count</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var bus in Model)
+        {
+            <tr>
+                <td>@bus.DriverName</td>
+                <td>@bus.Capacity</td>
+                <td>@bus.Route</td>
+                <td>@bus.DriverContact</td>
+                <td>@bus.StudentCount</td>
+                <td>
+                    <a asp-action="Schedule" asp-route-id="@bus.BusId" class="btn btn-info btn-sm">View Schedule</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

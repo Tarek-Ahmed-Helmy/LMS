@@ -1,0 +1,44 @@
+﻿@model CreateBusViewModel
+
+@{
+    ViewBag.Title = "Bus Managment";
+    ViewBag.CardTitle = "Edit Bus";
+}
+
+<form asp-action="Edit" method="post">
+    <div asp-validation-summary="All" class="text-danger"></div>
+	<input type="hidden" asp-for="BusId" />
+
+    <div class="form-group">
+        <label asp-for="DriverName" class="control-label"></label>
+        <input asp-for="DriverName" class="form-control" />
+        <span asp-validation-for="DriverName" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Route" class="control-label"></label>
+        <input asp-for="Route" class="form-control" />
+        <span asp-validation-for="Route" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Capacity" class="control-label"></label>
+        <input asp-for="Capacity" class="form-control" type="number" />
+        <span asp-validation-for="Capacity" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="DriverContact" class="control-label"></label>
+        <input asp-for="DriverContact" class="form-control" />
+        <span asp-validation-for="DriverContact" class="text-danger"></span>
+    </div>
+
+    <div class="form-group mt-3">
+        <button type="submit" class="btn btn-primary">Edit Bus</button>
+        <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+    </div>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
