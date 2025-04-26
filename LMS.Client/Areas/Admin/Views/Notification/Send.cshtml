@@ -1,0 +1,31 @@
+﻿@model NotificationViewModel
+
+@{
+    ViewData["Title"] = "Admin Dashboard";
+    ViewBag.CardTitle = $"Send Notification to {Model.ReceiverName}";
+}
+
+<form method="post">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <input type="hidden" asp-for="ReceiverId" />
+    <input type="hidden" asp-for="ReceiverName" />
+
+    <div class="form-group">
+        <label asp-for="Message" class="control-label"></label>
+        <textarea asp-for="Message" class="form-control" rows="5"></textarea>
+        <span asp-validation-for="Message" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="NotificationType" class="control-label"></label>
+        <select asp-for="NotificationType" class="form-control"
+                asp-items="Html.GetEnumSelectList<NotificationType>()"></select>
+        <span asp-validation-for="NotificationType" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <input type="submit" value="Send" class="btn btn-primary" />
+        <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+    </div>
+</form>
