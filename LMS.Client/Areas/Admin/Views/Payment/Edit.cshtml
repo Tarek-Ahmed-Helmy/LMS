@@ -1,0 +1,71 @@
+﻿@model LMS.Web.ViewModels.EditPaymentViewModel
+@using LMS.Entities.Models
+
+@{
+    ViewBag.Title = "Payment Management";
+    ViewBag.CardTitle = $"Edit Payment – {Model.PaymentId}";
+}
+
+<!-- Select2 CSS (optional if you’re using searchable dropdowns) -->
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+
+<h3 class="mb-3">@ViewBag.CardTitle</h3>
+
+<form asp-action="Edit" asp-route-id="@Model.PaymentId"
+      method="post" enctype="multipart/form-data">
+    @Html.AntiForgeryToken()
+    <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+    <!-- Student dropdown -->
+    <div class="mb-3">
+        <label asp-for="StudentId" class="form-label"></label>
+        <select asp-for="StudentId"
+                asp-items="(IEnumerable<SelectListItem>)ViewBag.Students"
+                class="form-select">
+            <option value="">-- Select student --</option>
+        </select>
+        <span asp-validation-for="StudentId" class="text-danger"></span>
+    </div>
+
+    <!-- Parent dropdown -->
+    <div class="mb-3">
+        <label asp-for="ParentId" class="form-label"></label>
+        <select asp-for="ParentId"
+                asp-items="(IEnumerable<SelectListItem>)ViewBag.Parents"
+                class="form-select">
+            <option value="">-- Select parent --</option>
+        </select>
+        <span asp-validation-for="ParentId" class="text-danger"></span>
+    </div>
+
+    <!-- Amount -->
+    <div class="mb-3">
+        <label asp-for="Amount" class="form-label"></label>
+        <input asp-for="Amount" type="number" step="0.01" class="form-control" />
+        <span asp-validation-for="Amount" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-success me-2">
+        <i class="bi bi-save"></i> Save Changes
+    </button>
+    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+</form>
+
+@section Scripts {
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- Select2 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $(".select2").select2({
+                width: '100%',
+                allowClear: true,
+                placeholder: function(){
+                    return $(this).data('placeholder');
+                }
+            });
+        });
+    </script>
+    <partial name="_ValidationScriptsPartial" />
+}
