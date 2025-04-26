@@ -1,10 +1,12 @@
 ﻿using LMS.Entities.Interfaces;
 using LMS.Entities.Models;
 using LMS.Utilities;
+using LMS.Web.ViewModels;
 using LMS.Web.ViewModels.AdminViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace LMS.Web.Areas.AdminArea.Controllers
 {
@@ -50,6 +52,26 @@ namespace LMS.Web.Areas.AdminArea.Controllers
             return Json(new { data });
         }
 
+        [HttpGet]
+        public async Task<JsonResult> GetChildrenList(string id)
+        {
+            var students = await _unitOfWork.Student.FindAllAsync(s=>s.ParentId == id, ["ApplicationUser", "Class"]);
+            var studentList = students.Select(s => new
+            {
+                s.StudentId,
+                s.StudentNumber,
+                s.ApplicationUser?.FullName,
+                s.ApplicationUser?.Email,
+                s.DateOfBirth,
+                s.Gender,
+                s.AdmissionDate,
+                s.Class?.GradeLevel,
+                s.Class?.ClassNumber
+
+            }).ToList();
+            return Json(new { data = studentList });
+        }
+
         // GET: /Parent/Details/{id}
         [HttpGet]
         public async Task<IActionResult> Details(string id)
@@ -60,8 +82,19 @@ namespace LMS.Web.Areas.AdminArea.Controllers
                 return NotFound();
             }
 
+            var allStudents = await _unitOfWork.Student.FindAllAsync(s => s.ParentId == null, ["ApplicationUser"]);
+            ViewBag.Students = allStudents
+                .OrderBy(s => s.StudentNumber)
+                .ThenBy(s => s.ApplicationUser.FullName)
+                .Select(s => new SelectListItem
+                {
+                    Value = s.StudentId.ToString(),
+                    Text = $"{s.StudentNumber} - {s.ApplicationUser.FullName}"
+                }).ToList();
+
             var model = new ParentDetailsViewModel
             {
+                ParentId = parent.ParentId,
                 FullName = parent.ApplicationUser?.FullName,
                 Address = parent.ApplicationUser?.Address,
                 ProfilePictureURL = parent.ApplicationUser?.ProfilePictureURL,
@@ -191,6 +224,41 @@ namespace LMS.Web.Areas.AdminArea.Controllers
             }
 
             return RedirectToAction(nameof(Index));
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddToParent(ParentDetailsViewModel model)
+        {
+            var students = await _unitOfWork.Student.FindAllAsync(s => model.SelectedStudentsIds.Contains(s.StudentId));
+            if (students == null || !students.Any())
+            {
+                return NotFound();
+            }
+            foreach (var student in students)
+            {
+                student.ParentId = model.ParentId;
+            }
+
+            await _unitOfWork.Student.UpdateRangeAsync(students);
+            await _unitOfWork.SaveChangesAsync();
+            return RedirectToAction(nameof(Details), new { id = model.ParentId });
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> RemoveFromParent(string studentId, string parentId)
+        {
+            var student = await _unitOfWork.Student.FindAsync(s => s.StudentId == studentId);
+            if (student == null)
+            {
+                return NotFound();
+            }
+            student.ParentId = null;
+            await _unitOfWork.Student.UpdateAsync(student);
+            await _unitOfWork.SaveChangesAsync();
+
+            return RedirectToAction(nameof(Details), new { id = parentId });
         }
     }
 }
