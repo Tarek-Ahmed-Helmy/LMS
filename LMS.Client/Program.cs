@@ -62,7 +62,7 @@ public class Program
 
         app.MapControllerRoute(
             name: "default",
-            pattern: "{area=Shared}/{controller=Home}/{action=Index}/{id?}")
+            pattern: "{area=Shared}/{controller=Account}/{action=Login}/{id?}")
             .WithStaticAssets();
 
         app.MapControllerRoute(

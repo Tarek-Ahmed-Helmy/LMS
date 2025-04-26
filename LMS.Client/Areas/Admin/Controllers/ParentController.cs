@@ -127,10 +127,12 @@ namespace LMS.Web.Areas.AdminArea.Controllers
                     Address = newParent.Address,
                     PhoneNumber = newParent.PhoneNumber 
                 };
-                await _userManager.AddToRoleAsync(user, SD.ParentRole);
+                
                 var result = await _userManager.CreateAsync(user, newParent.Password);
+                
                 if (result.Succeeded)
                 {
+                    await _userManager.AddToRoleAsync(user, SD.ParentRole);
                     var parent = new Parent
                     {
                         ParentId = user.Id,
@@ -162,7 +164,7 @@ namespace LMS.Web.Areas.AdminArea.Controllers
                 return NotFound();
             }
 
-            var viewModel = new ParentRegistrationViewModel
+            var viewModel = new ParentEditViewModel
             {
                 FullName = parent.ApplicationUser.FullName,
                 Email = parent.ApplicationUser.Email,
@@ -177,7 +179,7 @@ namespace LMS.Web.Areas.AdminArea.Controllers
         // POST: /Parent/Edit/{id}
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, ParentRegistrationViewModel updatedParent)
+        public async Task<IActionResult> Edit(string id, ParentEditViewModel updatedParent)
         {
             if (!ModelState.IsValid)
                 return View(updatedParent);
@@ -195,6 +197,8 @@ namespace LMS.Web.Areas.AdminArea.Controllers
             parent.ApplicationUser.PhoneNumber = updatedParent.PhoneNumber; 
             parent.Occupation = updatedParent.Occupation;
 
+            await _unitOfWork.Parent.UpdateAsync(parent);
+            await _unitOfWork.ApplicationUser.UpdateAsync(parent.ApplicationUser);
             await _unitOfWork.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }

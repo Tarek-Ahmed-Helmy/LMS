@@ -125,7 +125,7 @@ public class TeacherController : Controller
         var teacher = await _unitOfWork.Teacher.FindAsync(t => t.TeacherId == id, includes: new string[] { "ApplicationUser" });
         if (teacher == null) return NotFound();
 
-        var viewModel = new TeacherRegistrationViewModel
+        var viewModel = new TeacherEditViewModel
         {
             FullName = teacher.ApplicationUser.FullName,
             Email = teacher.ApplicationUser.Email,
@@ -140,7 +140,7 @@ public class TeacherController : Controller
     // POST: /Teacher/Edit/{id}
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(string id, TeacherRegistrationViewModel updatedTeacher)
+    public async Task<IActionResult> Edit(string id, TeacherEditViewModel updatedTeacher)
     {
         if (!ModelState.IsValid)
             return View(updatedTeacher);
@@ -159,6 +159,8 @@ public class TeacherController : Controller
         teacher.Qualification = updatedTeacher.Qualification;
         teacher.Experience = updatedTeacher.Experience;
 
+        await _unitOfWork.ApplicationUser.UpdateAsync(teacher.ApplicationUser);
+        await _unitOfWork.Teacher.UpdateAsync(teacher);
         await _unitOfWork.SaveChangesAsync();
         return RedirectToAction(nameof(Index));
     }

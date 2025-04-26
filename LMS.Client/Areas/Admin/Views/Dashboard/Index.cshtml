@@ -135,35 +135,11 @@
             </div>
         </div>
 
-        <!-- Notifications Card -->
-        <div class="col-lg-3 col-md-6 mb-4">
-            <div class="card border-0 shadow-sm h-100">
-                <div class="card-header bg-secondary text-white d-flex justify-content-between align-items-center">
-                    <h5 class="mb-0"><i class="bi bi-journal-bookmark me-2"></i>Notifications</h5>
-                    <a asp-controller="Notification" asp-action="Index" class="text-white"><i class="bi bi-box-arrow-up-right"></i></a>
-                </div>
-                <div class="card-body">
-                    <ul class="list-unstyled">
-                        <li class="mb-2">
-                            <a asp-controller="Notification" asp-action="Index" class="text-decoration-none d-flex align-items-center">
-                                <i class="bi bi-list-ul me-2"></i> Manage Notifications
-                            </a>
-                        </li>
-                        <li>
-                            <a asp-controller="Notification" asp-action="SendToAll" class="text-decoration-none d-flex align-items-center">
-                                <i class="bi bi-plus-circle me-2"></i> Send Bulk
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-
         <!-- Buses Card -->
         <div class="col-lg-3 col-md-6 mb-4">
             <div class="card border-0 shadow-sm h-100">
-                <div class="card-header bg-warning text-dark d-flex justify-content-between align-items-center">
-                    <h5 class="mb-0"><i class="bi bi-person-vcard me-2"></i>Buses</h5>
+                <div class="card-header bg-light text-dark d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0"><i class="bi bi-bus-front"></i>Buses</h5>
                     <a asp-controller="Transport" asp-action="Index" class="text-dark"><i class="bi bi-box-arrow-up-right"></i></a>
                 </div>
                 <div class="card-body">
@@ -180,6 +156,50 @@
                         <li>
                             <a asp-controller="Transport" asp-action="Create" class="text-decoration-none d-flex align-items-center">
                                 <i class="bi bi-plus-circle me-2"></i> Add New Bus
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Fees Card -->
+        <div class="col-lg-3 col-md-6 mb-4">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0"><i class="bi bi-coin"></i>Fees</h5>
+                    <a asp-controller="Payment" asp-action="Index" class="text-white"><i class="bi bi-box-arrow-up-right"></i></a>
+                </div>
+                <div class="card-body">
+                    <ul class="list-unstyled">
+                        <li class="mb-2">
+                            <a asp-controller="Payment" asp-action="Index" class="text-decoration-none d-flex align-items-center">
+                                <i class="bi bi-list-ul me-2"></i> Manage Fees
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Notifications Card -->
+        <div class="col-lg-3 col-md-6 mb-4">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-header bg-danger text-white d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0"><i class="bi bi-bell-fill"></i>Notifications</h5>
+                    <a asp-controller="Notification" asp-action="Index" class="text-white"><i class="bi bi-box-arrow-up-right"></i></a>
+                </div>
+                <div class="card-body">
+                    <ul class="list-unstyled">
+                        <li class="mb-2">
+                            <a asp-controller="Notification" asp-action="Index" class="text-decoration-none d-flex align-items-center">
+                                <i class="bi bi-list-ul me-2"></i> Manage Notifications
+                            </a>
+                        </li>
+                        <li>
+                            <a asp-controller="Notification" asp-action="SendToAll" class="text-decoration-none d-flex align-items-center">
+                                <i class="bi bi-plus-circle me-2"></i> Send Bulk
                             </a>
                         </li>
                     </ul>
