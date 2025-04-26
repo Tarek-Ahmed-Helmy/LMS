@@ -3,7 +3,6 @@ using LMS.Entities.Models;
 using LMS.Utilities;
 using LMS.Web.ViewModels;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LMS.Web.Areas.Admin.Controllers;
@@ -13,14 +12,6 @@ namespace LMS.Web.Areas.Admin.Controllers;
 public class TransportController : Controller
 {
     private readonly IUnitOfWork _unitOfWork;
-    private readonly UserManager<ApplicationUser> _userManager;
-
-    //// this gust to display data is not in database
-    //private static readonly List<(int BusId, ScheduleDetailsViewModel Schedule)> _placeholderSchedules = new List<(int, ScheduleDetailsViewModel)>
-    //{
-    //    (1, new ScheduleDetailsViewModel { DepartureTime = DateTime.Today.AddHours(7).AddMinutes(30), ArrivalTime = DateTime.Today.AddHours(8).AddMinutes(15), DriverId = "driver1" }),
-    //    (1, new ScheduleDetailsViewModel { DepartureTime = DateTime.Today.AddHours(15).AddMinutes(0), ArrivalTime = DateTime.Today.AddHours(15).AddMinutes(45), DriverId = "driver2" })
-    //};
 
     public TransportController(IUnitOfWork unitOfWork)
     {
