@@ -1,16 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
+using DayOfWeek = LMS.Entities.Models.DayOfWeek;
 
 namespace LMS.Web.ViewModels;
 
 public class AddScheduleViewModel
 {
+    public int? ScheduleId { get; set; }
+
     [Required(ErrorMessage = "Please select a Teacher")]
     [Display(Name = "Teacher")]
     public string? TeacherId { get; set; }
 
     [Required(ErrorMessage = "Please select a day")]
+    [EnumDataType(typeof(DayOfWeek))]
     public DayOfWeek DayOfWeek { get; set; }
 
     [Required(ErrorMessage = "Start time is required")]

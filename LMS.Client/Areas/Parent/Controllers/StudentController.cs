@@ -1,5 +1,4 @@
 ﻿using LMS.Entities.Interfaces;
-using LMS.Entities.Models;
 using LMS.Utilities;
 using LMS.Web.ViewModels;
 using Microsoft.AspNetCore.Authorization;

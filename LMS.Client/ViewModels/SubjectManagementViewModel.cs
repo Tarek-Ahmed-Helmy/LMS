@@ -1,6 +1,6 @@
 ﻿using LMS.Entities.Models;
 
-namespace LMS.Web.ViewModels.AdminViewModels;
+namespace LMS.Web.ViewModels;
 
 public class SubjectManagementViewModel
 {

@@ -1,10 +1,10 @@
-﻿@model TeacherDetailsViewModel
+﻿﻿
+@model TeacherDetailsViewModel
 
 @{
     ViewBag.Title = "Teacher Management";
     ViewBag.CardTitle = "Teacher Details";
 }
-
 
 <div class="container mt-4">
     <div class="row">
@@ -58,19 +58,105 @@
     </div>
 </div>
 
-<div class="mt-4 text-center">
-    <a asp-action="Index" class="btn btn-primary">
-        <i class="bi bi-arrow-left"></i> Back to List
+@* <div class="d-flex justify-content-between mt-4">
+    <a asp-action="Index" class="btn btn-outline-secondary">
+        <i class="bi bi-arrow-left me-1"></i> Back to List
     </a>
+    <a asp-action="AddSchedule" asp-route-id="@ViewBag.TeacherId" class="btn btn-primary">
+        <i class="bi bi-plus-circle me-1"></i> Add Schedule
+    </a>
+</div> *@
+
+<!-- Schedule Section -->
+<div class="row mt-4">
+    <div class="col-12">
+        <div class="card shadow-sm">
+            <div class="card-header bg-light">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">
+                        <i class="bi bi-calendar-week me-2"></i>Teaching Schedule
+                    </h5>
+                    <a asp-action="AddSchedule" asp-route-id="@ViewBag.TeacherId" class="btn btn-sm btn-primary">
+                        <i class="bi bi-plus-circle me-1"></i> Add Schedule
+                    </a>
+                </div>
+            </div>
+            <div class="card-body p-0">
+                @if (Model.Schedules.Any())
+                {
+                    <div class="table-responsive">
+                        <table class="table table-hover mb-0">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Day</th>
+                                    <th>Time</th>
+                                    <th>Subject</th>
+                                    <th>Class</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var schedule in Model.Schedules.OrderBy(s => s.DayOfWeek).ThenBy(s => s.StartTime))
+                                {
+                                    <tr>
+                                        <td>@schedule.DayOfWeek</td>
+                                        <td>@schedule.StartTime.ToString(@"hh\:mm") - @schedule.EndTime.ToString(@"hh\:mm")</td>
+                                        <td>@schedule.Subject?.SubjectName</td>
+                                        <td>@(schedule.Class?.GradeLevel + " - " + schedule.Class?.ClassNumber)</td>
+                                        <td>
+                                            <div class="d-flex gap-2">
+                                                <a asp-action="EditSchedule" asp-route-id="@schedule.ScheduleId"
+                                                   class="btn btn-sm btn-outline-primary">
+                                                    <i class="bi bi-pencil"></i>
+                                                </a>
+                                                <form asp-action="DeleteSchedule" method="post" class="d-inline">
+                                                    <input type="hidden" name="id" value="@schedule.ScheduleId" />
+                                                    <input type="hidden" name="teacherId" value="@ViewBag.TeacherId" />
+                                                    @Html.AntiForgeryToken()
+                                                    <button type="submit" class="btn btn-sm btn-outline-danger"
+                                                            onclick="return confirm('Are you sure you want to delete this schedule?')">
+                                                        <i class="bi bi-trash"></i>
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                }
+                else
+                {
+                    <div class="text-center py-4">
+                        <i class="bi bi-calendar-x fs-1 text-muted"></i>
+                        <p class="mt-2 text-muted">No schedules assigned yet</p>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
 </div>
 
-
-
-
-
-<a asp-action="AddSchedule" asp-route-id="@ViewBag.TeacherId" class="btn btn-primary">
-    <i class="bi bi-plus-circle"></i> Add Schedule
+<a asp-action="Index" class="btn btn-outline-secondary">
+    <i class="bi bi-arrow-left me-1"></i> Back to List
 </a>
+
+    <style>
+        .table th {
+            border-top: none;
+            border-bottom: 1px solid #dee2e6;
+        }
+
+        .img-thumbnail {
+            transition: transform 0.3s ease;
+        }
+
+            .img-thumbnail:hover {
+                transform: scale(1.05);
+            }
+    </style>
 
 
 
