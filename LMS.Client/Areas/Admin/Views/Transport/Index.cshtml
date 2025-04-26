@@ -1,38 +1,62 @@
-﻿@model IEnumerable<BusListViewModel>
-
-@{
-    ViewBag.Title = "Bus Managment";
+﻿@{
+    ViewBag.Title = "Transport Management";
     ViewBag.CardTitle = "View Buses";
 }
 
-<div class="mb-3">
-    <a asp-action="Create" class="btn btn-primary">Add Bus</a>
-</div>
-
-<table class="table">
-    <thead>
+<table id="busesTable" class="table table-hover" width="100%">
+    <thead class="text-bold">
         <tr>
             <th>Driver Name</th>
-            <th>Capacity</th>
             <th>Route</th>
-            <th>Driver Contact</th>
-            <th>Student Count</th>
-            <th>Actions</th>
+            <th>Capacity</th>
+            <th>Contact</th>
+            <th>Students Assigned</th>
+            <th class="text-center">Actions</th>
         </tr>
     </thead>
-    <tbody>
-        @foreach (var bus in Model)
-        {
-            <tr>
-                <td>@bus.DriverName</td>
-                <td>@bus.Capacity</td>
-                <td>@bus.Route</td>
-                <td>@bus.DriverContact</td>
-                <td>@bus.StudentCount</td>
-                <td>
-                    <a asp-action="Schedule" asp-route-id="@bus.BusId" class="btn btn-info btn-sm">View Schedule</a>
-                </td>
-            </tr>
-        }
-    </tbody>
 </table>
+
+<br />
+<a asp-action="Create" class="btn btn-primary">Add New Bus</a>
+
+@section Scripts {
+    <script>
+              $(function () {
+                  $("#busesTable").DataTable({
+                      ajax: {
+                          url: "@Url.Action("GetBusList", "Transport", new { area = "Admin" })",
+                          dataSrc: "data"
+                      },
+                      columns: [
+                          { data: "driverName" },
+                          { data: "route" },
+                          { data: "capacity" },
+                          { data: "driverContact" },
+                          { data: "studentCount" },
+                          {
+                              data: "busId",
+                              orderable: false,
+                              className: "text-center",
+                              render: function (data) {
+                                  return `
+        <div class="d-flex gap-2 justify-content-center">
+          <a href="/Admin/Transport/Details/${data}" class="btn btn-info btn-sm">Details</a>
+          <a href="/Admin/Transport/Edit/${data}"    class="btn btn-warning btn-sm">Edit</a>
+          <form method="post" action="/Admin/Transport/Delete/${data}" style="display:inline;">
+           @Html.AntiForgeryToken()
+          <button type="submit" class="btn btn-danger btn-sm"
+                    onclick="return confirm('Delete this bus?');">
+              Delete
+            </button>
+          </form>
+        </div>`;
+                              }
+                          }
+                      ],
+                      order: [[0, "asc"]],
+                      responsive: true,
+                      autoWidth: true
+                  });
+              });
+    </script>
+}

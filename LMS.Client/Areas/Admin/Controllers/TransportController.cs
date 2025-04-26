@@ -19,22 +19,31 @@ public class TransportController : Controller
         _unitOfWork = unitOfWork;
     }
 
+    // GET: /Admin/Transport
     [HttpGet]
-    public async Task<IActionResult> Index()
+    public IActionResult Index()
+    {
+        return View();
+    }
+
+    // GET: /Admin/Transport/GetBusList
+    [HttpGet]
+    public async Task<JsonResult> GetBusList()
     {
         var buses = await _unitOfWork.Bus.GetAllAsync();
-        var viewModel = buses.Select(b => new BusListViewModel
+        var data = buses.Select(b => new
         {
-            BusId = b.BusId,
-            DriverName = b.DriverName,
-            Capacity = b.Capacity,
-            Route = b.Route,
-            DriverContact = b.DriverContact,
+            b.BusId,
+            b.DriverName,
+            b.Route,
+            b.Capacity,
+            b.DriverContact,
             StudentCount = b.Students?.Count ?? 0
         }).ToList();
 
-        return View(viewModel);
+        return Json(new { data });
     }
+
 
     [HttpGet]
     public async Task<IActionResult> Details(int id)

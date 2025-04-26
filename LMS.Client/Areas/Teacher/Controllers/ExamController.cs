@@ -214,3 +214,4 @@ public class ExamController : Controller
             return RedirectToAction(nameof(ExamResult), new { examId = result.ExamId });
         }
     }
+
