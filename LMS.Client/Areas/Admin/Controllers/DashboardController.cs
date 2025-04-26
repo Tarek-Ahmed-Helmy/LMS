@@ -21,6 +21,7 @@ public class DashboardController : Controller
         ViewBag.TotalParents = await _unitOfWork.Parent.CountAsync();
         ViewBag.TotalClasses = await _unitOfWork.Class.CountAsync();
         ViewBag.TotalSubjects = await _unitOfWork.Subject.CountAsync();
+        ViewBag.TotalBuses = await _unitOfWork.Bus.CountAsync();
         return View();
     }
 }

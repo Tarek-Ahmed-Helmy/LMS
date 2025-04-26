@@ -9,4 +9,5 @@ public class BusDetailsViewModel
     public int Capacity { get; set; }
     public int StudentCount { get; set; }
     public List<StudentBusViewModel> Students { get; set; } = new List<StudentBusViewModel>();
+    public List<string>? SelectedStudentsIds { get; set; } = new List<string>();
 }
