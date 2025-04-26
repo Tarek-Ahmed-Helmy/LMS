@@ -1,7 +1,7 @@
 ﻿using LMS.Entities.Interfaces;
 using LMS.Entities.Models;
 using LMS.Utilities;
-using LMS.Web.ViewModels.AdminViewModels;
+using LMS.Web.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -15,23 +15,22 @@ public class TransportController : Controller
     private readonly IUnitOfWork _unitOfWork;
     private readonly UserManager<ApplicationUser> _userManager;
 
-    // this gust to display data is not in database
-    private static readonly List<(int BusId, ScheduleDetailsViewModel Schedule)> _placeholderSchedules = new List<(int, ScheduleDetailsViewModel)>
-    {
-        (1, new ScheduleDetailsViewModel { DepartureTime = DateTime.Today.AddHours(7).AddMinutes(30), ArrivalTime = DateTime.Today.AddHours(8).AddMinutes(15), DriverId = "driver1" }),
-        (1, new ScheduleDetailsViewModel { DepartureTime = DateTime.Today.AddHours(15).AddMinutes(0), ArrivalTime = DateTime.Today.AddHours(15).AddMinutes(45), DriverId = "driver2" })
-    };
+    //// this gust to display data is not in database
+    //private static readonly List<(int BusId, ScheduleDetailsViewModel Schedule)> _placeholderSchedules = new List<(int, ScheduleDetailsViewModel)>
+    //{
+    //    (1, new ScheduleDetailsViewModel { DepartureTime = DateTime.Today.AddHours(7).AddMinutes(30), ArrivalTime = DateTime.Today.AddHours(8).AddMinutes(15), DriverId = "driver1" }),
+    //    (1, new ScheduleDetailsViewModel { DepartureTime = DateTime.Today.AddHours(15).AddMinutes(0), ArrivalTime = DateTime.Today.AddHours(15).AddMinutes(45), DriverId = "driver2" })
+    //};
 
-    public TransportController(IUnitOfWork unitOfWork, UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager)
+    public TransportController(IUnitOfWork unitOfWork)
     {
         _unitOfWork = unitOfWork;
-        _userManager = userManager;
     }
 
     [HttpGet]
     public async Task<IActionResult> Index()
     {
-        var buses = await _unitOfWork.Bus.FindAllAsync(includes: new[] { "Students", "Students.Class" });
+        var buses = await _unitOfWork.Bus.GetAllAsync();
         var viewModel = buses.Select(b => new BusListViewModel
         {
             BusId = b.BusId,
@@ -39,24 +38,46 @@ public class TransportController : Controller
             Capacity = b.Capacity,
             Route = b.Route,
             DriverContact = b.DriverContact,
-            StudentCount = b.Students?.Count ?? 0,
-            Classes = b.Students?.GroupBy(s => s.Class)
-                .Select(g => new ClassSummaryViewModel
-                {
-                    ClassId = g.Key.ClassId,
-                    GradeLevel = g.Key.GradeLevel,
-                    ClassNumber = g.Key.ClassNumber,
-                    StudentCount = g.Count()
-                }).ToList() ?? new List<ClassSummaryViewModel>()
+            StudentCount = b.Students?.Count ?? 0
         }).ToList();
 
         return View(viewModel);
     }
 
     [HttpGet]
+    public async Task<IActionResult> Details(int id)
+    {
+        var bus = await _unitOfWork.Bus.FindAsync(b => b.BusId == id, ["Students.ApplicationUser", "Students.Class"]);
+        if (bus == null)
+        {
+            return NotFound();
+        }
+
+        var viewModel = new BusDetailsViewModel
+        {
+            BusId = bus.BusId,
+            DriverName = bus.DriverName,
+            Route = bus.Route,
+            Capacity = bus.Capacity,
+            DriverContact = bus.DriverContact,
+            StudentCount = bus.Students?.Count ?? 0,
+            Students = bus.Students?.Select(s => new StudentBusViewModel
+            {
+                Id = s.StudentId,
+                FullName = s.ApplicationUser?.FullName ?? "Unknown",
+                StudentNumber = s.StudentNumber,
+                ClassNumber = s.Class?.ClassNumber ?? string.Empty,
+                GradeLevel = s.Class.GradeLevel,
+                EmergencyContact = s.EmergencyContact
+            }).ToList() ?? new List<StudentBusViewModel>()
+        };
+        return View(viewModel);
+    }
+
+    [HttpGet]
     public IActionResult Create()
     {
-        return View(new CreateBusViewModel());
+        return View();
     }
 
     [HttpPost]
@@ -81,77 +102,75 @@ public class TransportController : Controller
     }
 
     [HttpGet]
-    public async Task<IActionResult> Routes()
+    public async Task<IActionResult> Edit(int id)
     {
-        var buses = await _unitOfWork.Bus.FindAllAsync(includes: new[] { "Students", "Students.Class" });
-        var viewModel = buses
-            .GroupBy(b => b.Route)
-            .Select(g => new RouteListViewModel
-            {
-                RouteName = g.Key,
-                Buses = g.Select(b => new BusSummaryViewModel
-                {
-                    BusId = b.BusId,
-                    DriverName = b.DriverName,
-                    Capacity = b.Capacity,
-                    StudentCount = b.Students?.Count ?? 0,
-                    Classes = b.Students?.GroupBy(s => s.Class)
-                        .Select(c => new ClassSummaryViewModel
-                        {
-                            ClassId = c.Key.ClassId,
-                            GradeLevel = c.Key.GradeLevel,
-                            ClassNumber = c.Key.ClassNumber,
-                            StudentCount = c.Count()
-                        }).ToList() ?? new List<ClassSummaryViewModel>()
-                }).ToList()
-            }).ToList();
-
-        return View(viewModel);
-    }
-
-    [HttpGet]
-    public async Task<IActionResult> Schedule(int id, [FromQuery] string? userId, [FromQuery] DateTime? newDeparture, [FromQuery] DateTime? newArrival, [FromQuery] string? newDriverId)
-    {
-        var bus = await _unitOfWork.Bus.FindAsync(b => b.BusId == id, new[] { "Students" });
+        var bus = await _unitOfWork.Bus.FindAsync(b => b.BusId == id);
         if (bus == null)
         {
-            TempData["StatusMessage"] = "Bus not found.";
+            return NotFound();
+        }
+        var model = new CreateBusViewModel
+        {
+            DriverName = bus.DriverName,
+            Route = bus.Route,
+            Capacity = bus.Capacity,
+            DriverContact = bus.DriverContact
+        };
+        return View(model);
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Edit(int id, CreateBusViewModel model)
+    {
+        if (ModelState.IsValid)
+        {
+            var bus = await _unitOfWork.Bus.FindAsync(b => b.BusId == id);
+            if (bus == null)
+            {
+                return NotFound();
+            }
+            bus.DriverName = model.DriverName;
+            bus.Route = model.Route;
+            bus.Capacity = model.Capacity;
+            bus.DriverContact = model.DriverContact;
+
+            await _unitOfWork.Bus.UpdateAsync(bus);
+            await _unitOfWork.SaveChangesAsync();
+
             return RedirectToAction(nameof(Index));
         }
+        return View(model);
+    }
 
-        if (newDeparture.HasValue && newArrival.HasValue && !string.IsNullOrEmpty(newDriverId))
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Delete(int id)
+    {
+        var bus = await _unitOfWork.Bus.FindAsync(b => b.BusId == id);
+        if (bus == null)
         {
-            _placeholderSchedules.Add((id, new ScheduleDetailsViewModel
-            {
-                DepartureTime = newDeparture.Value,
-                ArrivalTime = newArrival.Value,
-                DriverId = newDriverId
-            }));
-            TempData["StatusMessage"] = "Schedule entry added successfully.";
+            return NotFound();
         }
+        await _unitOfWork.Bus.DeleteAsync(bus);
+        await _unitOfWork.SaveChangesAsync();
 
-        var schedules = _placeholderSchedules
-            .Where(s => s.BusId == id)
-            .Select(s => s.Schedule)
-            .ToList();
+        return RedirectToAction(nameof(Index));
+    }
 
-        var filteredSchedules = string.IsNullOrEmpty(userId)
-            ? schedules
-            : schedules.Where(s => s.DriverId == userId).ToList();
-
-        var viewModel = new BusScheduleViewModel
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> RemoveFromBus(string studentId, int busId)
+    {
+        var student = await _unitOfWork.Student.FindAsync(s => s.StudentId == studentId);
+        if (student == null)
         {
-            Bus = new BusDetailsViewModel
-            {
-                BusId = bus.BusId,
-                Route = bus.Route,
-                DriverName = bus.DriverName,
-                Capacity = bus.Capacity,
-                StudentCount = bus.Students?.Count ?? 0
-            },
-            Schedules = filteredSchedules
-        };
+            return NotFound();
+        }
+        student.BusId = null;
+        await _unitOfWork.Student.UpdateAsync(student);
+        await _unitOfWork.SaveChangesAsync();
 
-        return View(viewModel);
+        return RedirectToAction(nameof(Details), new { id = busId });
     }
 }
