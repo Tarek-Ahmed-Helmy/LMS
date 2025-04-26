@@ -19,14 +19,25 @@ public class AcademicController : Controller
     }
 
     [HttpGet]
-    public async Task<IActionResult> Subjects()
+    public IActionResult Subjects()
+    {
+        return View();
+    }
+
+    // GET: /Admin/Academic/GetSubjectList
+    [HttpGet]
+    public async Task<JsonResult> GetSubjectList()
     {
         var subjects = await _unitOfWork.Subject.GetAllAsync();
-        var model = new SubjectManagementViewModel
+        var data = subjects.Select(s => new
         {
-            Subjects = subjects
-        };
-        return View(model);
+            s.SubjectId,
+            s.SubjectCode,
+            s.SubjectName,
+            s.SubjectDescription
+            
+        }).ToList();
+        return Json(new { data });
     }
 
     [HttpPost]
@@ -81,15 +92,26 @@ public class AcademicController : Controller
 
 
     [HttpGet]
-    public async Task<IActionResult> Classes()
+    public IActionResult Classes()
+    {
+        return View();
+    }
+
+    // GET: /Admin/Academic/GetClassList
+    [HttpGet]
+    public async Task<JsonResult> GetClassList()
     {
         var classes = await _unitOfWork.Class.GetAllAsync();
-        var model = new ClassManagementViewModel
+        var data = classes.Select(c => new
         {
-            Classes = classes
-        };
-        return View(model);
+            c.ClassId,
+            c.ClassNumber,
+            c.GradeLevel,
+            c.Capacity
+        }).ToList();
+        return Json(new { data });
     }
+
 
     [HttpPost]
     [ValidateAntiForgeryToken]
