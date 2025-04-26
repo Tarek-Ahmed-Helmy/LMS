@@ -4,6 +4,7 @@ using LMS.Utilities;
 using LMS.Web.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace LMS.Web.Areas.Admin.Controllers;
 
@@ -52,6 +53,16 @@ public class TransportController : Controller
         {
             return NotFound();
         }
+
+        var allStudents = await _unitOfWork.Student.FindAllAsync(s=>s.BusId == null, ["ApplicationUser"]);
+        ViewBag.Students = allStudents
+            .OrderBy(s => s.StudentNumber)
+            .ThenBy(s => s.ApplicationUser.FullName)
+            .Select(s => new SelectListItem
+            {
+                Value = s.StudentId.ToString(),
+                Text = $"{s.StudentNumber} - {s.ApplicationUser.FullName}"
+            }).ToList();
 
         var viewModel = new BusDetailsViewModel
         {
@@ -172,5 +183,24 @@ public class TransportController : Controller
         await _unitOfWork.SaveChangesAsync();
 
         return RedirectToAction(nameof(Details), new { id = busId });
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> AddToBus(BusDetailsViewModel model)
+    {
+        var students = await _unitOfWork.Student.FindAllAsync(s => model.SelectedStudentsIds.Contains(s.StudentId));
+        if (students == null || !students.Any())
+        {
+            return NotFound();
+        }
+        foreach(var student in students)
+        {
+            student.BusId = model.BusId;
+        }
+
+        await _unitOfWork.Student.UpdateRangeAsync(students);
+        await _unitOfWork.SaveChangesAsync();
+        return RedirectToAction(nameof(Details), new { id = model.BusId });
     }
 }
