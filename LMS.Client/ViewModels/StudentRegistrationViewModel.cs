@@ -1,7 +1,7 @@
 ﻿using LMS.Entities.Models;
 using System.ComponentModel.DataAnnotations;
 
-namespace LMS.Web.ViewModels.AdminViewModels;
+namespace LMS.Web.ViewModels;
 
 public class StudentRegistrationViewModel
 {
@@ -36,4 +36,7 @@ public class StudentRegistrationViewModel
     [Required]
     [StringLength(255)]
     public required string StudentNumber { get; set; }
+
+    [Display(Name = "Class Number")]
+    public int ClassId { get; set; }
 }

@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace LMS.Web.ViewModels.TeacherViewModels;
+namespace LMS.Web.ViewModels;
 
 
 public class TeacherStudentProfileViewModel
@@ -57,10 +57,10 @@ public class TeacherStudentProfileViewModel
     public List<AttendanceViewModel> RecentAttendances { get; set; }
 
     [Display(Name = "Exam Results")]
-    public List<ExamResultViewModel> ExamResults { get; set; }
+    public List<ExamResultViewModell> ExamResults { get; set; }
 
     [Display(Name = "Assignment Submissions")]
-    public List<SubmissionViewModel> Submissions { get; set; }
+    public List<SubmissionViewModell> Submissions { get; set; }
 }
 
 public class AttendanceViewModel
@@ -76,7 +76,7 @@ public class AttendanceViewModel
     public string Notes { get; set; }
 }
 
-public class ExamResultViewModel
+public class ExamResultViewModell
 {
     [Display(Name = "Exam ID")]
     public int ExamId { get; set; }
@@ -97,7 +97,7 @@ public class ExamResultViewModel
     public string Remarks { get; set; }
 }
 
-public class SubmissionViewModel
+public class SubmissionViewModell
 {
     [Display(Name = "Assignment ID")]
     public int AssignmentId { get; set; }

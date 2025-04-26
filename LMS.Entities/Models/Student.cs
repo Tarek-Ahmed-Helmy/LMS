@@ -28,7 +28,7 @@ public class Student
     public required string StudentNumber { get; set; }
 
     [ForeignKey("Class")]
-    public int? ClassId { get; set; }
+    public int ClassId { get; set; }
 
     [ForeignKey("Parent")]
     public string? ParentId { get; set; }

@@ -1,7 +1,7 @@
 ﻿// File: LMS.Web/Areas/Teacher/Controllers/StudentManagement.cs
 using LMS.Entities.Interfaces;
 using LMS.Entities.Models;
-using LMS.Web.ViewModels.TeacherViewModels;
+using LMS.Web.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
@@ -105,7 +105,7 @@ public class StudentManagement : Controller
                 })
                 .ToList(),
             ExamResults = examResults
-                .Select(er => new ExamResultViewModel
+                .Select(er => new ExamResultViewModell
                 {
                     ExamId = er.ExamId,
                     ExamType = er.Exam?.ExamType.ToString() ?? "N/A",
@@ -116,7 +116,7 @@ public class StudentManagement : Controller
                 })
                 .ToList(),
             Submissions = submissions
-                .Select(s => new SubmissionViewModel
+                .Select(s => new SubmissionViewModell
                 {
                     AssignmentId = s.AssignmentId,
                     AssignmentTitle = s.Assignment?.Title ?? "N/A",

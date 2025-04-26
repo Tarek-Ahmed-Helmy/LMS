@@ -1,0 +1,308 @@
+﻿@model NotificationToAllViewModel
+@{
+    ViewData["Title"] = "Admin Dashboard";
+    ViewBag.CardTitle = "Send Notifications";
+}
+
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.0/font/bootstrap-icons.css">
+<link href="https://cdn.jsdelivr.net/npm/quill@2.0.0/dist/quill.snow.css" rel="stylesheet" />
+
+<style>
+    :root {
+        --primary-color: #4361ee;
+        --secondary-color: #3f37c9;
+        --light-bg: #f8f9fa;
+        --card-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    }
+
+    .notification-card {
+        border: none;
+        border-radius: 12px;
+        box-shadow: var(--card-shadow);
+        overflow: hidden;
+    }
+
+    .card-header-custom {
+        background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+        color: white;
+        padding: 1.5rem;
+    }
+
+    .recipient-type-card {
+        transition: all 0.3s ease;
+        border: 2px solid transparent;
+        cursor: pointer;
+    }
+
+        .recipient-type-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary-color);
+        }
+
+        .recipient-type-card.active {
+            border-color: var(--primary-color);
+            background-color: rgba(67, 97, 238, 0.05);
+        }
+
+    .filter-section {
+        background-color: var(--light-bg);
+        border-radius: 10px;
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .ql-container {
+        min-height: 200px;
+        border-radius: 0 0 8px 8px !important;
+    }
+
+    .ql-toolbar {
+        border-radius: 8px 8px 0 0 !important;
+    }
+
+    .select2-container--default .select2-selection--multiple {
+        border: 1px solid #e0e0e0;
+        padding: 0.5rem;
+        min-height: 48px;
+        border-radius: 8px;
+    }
+
+        .select2-container--default .select2-selection--multiple .select2-selection__choice {
+            background-color: var(--primary-color);
+            border: none;
+            border-radius: 20px;
+            color: white;
+            padding: 0 10px;
+        }
+
+    .stat-card {
+        background: white;
+        border-radius: 10px;
+        padding: 1.5rem;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    }
+
+    .send-btn {
+        background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+        border: none;
+        padding: 0.75rem 2rem;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+    }
+</style>
+
+<div class="container-fluid py-4">
+    <div class="row mb-4">
+        <div class="col">
+            <div class="notification-card">
+                <div class="card-header-custom d-flex justify-content-between align-items-center">
+                    <div>
+                        <h2 class="mb-0"><i class="bi bi-megaphone me-2"></i> @ViewBag.CardTitle</h2>
+                        <p class="mb-0 opacity-75">Send notifications to multiple recipients at once</p>
+                    </div>
+                    <div class="badge bg-white text-primary p-2">
+                        <i class="bi bi-info-circle me-1"></i> All changes are logged
+                    </div>
+                </div>
+                <div class="card-body">
+                    <form asp-action="SendToAll" method="post" id="messageForm">
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+
+                        <!-- Notification Details -->
+                        <div class="row mb-4">
+                            <div class="col-md-8">
+                                <div class="mb-4">
+                                    <label class="form-label fw-bold mb-3">Notification Type</label>
+                                    <select asp-for="NotificationType" class="form-select form-select-lg"
+                                            asp-items="Html.GetEnumSelectList<NotificationType>()">
+                                        <option value="">Select notification type...</option>
+                                    </select>
+                                    <span asp-validation-for="NotificationType" class="text-danger small"></span>
+                                </div>
+
+                                <label class="form-label fw-bold mb-3">Message Content</label>
+                                <div id="editor" style="height: 250px;">@Html.Raw(Model?.Message)</div>
+                                <textarea asp-for="Message" class="d-none" id="messageContent"></textarea>
+                                <span asp-validation-for="Message" class="text-danger small"></span>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="stat-card h-100">
+                                    <h5 class="fw-bold mb-3"><i class="bi bi-speedometer2 me-2"></i>Quick Stats</h5>
+                                    <div class="d-flex align-items-center mb-3">
+                                        <div class="bg-primary bg-opacity-10 p-2 rounded me-3">
+                                            <i class="bi bi-people-fill text-primary"></i>
+                                        </div>
+                                        <div>
+                                            <h6 class="mb-0">Total Students</h6>
+                                            <p class="mb-0 text-muted">@ViewBag.TotalStudents</p>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex align-items-center mb-3">
+                                        <div class="bg-primary bg-opacity-10 p-2 rounded me-3">
+                                            <i class="bi bi-person-vcard text-primary"></i>
+                                        </div>
+                                        <div>
+                                            <h6 class="mb-0">Total Parents</h6>
+                                            <p class="mb-0 text-muted">@ViewBag.TotalParents</p>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex align-items-center">
+                                        <div class="bg-primary bg-opacity-10 p-2 rounded me-3">
+                                            <i class="bi bi-person-badge text-primary"></i>
+                                        </div>
+                                        <div>
+                                            <h6 class="mb-0">Total Teachers</h6>
+                                            <p class="mb-0 text-muted">@ViewBag.TotalTeachers</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Recipient Selection -->
+                        <div class="mb-4">
+                            <label class="form-label fw-bold mb-3">Select Recipients</label>
+                            <div class="row g-3 mb-4">
+                                <div class="col-md-4">
+                                    <div class="recipient-type-card p-3 text-center @(Model?.SendToStudents == true ? "active" : "")"
+                                         onclick="toggleRecipient('SendToStudents', this)">
+                                        <div class="bg-primary bg-opacity-10 p-3 rounded-circle d-inline-block mb-2">
+                                            <i class="bi bi-people-fill text-primary" style="font-size: 1.5rem;"></i>
+                                        </div>
+                                        <h5>Students</h5>
+                                        <p class="text-muted small">Send to all or filtered students</p>
+                                        <input type="checkbox" asp-for="SendToStudents" class="d-none">
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="recipient-type-card p-3 text-center @(Model?.SendToParents == true ? "active" : "")"
+                                         onclick="toggleRecipient('SendToParents', this)">
+                                        <div class="bg-primary bg-opacity-10 p-3 rounded-circle d-inline-block mb-2">
+                                            <i class="bi bi-person-vcard text-primary" style="font-size: 1.5rem;"></i>
+                                        </div>
+                                        <h5>Parents</h5>
+                                        <p class="text-muted small">Send to parents of students</p>
+                                        <input type="checkbox" asp-for="SendToParents" class="d-none">
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="recipient-type-card p-3 text-center @(Model?.SendToTeachers == true ? "active" : "")"
+                                         onclick="toggleRecipient('SendToTeachers', this)">
+                                        <div class="bg-primary bg-opacity-10 p-3 rounded-circle d-inline-block mb-2">
+                                            <i class="bi bi-person-badge text-primary" style="font-size: 1.5rem;"></i>
+                                        </div>
+                                        <h5>Teachers</h5>
+                                        <p class="text-muted small">Send to teaching staff</p>
+                                        <input type="checkbox" asp-for="SendToTeachers" class="d-none">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Filter Sections -->
+                            <div class="filter-section">
+                                <h5 class="fw-bold mb-3"><i class="bi bi-funnel me-2"></i>Filter Options</h5>
+                                <div class="row g-3">
+                                    <div class="col-md-4">
+                                        <label class="form-label">By Class</label>
+                                        <select asp-for="SelectedClassIds" asp-items="ViewBag.Classes" class="form-control select2" multiple="multiple">
+                                            <option value="">Select classes...</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="form-label">By Subject</label>
+                                        <select asp-for="SelectedSubjectIds" asp-items="ViewBag.Subjects" class="form-control select2" multiple="multiple">
+                                            <option value="">Select subjects...</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="form-label">By Bus Route</label>
+                                        <select asp-for="SelectedBusIds" asp-items="ViewBag.Buses" class="form-control select2" multiple="multiple">
+                                            <option value="">Select buses...</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="d-flex justify-content-end mt-4">
+                            <button type="button" class="btn btn-outline-secondary me-3" onclick="resetForm()">
+                                <i class="bi bi-arrow-counterclockwise me-2"></i>Reset
+                            </button>
+                            <button type="submit" class="btn send-btn">
+                                <i class="bi bi-send me-2"></i> Send Notification
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/quill@2.0.0/dist/quill.js"></script>
+
+    <script>
+        // Initialize rich text editor
+        const quill = new Quill('#editor', {
+            theme: 'snow',
+            modules: {
+                toolbar: [
+                    ['bold', 'italic', 'underline', 'strike'],
+                    ['blockquote', 'code-block'],
+                    [{ 'header': 1 }, { 'header': 2 }],
+                    [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                    [{ 'script': 'sub'}, { 'script': 'super' }],
+                    [{ 'indent': '-1'}, { 'indent': '+1' }],
+                    [{ 'direction': 'rtl' }],
+                    [{ 'size': ['small', false, 'large', 'huge'] }],
+                    [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+                    [{ 'color': [] }, { 'background': [] }],
+                    [{ 'font': [] }],
+                    [{ 'align': [] }],
+                    ['clean'],
+                    ['link', 'image']
+                ]
+            }
+        });
+
+        // Sync editor content with form field
+        quill.on('text-change', function() {
+            document.getElementById('messageContent').value = quill.root.innerHTML;
+        });
+
+        // Initialize Select2
+        $(document).ready(function() {
+            $('.select2').select2({
+                placeholder: "Select options",
+                allowClear: true,
+                width: '100%'
+            });
+        });
+
+        // Toggle recipient selection
+        function toggleRecipient(fieldName, element) {
+            const checkbox = document.querySelector(`input[name="${fieldName}"]`);
+            checkbox.checked = !checkbox.checked;
+
+            if (checkbox.checked) {
+                element.classList.add('active');
+            } else {
+                element.classList.remove('active');
+            }
+        }
+
+        // Reset form
+        function resetForm() {
+            document.getElementById('messageForm').reset();
+            quill.root.innerHTML = '';
+            $('.select2').val(null).trigger('change');
+            document.querySelectorAll('.recipient-type-card').forEach(card => {
+                card.classList.remove('active');
+            });
+        }
+    </script>
+}

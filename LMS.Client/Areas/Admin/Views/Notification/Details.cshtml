@@ -1,31 +1,101 @@
 ﻿@model NotificationViewModel
 
 @{
-    ViewData["Title"] = "Admin Dashboard";
+    ViewData["Title"] = "Notification Details";
     ViewBag.CardTitle = "Notification Details";
 }
 
-<div class="card">
-    <div class="card-body">
-        <h5 class="card-title">@Model.NotificationType</h5>
-        <h6 class="card-subtitle mb-2 text-muted">
-            From: @Model.SenderName | To: @Model.ReceiverName
-        </h6>
-        <p class="card-text">@Model.Message</p>
-        <p class="card-text">
-            <small class="text-muted">
-                Sent: @Model.CreatedAt.ToString("g") |
-                Status: @(Model.IsRead ? "Read" : "Unread")
-            </small>
-        </p>
+<style>
+    .message-container {
+        min-height: 150px;
+        border-left: 4px solid #0d6efd;
+    }
 
-        <a asp-action="Edit" asp-route-id="@Model.NotificationId" class="btn btn-primary">Edit</a>
-        <form asp-action="Delete" asp-route-id="@Model.NotificationId" method="post" class="d-inline">
-            <button type="submit" class="btn btn-danger"
-                    onclick="return confirm('Are you sure you want to delete this notification?')">
-                Delete
-            </button>
-        </form>
-        <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+        .message-container img {
+            max-width: 100%;
+            height: auto;
+        }
+
+    .card {
+        border: none;
+        border-radius: 0.5rem;
+    }
+
+    .card-header {
+        border-radius: 0.5rem 0.5rem 0 0 !important;
+    }
+</style>
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">
+                            @switch (Model.NotificationType)
+                            {
+                                case NotificationType.Alert:
+                                    <i class="fas fa-exclamation-circle me-2"></i>
+                                    break;
+                                case NotificationType.Reminder:
+                                    <i class="fas fa-bell me-2"></i>
+                                    break;
+                                case NotificationType.Announcement:
+                                    <i class="fas fa-bullhorn me-2"></i>
+                                    break;
+                            }
+                            @Model.NotificationType
+                        </h5>
+                        <span class="badge @(Model.IsRead ? "bg-success" : "bg-warning")">
+                            @(Model.IsRead ? "Read" : "Unread")
+                        </span>
+                    </div>
+                </div>
+
+                <div class="card-body">
+                    <div class="mb-4">
+                        <div class="d-flex justify-content-between mb-2">
+                            <div>
+                                <span class="fw-bold">From:</span>
+                                <span class="ms-2">@Model.SenderName</span>
+                            </div>
+                            <div>
+                                <span class="fw-bold">To:</span>
+                                <span class="ms-2">@Model.ReceiverName</span>
+                            </div>
+                        </div>
+
+                        <div class="d-flex justify-content-between text-muted small">
+                            <div>
+                                <i class="far fa-clock me-1"></i>
+                                <span>@Model.CreatedAt.ToString("f")</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="message-container bg-light p-4 rounded mb-4">
+                        @Html.Raw(Model.Message)
+                    </div>
+
+                    <div class="d-flex flex-wrap gap-2">
+                        <a asp-action="Edit" asp-route-id="@Model.NotificationId" class="btn btn-primary">
+                            <i class="fas fa-edit me-1"></i> Edit
+                        </a>
+
+                        <form asp-action="Delete" asp-route-id="@Model.NotificationId" method="post" class="d-inline">
+                            <button type="submit" class="btn btn-danger"
+                                    onclick="return confirm('Are you sure you want to delete this notification?')">
+                                <i class="fas fa-trash-alt me-1"></i> Delete
+                            </button>
+                        </form>
+
+                        <a asp-action="Index" class="btn btn-outline-secondary ms-auto">
+                            <i class="fas fa-arrow-left me-1"></i> Back to List
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>

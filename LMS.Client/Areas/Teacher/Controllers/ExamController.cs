@@ -6,7 +6,7 @@ using LMS.Web.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace LMS.Web.Areas.Teacher.Controllers;
+namespace LMS.Web.Areas.TeacherArea.Controllers;
 
 [Area("Teacher")]
 [Authorize(Roles = SD.TeacherRole)]

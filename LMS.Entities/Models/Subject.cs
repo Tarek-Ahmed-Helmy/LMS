@@ -30,4 +30,5 @@ public class Subject
 
     [ValidateNever]
     public ICollection<Exam>? Exams { get; set; }
+    public ICollection<Schedule>? Schedules { get; set; }
 }
