@@ -1,10 +1,9 @@
 ﻿@model EditUserViewModel
 
 @{
-    ViewBag.Title = "Edit User";
+    ViewData["Title"] = "Super Admin Dashboard";
+    ViewBag.CardTitle = "Edit User";
 }
-
-<h1>Edit User</h1>
 
 <form method="post" class="mt-3">
     <input type="hidden" asp-for="Id" />

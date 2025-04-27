@@ -1,5 +1,10 @@
 ﻿@model RoleClaimsViewModel
 
+@{
+    ViewData["Title"] = "Super Admin Dashboard";
+    ViewBag.CardTitle = "Role Claims";
+}
+
 <form method="post" asp-controller="Administration" asp-action="ManageRoleClaims">
     <div class="card">
         <div class="card-header">
