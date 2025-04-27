@@ -23,7 +23,7 @@ public class AssignmentController : Controller
         var teacherId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
         var assignments = await _uow.Assignment
-            .FindAllAsync(a => a.TeacherId == teacherId, new[] { "Subject" });
+            .FindAllAsync(a => a.TeacherId == teacherId, ["Subject"]);
 
         var vm = assignments
             .GroupBy(a => a.Subject!.SubjectName)
@@ -47,8 +47,8 @@ public class AssignmentController : Controller
     [HttpGet("Upload")]
     public async Task<IActionResult> Upload()
     {
-        
-        var subjects = await _uow.Subject.GetAllAsync();
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        var subjects = await _uow.Subject.FindAllAsync(s => s.Schedules.Select(sh => sh.TeacherId).Contains(userId));
         return View(new CreateAssignmentViewModel { Subjects = subjects });
     }
 
@@ -179,6 +179,15 @@ public class AssignmentController : Controller
     }
 
     /* ===================  Grade  =================== */
+    [HttpGet]
+    public async Task<IActionResult> Grade(int submissionId)
+    {
+        var submission = await _uow.Submission.FindAsync(
+            s => s.SubmissionId == submissionId,
+            new[] { "Assignment" });
+        return View();
+    }
+
     [HttpPost("Grade/{submissionId:int}")]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Grade(int submissionId, GradeSubmissionViewModel model)

@@ -1,10 +1,8 @@
 ﻿@model IEnumerable<SubmissionViewModel>
 @{
     ViewData["Title"] = "Submissions";
+    ViewBag.CardTitle = $"Submissions: {@ViewBag.AssignmentTitle}";
 }
-
-<h3>Submissions: @ViewBag.AssignmentTitle</h3>
-<hr />
 
 <table class="table table-striped">
     <thead>

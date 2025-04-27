@@ -1,4 +1,5 @@
 ﻿using LMS.Entities.Interfaces;
+using LMS.Entities.Models;
 using LMS.Utilities;
 using LMS.Web.ViewModels;
 using Microsoft.AspNetCore.Authorization;
@@ -22,19 +23,20 @@ public class ProfileController : Controller
     {
         var id = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-        var teacher = await _unitOfWork.Teacher.FindAsync(s => s.TeacherId == id, ["ApplicationUser"]);
+        var teacher = await _unitOfWork.Teacher.FindAsync(s => s.TeacherId == id, ["ApplicationUser", "Schedules.Class", "Schedules.Subject"]);
 
         if (teacher == null || teacher.ApplicationUser == null)
             return NotFound();
 
-        var teacherProfileVM = new TeacherProfileViewModel
+        var teacherProfileVM = new TeacherDetailsViewModel
         {
             FullName = teacher.ApplicationUser.FullName,
             Address = teacher.ApplicationUser.Address,
             ProfilePictureURL = teacher.ApplicationUser.ProfilePictureURL,
             HireDate = teacher.HireDate,
             Qualification = teacher.Qualification,
-            Experience = teacher.Experience
+            Experience = teacher.Experience,
+            Schedules = teacher.Schedules.ToList() ?? new List<Schedule>()
         };
 
         return View(teacherProfileVM);

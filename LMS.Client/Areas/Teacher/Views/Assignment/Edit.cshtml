@@ -1,13 +1,10 @@
 ﻿@model EditAssignmentViewModel
 @{
     ViewData["Title"] = "Edit Assignment";
+    ViewBag.CardTitle = $"Edit assignment – {@Model.Title}";
 }
 
 <div class="card shadow-sm">
-    <div class="card-header bg-primary text-white fw-semibold">
-        Edit assignment – @Model.Title
-    </div>
-
     <div class="card-body">
         <form asp-action="Edit"
               asp-route-assignmentId="@Model.AssignmentId"
