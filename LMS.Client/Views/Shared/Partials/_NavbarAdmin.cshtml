@@ -1,158 +1,189 @@
-﻿
+﻿<!-- Dashboard -->
 <li class="nav-item">
-	<a asp-area="Admin" asp-controller="Dashboard" asp-action="Index" class="nav-link">
-		<i class="nav-icon bi bi-circle-fill"></i>
-		<p>
-			Dashboard
-		</p>
-	</a>
+    <a asp-area="Admin" asp-controller="Dashboard" asp-action="Index" class="nav-link">
+        <i class="nav-icon bi bi-speedometer2"></i>
+        <p>Dashboard</p>
+    </a>
 </li>
-<li class="nav-item menu-open">
-	<a href="#" class="nav-link">
-		<i class="nav-icon bi bi-circle-fill"></i>
-		<p>
-			Students
-			<i class="nav-arrow bi bi-chevron-right"></i>
-		</p>
-	</a>
-	<ul class="nav nav-treeview" style="box-sizing: border-box; display: block;">
-		<li class="nav-item">
-			<a asp-area="Admin" asp-controller="Student" asp-action="Index" class="nav-link">
-				<i class="nav-icon bi bi-circle"></i>
-				<p>Manage Students</p>
-			</a>
-		</li>
-		<li class="nav-item">
-			<a asp-area="Admin" asp-controller="Student" asp-action="Create" class="nav-link">
-				<i class="nav-icon bi bi-circle"></i>
-				<p>Add New Student</p>
-			</a>
-		</li>
-	</ul>
+
+<!-- Students -->
+<li class="nav-item">
+    <a href="#" class="nav-link">
+        <i class="nav-icon bi bi-people-fill"></i>
+        <p>
+            Students
+            <i class="nav-arrow bi bi-chevron-down float-end"></i>
+        </p>
+    </a>
+    <ul class="nav nav-treeview">
+        <li class="nav-item">
+            <a asp-area="Admin" asp-controller="Student" asp-action="Index" class="nav-link">
+                <i class="nav-icon bi bi-list-ul"></i>
+                <p>Manage Students</p>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a asp-area="Admin" asp-controller="Student" asp-action="Create" class="nav-link">
+                <i class="nav-icon bi bi-plus-circle"></i>
+                <p>Add New Student</p>
+            </a>
+        </li>
+    </ul>
 </li>
-<li class="nav-item menu-open">
-	<a href="#" class="nav-link">
-		<i class="nav-icon bi bi-circle-fill"></i>
-		<p>
-			Teachers
-			<i class="nav-arrow bi bi-chevron-right"></i>
-		</p>
-	</a>
-	<ul class="nav nav-treeview" style="box-sizing: border-box; display: block;">
-		<li class="nav-item">
-			<a asp-area="Admin" asp-controller="Teacher" asp-action="Index" class="nav-link">
-				<i class="nav-icon bi bi-circle"></i>
-				<p>Manage Teachers</p>
-			</a>
-		</li>
-		<li class="nav-item">
-			<a asp-area="Admin" asp-controller="Teacher" asp-action="Create" class="nav-link">
-				<i class="nav-icon bi bi-circle"></i>
-				<p>Add New Teacher</p>
-			</a>
-		</li>
-	</ul>
+
+<!-- Teachers -->
+<li class="nav-item">
+    <a href="#" class="nav-link">
+        <i class="nav-icon bi bi-person-video3"></i>
+        <p>
+            Teachers
+            <i class="nav-arrow bi bi-chevron-down float-end"></i>
+        </p>
+    </a>
+    <ul class="nav nav-treeview">
+        <li class="nav-item">
+            <a asp-area="Admin" asp-controller="Teacher" asp-action="Index" class="nav-link">
+                <i class="nav-icon bi bi-list-ul"></i>
+                <p>Manage Teachers</p>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a asp-area="Admin" asp-controller="Teacher" asp-action="Create" class="nav-link">
+                <i class="nav-icon bi bi-plus-circle"></i>
+                <p>Add New Teacher</p>
+            </a>
+        </li>
+    </ul>
 </li>
-<li class="nav-item menu-open">
-	<a href="#" class="nav-link">
-		<i class="nav-icon bi bi-circle-fill"></i>
-		<p>
-			Parents
-			<i class="nav-arrow bi bi-chevron-right"></i>
-		</p>
-	</a>
-	<ul class="nav nav-treeview" style="box-sizing: border-box; display: block;">
-		<li class="nav-item">
-			<a asp-area="Admin" asp-controller="Parent" asp-action="Index" class="nav-link">
-				<i class="nav-icon bi bi-circle"></i>
-				<p>Manage Parents</p>
-			</a>
-		</li>
-		<li class="nav-item">
-			<a asp-area="Admin" asp-controller="Parent" asp-action="Create" class="nav-link">
-				<i class="nav-icon bi bi-circle"></i>
-				<p>Add New Parent</p>
-			</a>
-		</li>
-	</ul>
+
+<!-- Parents -->
+<li class="nav-item">
+    <a href="#" class="nav-link">
+        <i class="nav-icon bi bi-person-hearts"></i>
+        <p>
+            Parents
+            <i class="nav-arrow bi bi-chevron-down float-end"></i>
+        </p>
+    </a>
+    <ul class="nav nav-treeview">
+        <li class="nav-item">
+            <a asp-area="Admin" asp-controller="Parent" asp-action="Index" class="nav-link">
+                <i class="nav-icon bi bi-list-ul"></i>
+                <p>Manage Parents</p>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a asp-area="Admin" asp-controller="Parent" asp-action="Create" class="nav-link">
+                <i class="nav-icon bi bi-plus-circle"></i>
+                <p>Add New Parent</p>
+            </a>
+        </li>
+    </ul>
 </li>
-<li class="nav-item menu-open">
-	<a href="#" class="nav-link">
-		<i class="nav-icon bi bi-circle-fill"></i>
-		<p>
-			Classes
-			<i class="nav-arrow bi bi-chevron-right"></i>
-		</p>
-	</a>
-	<ul class="nav nav-treeview" style="box-sizing: border-box; display: block;">
-		<li class="nav-item">
-			<a asp-area="Admin" asp-controller="Academic" asp-action="Classes" class="nav-link">
-				<i class="nav-icon bi bi-circle"></i>
-				<p>Manage Classes</p>
-			</a>
-		</li>
-	</ul>
+
+<!-- Classes -->
+<li class="nav-item">
+    <a href="#" class="nav-link">
+        <i class="nav-icon bi bi-building"></i>
+        <p>
+            Classes
+            <i class="nav-arrow bi bi-chevron-down float-end"></i>
+        </p>
+    </a>
+    <ul class="nav nav-treeview">
+        <li class="nav-item">
+            <a asp-area="Admin" asp-controller="Academic" asp-action="Classes" class="nav-link">
+                <i class="nav-icon bi bi-list-ul"></i>
+                <p>Manage Classes</p>
+            </a>
+        </li>
+    </ul>
 </li>
-<li class="nav-item menu-open">
-	<a href="#" class="nav-link">
-		<i class="nav-icon bi bi-circle-fill"></i>
-		<p>
-			Subjects
-			<i class="nav-arrow bi bi-chevron-right"></i>
-		</p>
-	</a>
-	<ul class="nav nav-treeview" style="box-sizing: border-box; display: block;">
-		<li class="nav-item">
-			<a asp-area="Admin" asp-controller="Academic" asp-action="Subjects" class="nav-link">
-				<i class="nav-icon bi bi-circle"></i>
-				<p>Manage Subjects</p>
-			</a>
-		</li>
-	</ul>
+
+<!-- Subjects -->
+<li class="nav-item">
+    <a href="#" class="nav-link">
+        <i class="nav-icon bi bi-book"></i>
+        <p>
+            Subjects
+            <i class="nav-arrow bi bi-chevron-down float-end"></i>
+        </p>
+    </a>
+    <ul class="nav nav-treeview">
+        <li class="nav-item">
+            <a asp-area="Admin" asp-controller="Academic" asp-action="Subjects" class="nav-link">
+                <i class="nav-icon bi bi-list-ul"></i>
+                <p>Manage Subjects</p>
+            </a>
+        </li>
+    </ul>
 </li>
-<li class="nav-item menu-open">
-	<a href="#" class="nav-link">
-		<i class="nav-icon bi bi-circle-fill"></i>
-		<p>
-			Notifications
-			<i class="nav-arrow bi bi-chevron-right"></i>
-		</p>
-	</a>
-	<ul class="nav nav-treeview" style="box-sizing: border-box; display: block;">
-		<li class="nav-item">
-			<a asp-area="Admin" asp-controller="Notification" asp-action="Index" class="nav-link">
-				<i class="nav-icon bi bi-circle"></i>
-				<p>Manage Notifications</p>
-			</a>
-		</li>
-		<li class="nav-item">
-			<a asp-area="Admin" asp-controller="Notification" asp-action="SendToAll" class="nav-link">
-				<i class="nav-icon bi bi-circle"></i>
-				<p>Send Bulk</p>
-			</a>
-		</li>
-	</ul>
+
+<!-- Notifications -->
+<li class="nav-item">
+    <a href="#" class="nav-link">
+        <i class="nav-icon bi bi-bell-fill"></i>
+        <p>
+            Notifications
+            <i class="nav-arrow bi bi-chevron-down float-end"></i>
+        </p>
+    </a>
+    <ul class="nav nav-treeview">
+        <li class="nav-item">
+            <a asp-area="Admin" asp-controller="Notification" asp-action="Index" class="nav-link">
+                <i class="nav-icon bi bi-list-ul"></i>
+                <p>Manage Notifications</p>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a asp-area="Admin" asp-controller="Notification" asp-action="SendToAll" class="nav-link">
+                <i class="nav-icon bi bi-send-fill"></i>
+                <p>Send Bulk</p>
+            </a>
+        </li>
+    </ul>
 </li>
-<li class="nav-item menu-open">
-	<a href="#" class="nav-link">
-		<i class="nav-icon bi bi-circle-fill"></i>
-		<p>
-			Buses
-			<i class="nav-arrow bi bi-chevron-right"></i>
-		</p>
-	</a>
-	<ul class="nav nav-treeview" style="box-sizing: border-box; display: block;">
-		<li class="nav-item">
-			<a asp-area="Admin" asp-controller="Transport" asp-action="Index" class="nav-link">
-				<i class="nav-icon bi bi-circle"></i>
-				<p>Manage Buses</p>
-			</a>
-		</li>
-		<li class="nav-item">
-			<a asp-area="Admin" asp-controller="Transport" asp-action="Create" class="nav-link">
-				<i class="nav-icon bi bi-circle"></i>
-				<p>Add New Bus</p>
-			</a>
-		</li>
-	</ul>
+
+<!-- Buses -->
+<li class="nav-item">
+    <a href="#" class="nav-link">
+        <i class="nav-icon bi bi-bus-front"></i>
+        <p>
+            Buses
+            <i class="nav-arrow bi bi-chevron-down float-end"></i>
+        </p>
+    </a>
+    <ul class="nav nav-treeview">
+        <li class="nav-item">
+            <a asp-area="Admin" asp-controller="Transport" asp-action="Index" class="nav-link">
+                <i class="nav-icon bi bi-list-ul"></i>
+                <p>Manage Buses</p>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a asp-area="Admin" asp-controller="Transport" asp-action="Create" class="nav-link">
+                <i class="nav-icon bi bi-plus-circle"></i>
+                <p>Add New Bus</p>
+            </a>
+        </li>
+    </ul>
+</li>
+
+<!-- Fees -->
+<li class="nav-item">
+    <a href="#" class="nav-link">
+        <i class="nav-icon bi bi-cash-stack"></i>
+        <p>
+            Fees
+            <i class="nav-arrow bi bi-chevron-down float-end"></i>
+        </p>
+    </a>
+    <ul class="nav nav-treeview">
+        <li class="nav-item">
+            <a asp-area="Admin" asp-controller="Payment" asp-action="Index" class="nav-link">
+                <i class="nav-icon bi bi-list-ul"></i>
+                <p>Manage Fees</p>
+            </a>
+        </li>
+    </ul>
 </li>

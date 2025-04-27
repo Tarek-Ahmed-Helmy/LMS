@@ -2,10 +2,9 @@
 @model IEnumerable<IdentityRole>
 
 @{
-    ViewBag.Title = "All Roles";
+    ViewData["Title"] = "Super Admin Dashboard";
+    ViewBag.CardTitle = "Roles List";
 }
-
-<h1>All Roles</h1>
 
 @if (Model.Any())
 {

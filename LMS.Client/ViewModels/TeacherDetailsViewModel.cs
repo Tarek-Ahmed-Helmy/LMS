@@ -1,7 +1,7 @@
 ﻿using LMS.Entities.Models;
 using System.ComponentModel.DataAnnotations;
 
-namespace LMS.Web.ViewModels.AdminViewModels
+namespace LMS.Web.ViewModels
 {
     public class TeacherDetailsViewModel
     {
@@ -19,5 +19,6 @@ namespace LMS.Web.ViewModels.AdminViewModels
         public string Qualification { get; set; }
 
         public int Experience { get; set; }  // In years
+        public List<Schedule> Schedules { get; set; } = new List<Schedule>();
     }
 }

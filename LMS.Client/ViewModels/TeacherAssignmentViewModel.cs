@@ -1,6 +1,4 @@
-﻿using LMS.Entities.Models;
-using System.ComponentModel.DataAnnotations;
-namespace LMS.Web.ViewModels;
+﻿namespace LMS.Web.ViewModels;
 
 public class TeacherAssignmentViewModel
 {

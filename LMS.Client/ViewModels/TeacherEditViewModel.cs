@@ -1,9 +1,8 @@
-﻿using LMS.Entities.Models;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace LMS.Web.ViewModels;
 
-public class TeacherRegistrationViewModel
+public class TeacherEditViewModel
 {
     [Required]
     [Display(Name = "Full Name")]
@@ -12,15 +11,6 @@ public class TeacherRegistrationViewModel
     [Required]
     [EmailAddress]
     public string Email { get; set; }
-
-    [Required]
-    [DataType(DataType.Password)]
-    public string Password { get; set; }
-
-    [Required]
-    [DataType(DataType.Password)]
-    [Compare("Password", ErrorMessage = "Passwords do not match.")]
-    public string ConfirmPassword { get; set; }
 
     [Required]
     public string Address { get; set; }
@@ -34,5 +24,4 @@ public class TeacherRegistrationViewModel
 
     [Required]
     public int Experience { get; set; } // In years
-
 }

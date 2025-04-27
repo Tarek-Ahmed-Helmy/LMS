@@ -2,7 +2,7 @@
 
 namespace LMS.Web.ViewModels;
 
-public class ParentRegistrationViewModel
+public class ParentEditViewModel
 {
     [Required]
     [Display(Name = "Full Name")]
@@ -14,15 +14,6 @@ public class ParentRegistrationViewModel
 
     [Required]
     public string Address { get; set; }
-
-    [Required]
-    [DataType(DataType.Password)]
-    public string Password { get; set; }
-
-    [Required]
-    [DataType(DataType.Password)]
-    [Compare("Password", ErrorMessage = "Passwords do not match.")]
-    public string ConfirmPassword { get; set; }
 
     [Required]
     [Phone]

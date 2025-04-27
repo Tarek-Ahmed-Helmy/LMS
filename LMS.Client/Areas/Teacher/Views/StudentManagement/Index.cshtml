@@ -5,7 +5,6 @@
 }
 
 <div class="container mt-4">
-    <h2>My Students</h2>
     <div class="card">
         <div class="card-body">
             @if (Model.Any())
@@ -15,7 +14,8 @@
                         <tr>
                             <th>@Html.DisplayNameFor(m => m.First().FullName)</th>
                             <th>@Html.DisplayNameFor(m => m.First().StudentNumber)</th>
-                            <th>@Html.DisplayNameFor(m => m.First().ClassName)</th>
+                            <th>@Html.DisplayNameFor(m => m.First().ClassNumber)</th>
+                            <th>@Html.DisplayNameFor(m => m.First().GradeLevel)</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
@@ -25,7 +25,8 @@
                             <tr>
                                 <td>@student.FullName</td>
                                 <td>@student.StudentNumber</td>
-                                <td>@student.ClassName</td>
+                                <td>@student.ClassNumber</td>
+                                <td>@student.GradeLevel</td>
                                 <td>
                                     <a asp-action="Details" asp-route-id="@student.StudentId" class="btn btn-primary btn-sm">View Profile</a>
                                 </td>
@@ -40,13 +41,4 @@
             }
         </div>
     </div>
-
-    @* @section Scripts { *@
-    @*     <script> *@
-    @*         // Optional: Add any JavaScript if needed (e.g., for table sorting or filtering) *@
-    @*         $(document).ready(function () { *@
-    @*             $('.table').DataTable(); *@
-    @*         }); *@
-    @*     </script> *@
-    @* } *@
 </div>

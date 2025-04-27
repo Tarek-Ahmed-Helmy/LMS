@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using LMS.Entities.Models;
+using System.ComponentModel.DataAnnotations;
 
 namespace LMS.Web.ViewModels;
 
@@ -14,5 +15,7 @@ public class TeacherStudentListViewModel
     public string StudentNumber { get; set; }
 
     [Display(Name = "Class")]
-    public string ClassName { get; set; }
+    public string ClassNumber { get; set; }
+
+    public GradeLevel GradeLevel { get; set; }
 }

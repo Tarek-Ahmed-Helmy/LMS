@@ -91,11 +91,18 @@ namespace LMS.Web.Areas.Admin.Controllers
                 return View(vm);
             }
                 
+            var student = await _unitOfWork.Student.FindAsync(x => x.StudentId == vm.StudentId);
+            if (student.ParentId is null)
+            {
+                ModelState.AddModelError("", "This Student Has No Parents");
+                await PopulatePage();
+                return View(vm);
+            }
 
             var payment = new Payment
             {
                 StudentId = vm.StudentId,
-                ParentId = vm.ParentId,
+                ParentId = student.ParentId,
                 Amount = vm.Amount,
                 PaymentStatus = PaymentStatus.Pending,
                 ReceiptPath = string.Empty 
@@ -117,8 +124,7 @@ namespace LMS.Web.Areas.Admin.Controllers
             {
                 PaymentId = p.PaymentId,
                 Amount = p.Amount,
-                StudentId = p.StudentId,
-                ParentId = p.ParentId
+                StudentId = p.StudentId
             };
 
             await PopulatePage();

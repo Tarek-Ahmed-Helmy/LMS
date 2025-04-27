@@ -24,6 +24,8 @@ public class AdministrationController : Controller
     [HttpGet]
     public IActionResult Index()
     {
+        ViewBag.TotalRoles = _roleManager.Roles.Count();
+        ViewBag.TotalUsers = _userManager.Users.Count();
         return View();
     }
 

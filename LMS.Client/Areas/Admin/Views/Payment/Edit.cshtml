@@ -27,17 +27,6 @@
         <span asp-validation-for="StudentId" class="text-danger"></span>
     </div>
 
-    <!-- Parent dropdown -->
-    <div class="mb-3">
-        <label asp-for="ParentId" class="form-label"></label>
-        <select asp-for="ParentId"
-                asp-items="(IEnumerable<SelectListItem>)ViewBag.Parents"
-                class="form-select">
-            <option value="">-- Select parent --</option>
-        </select>
-        <span asp-validation-for="ParentId" class="text-danger"></span>
-    </div>
-
     <!-- Amount -->
     <div class="mb-3">
         <label asp-for="Amount" class="form-label"></label>

@@ -1,10 +1,11 @@
 ﻿using LMS.Entities.Interfaces;
 using LMS.Entities.Models;
 using LMS.Utilities;
-using LMS.Web.ViewModels.AdminViewModels;
+using LMS.Web.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace LMS.Web.Areas.AdminArea.Controllers;
 
@@ -50,7 +51,7 @@ public class TeacherController : Controller
     [HttpGet]
     public async Task<IActionResult> Details(string id)
     {
-        var teacher = await _unitOfWork.Teacher.FindAsync(t => t.TeacherId == id, includes: new string[] { "ApplicationUser" });
+        var teacher = await _unitOfWork.Teacher.FindAsync(t => t.TeacherId == id, includes: new string[] { "ApplicationUser", "Schedules.Class", "Schedules.Subject" });
         if (teacher == null) return NotFound();
 
         var model = new TeacherDetailsViewModel
@@ -60,8 +61,11 @@ public class TeacherController : Controller
             ProfilePictureURL = teacher.ApplicationUser?.ProfilePictureURL,
             HireDate = teacher.HireDate,
             Qualification = teacher.Qualification,
-            Experience = teacher.Experience
+            Experience = teacher.Experience,
+            Schedules = teacher.Schedules.ToList() ?? new List<Schedule>()
         };
+
+        ViewBag.TeacherId = id;
 
         return View(model);
     }
@@ -121,7 +125,7 @@ public class TeacherController : Controller
         var teacher = await _unitOfWork.Teacher.FindAsync(t => t.TeacherId == id, includes: new string[] { "ApplicationUser" });
         if (teacher == null) return NotFound();
 
-        var viewModel = new TeacherRegistrationViewModel
+        var viewModel = new TeacherEditViewModel
         {
             FullName = teacher.ApplicationUser.FullName,
             Email = teacher.ApplicationUser.Email,
@@ -136,7 +140,7 @@ public class TeacherController : Controller
     // POST: /Teacher/Edit/{id}
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(string id, TeacherRegistrationViewModel updatedTeacher)
+    public async Task<IActionResult> Edit(string id, TeacherEditViewModel updatedTeacher)
     {
         if (!ModelState.IsValid)
             return View(updatedTeacher);
@@ -155,6 +159,8 @@ public class TeacherController : Controller
         teacher.Qualification = updatedTeacher.Qualification;
         teacher.Experience = updatedTeacher.Experience;
 
+        await _unitOfWork.ApplicationUser.UpdateAsync(teacher.ApplicationUser);
+        await _unitOfWork.Teacher.UpdateAsync(teacher);
         await _unitOfWork.SaveChangesAsync();
         return RedirectToAction(nameof(Index));
     }
@@ -183,6 +189,153 @@ public class TeacherController : Controller
         }
 
         return RedirectToAction(nameof(Index));
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> AddSchedule(string id)
+    {
+        if (string.IsNullOrEmpty(id))
+        {
+            return NotFound();
+        }
+
+        var teacher = await _unitOfWork.Teacher.GetByIdAsync(id);
+        if (teacher == null)
+        {
+            return NotFound();
+        }
+
+        await PopulateViewBags();
+
+        var model = new AddScheduleViewModel
+        {
+            TeacherId = teacher.TeacherId
+        };
+
+        return View(model);
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> AddSchedule(AddScheduleViewModel model)
+    {
+        if (!ModelState.IsValid)
+        {
+            await PopulateViewBags();
+            return View(model);
+        }
+
+        var teacher = await _unitOfWork.Teacher.GetByIdAsync(model.TeacherId);
+        if (teacher == null)
+        {
+            return NotFound();
+        }
+
+        var schedule = new Schedule
+        {
+            TeacherId = model.TeacherId,
+            ClassId = model.ClassId,
+            SubjectId = model.SubjectId,
+            DayOfWeek = model.DayOfWeek, 
+            StartTime = model.StartTime,
+            EndTime = model.EndTime
+        };
+
+        await _unitOfWork.Schedule.AddAsync(schedule);
+        await _unitOfWork.SaveChangesAsync();
+
+        return RedirectToAction(nameof(Details), new { id = model.TeacherId });
+    }
+
+
+    private async Task PopulateViewBags()
+    {
+        var subjects = await _unitOfWork.Subject.GetAllAsync();
+        ViewBag.Subject = subjects
+            .OrderBy(s => s.SubjectCode)
+            .ThenBy(s => s.SubjectName)
+            .Select(s => new SelectListItem
+            {
+                Value = s.SubjectId.ToString(),
+                Text = $"{s.SubjectCode} - {s.SubjectName}"
+            }).ToList();
+
+        var classes = await _unitOfWork.Class.GetAllAsync();
+        ViewBag.Class = classes
+            .OrderBy(c => c.GradeLevel)
+            .ThenBy(c => c.ClassNumber)
+            .Select(c => new SelectListItem
+            {
+                Value = c.ClassId.ToString(),
+                Text = $"{c.GradeLevel} - {c.ClassNumber}"
+            }).ToList();
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> EditSchedule(int id, string teacherId)
+    {
+        var schedule = await _unitOfWork.Schedule.GetByIdAsync(id);
+        if (schedule == null)
+        {
+            return NotFound();
+        }
+
+        await PopulateViewBags();
+
+        var model = new AddScheduleViewModel
+        {
+            TeacherId = teacherId,
+            ScheduleId = schedule.ScheduleId,
+            ClassId = schedule.ClassId,
+            SubjectId = schedule.SubjectId,
+            DayOfWeek = schedule.DayOfWeek,
+            StartTime = schedule.StartTime,
+            EndTime = schedule.EndTime
+        };
+
+        return View(model);
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> EditSchedule(AddScheduleViewModel model)
+    {
+        if (!ModelState.IsValid)
+        {
+            await PopulateViewBags();
+            return View(model);
+        }
+
+        var teacher = await _unitOfWork.Teacher.GetByIdAsync(model.TeacherId);
+        var schedule = await _unitOfWork.Schedule.GetByIdAsync(model.ScheduleId.Value);
+        if (teacher == null || schedule == null)
+        {
+            return NotFound();
+        }
+
+        schedule.ClassId = model.ClassId;
+        schedule.SubjectId = model.SubjectId;
+        schedule.DayOfWeek = model.DayOfWeek;
+        schedule.StartTime = model.StartTime;
+        schedule.EndTime = model.EndTime;
+
+        await _unitOfWork.Schedule.UpdateAsync(schedule);
+        await _unitOfWork.SaveChangesAsync();
+
+        return RedirectToAction(nameof(Details), new { id = model.TeacherId });
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> DeleteSchedule(int id, string teacherId)
+    {
+        var schedule = await _unitOfWork.Schedule.GetByIdAsync(id);
+        if (schedule == null)
+        {
+            return NotFound();
+        }
+        await _unitOfWork.Schedule.DeleteAsync(schedule);
+        await _unitOfWork.SaveChangesAsync();
+        return RedirectToAction(nameof(Details), new { id = teacherId });
     }
 }
 

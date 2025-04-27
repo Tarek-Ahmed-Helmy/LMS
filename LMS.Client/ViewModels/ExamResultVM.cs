@@ -1,6 +1,4 @@
-﻿using LMS.Web.ViewModels;
-using System.ComponentModel.DataAnnotations;
-namespace LMS.Web.ViewModels;
+﻿namespace LMS.Web.ViewModels;
 public class ExamResultVM
 {
     public int ExamResultId { get; set; }

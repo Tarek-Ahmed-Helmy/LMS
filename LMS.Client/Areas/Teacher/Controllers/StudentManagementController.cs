@@ -1,6 +1,6 @@
-﻿// File: LMS.Web/Areas/Teacher/Controllers/StudentManagement.cs
-using LMS.Entities.Interfaces;
+﻿using LMS.Entities.Interfaces;
 using LMS.Entities.Models;
+using LMS.Utilities;
 using LMS.Web.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -9,59 +9,43 @@ using System.Security.Claims;
 namespace LMS.Web.Areas.TeacherArea.Controllers;
 
 [Area("Teacher")]
-//[Authorize(Roles = "Teacher")]
-[AllowAnonymous]
-public class StudentManagement : Controller
+[Authorize(Roles = SD.TeacherRole)]
+public class StudentManagementController : Controller
 {
     private readonly IUnitOfWork _unitOfWork;
 
-    public StudentManagement(IUnitOfWork unitOfWork)
+    public StudentManagementController(IUnitOfWork unitOfWork)
     {
         _unitOfWork = unitOfWork;
     }
-    public async Task<IActionResult> Index(string teacherId = null)
+    public async Task<IActionResult> Index()
     {
-        ////Get the currently logged-in teacher's ID
-        //var teacherId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-        //if (string.IsNullOrEmpty(teacherId))
-        //{
-        //    return Unauthorized();
-        //}
-
-        if (string.IsNullOrEmpty(teacherId))
-        {
-            teacherId = "TCHR001"; 
-        }
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
         // Fetch the teacher's schedules to get the classes they teach
-        var schedules = await _unitOfWork.Schedule.FindAllAsync(
-            criteria: s => s.TeacherId == teacherId,
-            includes: new[] { "Class.Students.ApplicationUser" });
+        var schedules = await _unitOfWork.Schedule.FindAllAsync( s => s.TeacherId == userId, ["Class.Students.ApplicationUser"]);
 
         // Get all students from the classes the teacher teaches
         var students = schedules
             .SelectMany(s => s.Class?.Students ?? new List<Student>())
-            .DistinctBy(s => s.StudentId) // Avoid duplicates if a student is in multiple classes
             .Select(s => new TeacherStudentListViewModel
             {
                 StudentId = s.StudentId,
                 FullName = s.ApplicationUser?.FullName ?? "N/A",
                 StudentNumber = s.StudentNumber,
-                ClassName = s.Class?.ClassNumber ?? "Not Assigned"
+                GradeLevel = s.Class.GradeLevel,
+                ClassNumber = s.Class?.ClassNumber ?? "Not Assigned"
             })
-            .OrderBy(s => s.FullName) // Sort by name for better readability
+            .OrderBy(s => s.FullName)
             .ToList();
-
 
         return View(students);
     }
-    // GET: Teacher/Students/{id}
+
     public async Task<IActionResult> Details(string id)
     {
-        // Fetch the student with related data
         var student = await _unitOfWork.Student.FindAsync(
-            s => s.StudentId == id,
-            new[] { "ApplicationUser", "Class", "Attendances", "ExamResults.Exam.Subject", "Submissions.Assignment" });
+            s => s.StudentId == id, ["ApplicationUser", "Class", "Attendances", "ExamResults.Exam.Subject", "Submissions.Assignment"]);
 
         if (student == null)
         {
@@ -91,7 +75,7 @@ public class StudentManagement : Controller
             Gender = student.Gender.ToString(),
             EmergencyContact = student.EmergencyContact,
             AdmissionDate = student.AdmissionDate,
-            ProfilePictureURL = student.ApplicationUser?.ProfilePictureURL ?? "/images/default-profile.jpg",
+            ProfilePictureURL = student.ApplicationUser?.ProfilePictureURL,
             AverageExamScore = averageExamScore,
             AverageAssignmentScore = averageAssignmentScore,
             RecentAttendances = attendances

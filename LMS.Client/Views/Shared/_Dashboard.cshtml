@@ -46,9 +46,6 @@
 							<i class="bi bi-list"></i>
 						</a>
 					</li>
-					<li class="nav-item d-none d-md-block"><a asp-area="Shared" asp-controller="Home" asp-action="Index" class="nav-link">Home</a></li>
-					<li class="nav-item d-none d-md-block"><a asp-area="Shared" asp-controller="Home" asp-action="Privacy" class="nav-link">Privacy</a></li>
-					<li class="nav-item d-none d-md-block"><a asp-area="Teacher" asp-controller="Dashboard" asp-action="Index" class="nav-link">Teacher</a></li>
 				</ul>
 				<ul class="navbar-nav ms-auto">
 					<li class="nav-item">
@@ -75,21 +72,9 @@
 									 alt="User Image" />
 								<p>
 									@User?.Identity?.Name
-									<small>Member since Nov. 2023</small>
 								</p>
 							</li>
 							<!--end::User Image-->
-							<!--begin::Menu Body-->
-							<li class="user-body">
-								<!--begin::Row-->
-								<div class="row">
-									<div class="col-4 text-center"><a href="#">Followers</a></div>
-									<div class="col-4 text-center"><a href="#">Sales</a></div>
-									<div class="col-4 text-center"><a href="#">Friends</a></div>
-								</div>
-								<!--end::Row-->
-							</li>
-							<!--end::Menu Body-->
 							<!--begin::Menu Footer-->
 							<li class="user-footer">
 								<a href="#" class="btn btn-default btn-flat">Profile</a>

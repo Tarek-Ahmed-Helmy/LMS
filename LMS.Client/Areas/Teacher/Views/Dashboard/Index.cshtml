@@ -26,9 +26,23 @@
                                 <i class="bi bi-bell me-2"></i> Notifications
                             </a>
                         </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== Student Management ===== -->
+        <div class="col-lg-3 col-md-6 mb-4">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-header bg-danger text-white d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0"><i class="bi bi-person me-2"></i>Students Management</h5>
+                </div>
+                <div class="card-body">
+                    <ul class="list-unstyled">
                         <li class="mb-2">
-                            <a asp-controller="Resource" asp-action="Index" class="text-decoration-none d-flex align-items-center">
-                                <i class="bi bi-folder me-2"></i> Resources
+                            <a asp-area="Teacher" asp-controller="StudentManagement" asp-action="Index"
+                               class="text-decoration-none d-flex align-items-center">
+                                <i class="bi bi-person me-2"></i> Students List
                             </a>
                         </li>
                     </ul>

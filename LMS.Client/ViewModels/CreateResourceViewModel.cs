@@ -1,7 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using LMS.Entities.Models;
 using System.ComponentModel.DataAnnotations;
-
-using LMS.Entities.Models;
 
 namespace LMS.Web.ViewModels;
 

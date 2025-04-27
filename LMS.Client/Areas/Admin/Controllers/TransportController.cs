@@ -30,7 +30,7 @@ public class TransportController : Controller
     [HttpGet]
     public async Task<JsonResult> GetBusList()
     {
-        var buses = await _unitOfWork.Bus.GetAllAsync();
+        var buses = await _unitOfWork.Bus.FindAllAsync(includes: ["Students"]);
         var data = buses.Select(b => new
         {
             b.BusId,

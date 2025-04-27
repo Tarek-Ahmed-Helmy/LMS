@@ -1,10 +1,9 @@
 ﻿@model IEnumerable<ApplicationUser>
 
 @{
-    ViewBag.Title = "All Users";
+    ViewData["Title"] = "Super Admin Dashboard";
+    ViewBag.CardTitle = "Users List";
 }
-
-<h1>All Users</h1>
 
 @if (Model.Any())
 {
