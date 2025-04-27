@@ -42,6 +42,27 @@ public class ProfileController : Controller
     }
 
     [HttpGet]
+    public async Task<JsonResult> GetChildrenList()
+    {
+        var id = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        var students = await _unitOfWork.Student.FindAllAsync(s => s.ParentId == id, ["ApplicationUser", "Class"]);
+        var studentList = students.Select(s => new
+        {
+            s.StudentId,
+            s.StudentNumber,
+            s.ApplicationUser?.FullName,
+            s.ApplicationUser?.Email,
+            s.DateOfBirth,
+            s.Gender,
+            s.AdmissionDate,
+            s.Class?.GradeLevel,
+            s.Class?.ClassNumber
+
+        }).ToList();
+        return Json(new { data = studentList });
+    }
+
+    [HttpGet]
     public async Task<IActionResult> ReceivedNotifications()
     {
         var id = User.FindFirstValue(ClaimTypes.NameIdentifier);

@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Security.Claims;
 
-namespace LMS.Web.Areas.ParentArea;
+namespace LMS.Web.Areas.ParentArea.Controllers;
 
 [Area("Parent")]
 [Authorize(Roles = SD.ParentRole)]

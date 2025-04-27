@@ -116,7 +116,7 @@
             // Initialize DataTable
             $('#childrenTable').DataTable({
                 "ajax": {
-                    "url": "/Admin/Parent/GetChildrenList/" + "@Model.ParentId",
+                "url": "/Parent/Profile/GetChildrenList",
                     "dataSrc": "data"
                 },
                 "columns": [
@@ -148,11 +148,7 @@
                         "render": function (data) {
                             return `
                                 <div class="d-flex gap-2 justify-content-center">
-                                    <a href="/Admin/Student/Details/${data}" class="btn btn-info btn-sm">Details</a>
-                                    <form method="post" action="/Admin/Parent/RemoveFromParent" style="display:inline;">
-                                        <input type="hidden" name="studentId" value="${data}" />
-                                        <input type="hidden" name="parentId" value="@Model.ParentId" />
-                                    </form>
+                                    <a href="/Parent/Student/Details/${data}" class="btn btn-info btn-sm">Details</a>
                                 </div>
                             `;
                         }
