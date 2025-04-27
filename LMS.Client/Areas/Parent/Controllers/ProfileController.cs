@@ -23,19 +23,20 @@ public class ProfileController : Controller
     {
         var id = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-        var parent = await _unitOfWork.Parent.FindAsync(s => s.ParentId == id, ["ApplicationUser"]);
+        var parent = await _unitOfWork.Parent.FindAsync(s => s.ParentId == id, ["ApplicationUser", ]);
 
         if (parent == null || parent.ApplicationUser == null)
             return NotFound();
 
-        var parentProfileVM = new ParentProfileViewModel
+        var parentProfileVM = new ParentDetailsViewModel
         {
-            FullName = parent.ApplicationUser.FullName,
-            Email = parent.ApplicationUser.Email ?? "N/A",
-            PhoneNumber = parent.ApplicationUser.PhoneNumber ?? "N/A",
-            Address = parent.ApplicationUser.Address,
-            ProfilePictureURL = parent.ApplicationUser.ProfilePictureURL,
-            Occupation = parent.Occupation ?? "N/A"
+            ParentId = parent.ParentId,
+            FullName = parent.ApplicationUser?.FullName,
+            Address = parent.ApplicationUser?.Address,
+            ProfilePictureURL = parent.ApplicationUser?.ProfilePictureURL,
+            Email = parent.ApplicationUser?.Email,
+            PhoneNumber = parent.ApplicationUser?.PhoneNumber,
+            Occupation = parent.Occupation
         };
         return View(parentProfileVM);
     }

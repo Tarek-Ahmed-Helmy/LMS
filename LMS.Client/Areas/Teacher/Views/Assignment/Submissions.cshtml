@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<SubmissionViewModel>
 @{
     ViewData["Title"] = "Submissions";
-    ViewBag.CardTitle = $"Submissions: {@ViewBag.AssignmentTitle}";
+    ViewBag.CardTitle = $"Submissions: {ViewBag.AssignmentTitle}";
 }
 
 <table class="table table-striped">
@@ -19,13 +19,30 @@
         {
             <tr>
                 <td>@s.StudentName</td>
-                <td>@s.SubmissionDate.ToLocalTime().ToString("yyyy-MM-dd HH:mm")</td>
-                <td>@(s.Score == 0 ? "—" : s.Score)</td>
+                <td>@s.SubmissionDate.ToLocalTime()</td>
+                <td>@(s.Score == 0 ? "—" : s.Score.ToString())</td>
                 <td>
-                    <a href="@Url.Content($"~/{s.FilePath}")" target="_blank">Download</a>
+                    @if (!string.IsNullOrEmpty(s.FilePath))
+                    {
+                        <a href="@(s.FilePath.StartsWith("/")
+                                 ? s.FilePath
+                                 : Url.Content("~/" + s.FilePath))"
+                           target="_blank"
+                           download>
+                            View/Download
+                        </a>
+                    }
+                    else
+                    {
+                        <span class="text-muted">No file</span>
+                    }
                 </td>
                 <td>
-                    <a asp-action="Grade" asp-route-submissionId="@s.SubmissionId" class="btn btn-sm btn-success">Grade</a>
+                    <a asp-action="Grade"
+                       asp-route-submissionId="@s.SubmissionId"
+                       class="btn btn-sm btn-success">
+                        Grade
+                    </a>
                 </td>
             </tr>
         }
