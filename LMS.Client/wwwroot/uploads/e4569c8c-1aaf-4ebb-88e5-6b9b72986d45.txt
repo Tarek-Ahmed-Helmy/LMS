@@ -1,0 +1,7 @@
+-- git 
+
+git commit -m Save progress
+
+git fetch origin
+
+git merge originmaster

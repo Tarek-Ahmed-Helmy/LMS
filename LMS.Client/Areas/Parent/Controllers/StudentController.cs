@@ -146,4 +146,26 @@ public class StudentController : Controller
 
         return View(scheduleVMs);
     }
+
+    [HttpGet]
+    public async Task<IActionResult> Details(string id)
+    {
+        var student = await _unitOfWork.Student.FindAsync(s => s.StudentId == id, includes: new string[] { "ApplicationUser", "Class" });
+        if (student == null) return NotFound();
+        var model = new StudentDetailsViewModel
+        {
+            FullName = student.ApplicationUser?.FullName,
+            Address = student.ApplicationUser?.Address,
+            ProfilePictureURL = student.ApplicationUser?.ProfilePictureURL,
+            DateOfBirth = student.DateOfBirth,
+            Gender = student.Gender,
+            EmergencyContact = student.EmergencyContact,
+            AdmissionDate = student.AdmissionDate,
+            StudentNumber = student.StudentNumber,
+            GradeLevel = student.Class?.GradeLevel,
+            ClassNumber = student.Class?.ClassNumber,
+            BusSubscription = student.BusId != null ? "Subscriped" : "Unsubscriped"
+        };
+        return View(model);
+    }
 }

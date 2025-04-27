@@ -23,21 +23,43 @@ public class ProfileController : Controller
     {
         var id = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-        var parent = await _unitOfWork.Parent.FindAsync(s => s.ParentId == id, ["ApplicationUser"]);
+        var parent = await _unitOfWork.Parent.FindAsync(s => s.ParentId == id, ["ApplicationUser", ]);
 
         if (parent == null || parent.ApplicationUser == null)
             return NotFound();
 
-        var parentProfileVM = new ParentProfileViewModel
+        var parentProfileVM = new ParentDetailsViewModel
         {
-            FullName = parent.ApplicationUser.FullName,
-            Email = parent.ApplicationUser.Email ?? "N/A",
-            PhoneNumber = parent.ApplicationUser.PhoneNumber ?? "N/A",
-            Address = parent.ApplicationUser.Address,
-            ProfilePictureURL = parent.ApplicationUser.ProfilePictureURL,
-            Occupation = parent.Occupation ?? "N/A"
+            ParentId = parent.ParentId,
+            FullName = parent.ApplicationUser?.FullName,
+            Address = parent.ApplicationUser?.Address,
+            ProfilePictureURL = parent.ApplicationUser?.ProfilePictureURL,
+            Email = parent.ApplicationUser?.Email,
+            PhoneNumber = parent.ApplicationUser?.PhoneNumber,
+            Occupation = parent.Occupation
         };
         return View(parentProfileVM);
+    }
+
+    [HttpGet]
+    public async Task<JsonResult> GetChildrenList()
+    {
+        var id = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        var students = await _unitOfWork.Student.FindAllAsync(s => s.ParentId == id, ["ApplicationUser", "Class"]);
+        var studentList = students.Select(s => new
+        {
+            s.StudentId,
+            s.StudentNumber,
+            s.ApplicationUser?.FullName,
+            s.ApplicationUser?.Email,
+            s.DateOfBirth,
+            s.Gender,
+            s.AdmissionDate,
+            s.Class?.GradeLevel,
+            s.Class?.ClassNumber
+
+        }).ToList();
+        return Json(new { data = studentList });
     }
 
     [HttpGet]

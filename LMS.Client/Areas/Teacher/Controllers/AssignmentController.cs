@@ -10,14 +10,13 @@ namespace LMS.Web.Areas.TeacherArea.Controllers;
 
 [Area("Teacher")]
 [Authorize(Roles = SD.TeacherRole)]
-[Route("Teacher/[controller]")]
 public class AssignmentController : Controller
 {
     private readonly IUnitOfWork _uow;
     public AssignmentController(IUnitOfWork uow) => _uow = uow;
 
     /* ===================  Index  =================== */
-    [HttpGet("")]
+    [HttpGet]
     public async Task<IActionResult> Index()
     {
         var teacherId = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -44,7 +43,7 @@ public class AssignmentController : Controller
     }
 
     /* ===================  Upload  =================== */
-    [HttpGet("Upload")]
+    [HttpGet]
     public async Task<IActionResult> Upload()
     {
         var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -52,7 +51,7 @@ public class AssignmentController : Controller
         return View(new CreateAssignmentViewModel { Subjects = subjects });
     }
 
-    [HttpPost("Upload")]
+    [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Upload(CreateAssignmentViewModel model)
     {
@@ -81,7 +80,7 @@ public class AssignmentController : Controller
     }
 
     /* ===================  Edit  =================== */
-    [HttpGet("Edit/{assignmentId:int}")]
+    [HttpGet]
     public async Task<IActionResult> Edit(int assignmentId)
     {
         var teacherId = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -105,7 +104,7 @@ public class AssignmentController : Controller
         });
     }
 
-    [HttpPost("Edit/{assignmentId:int}")]
+    [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(int assignmentId, EditAssignmentViewModel model)
     {
@@ -135,7 +134,7 @@ public class AssignmentController : Controller
     }
 
     /* ===================  Delete  =================== */
-    [HttpPost("Delete/{assignmentId:int}")]
+    [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Delete(int assignmentId)
     {
@@ -151,7 +150,7 @@ public class AssignmentController : Controller
     }
 
     /* ===================  Submissions  =================== */
-    [HttpGet("Submissions/{assignmentId:int}")]
+    [HttpGet]
     public async Task<IActionResult> Submissions(int assignmentId)
     {
         var teacherId = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -182,10 +181,26 @@ public class AssignmentController : Controller
     [HttpGet]
     public async Task<IActionResult> Grade(int submissionId)
     {
+        var teacherId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
         var submission = await _uow.Submission.FindAsync(
-            s => s.SubmissionId == submissionId,
+            s => s.SubmissionId == submissionId && s.Assignment!.TeacherId == teacherId,
             new[] { "Assignment" });
-        return View();
+
+        if (submission is null)
+            return NotFound();
+
+        var vm = new GradeSubmissionViewModel
+        {
+            SubmissionId = submission.SubmissionId,
+            Score = submission.Score ,
+            Feedback = submission.Feedback
+        };
+
+        ViewBag.AssignmentId = submission.AssignmentId;
+        ViewBag.AssignmentTitle = submission.Assignment!.Title;
+
+        return View(vm);
     }
 
     [HttpPost("Grade/{submissionId:int}")]
@@ -201,8 +216,8 @@ public class AssignmentController : Controller
 
         if (submission is null) return NotFound();
 
-        submission.Score = model.Score;
-        submission.Feedback = model.Feedback;
+        submission.Score = submission.Score;
+        submission.Feedback = submission.Feedback;
         submission.UpdatedAt = DateTime.UtcNow;
 
         await _uow.Submission.UpdateAsync(submission);
