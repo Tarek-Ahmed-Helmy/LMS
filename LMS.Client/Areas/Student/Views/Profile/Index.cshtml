@@ -1,55 +1,514 @@
-﻿@model StudentProfileViewModel
+﻿@* @model StudentProfileViewModel *@
+
+@* @{ *@
+@*     ViewBag.Title = "Student Profile"; *@
+@*     ViewBag.CardTitle = "Your Profile"; *@
+@* } *@
+
+@* <div class="container mt-5"> *@
+@*     <div class="card shadow-lg rounded p-4"> *@
+@*         <div class="row"> *@
+@*             <div class="col-md-4 text-center mb-4"> *@
+@*                 @if (!string.IsNullOrEmpty(Model.ProfilePictureURL)) *@
+@*                 { *@
+@*                     <img src="@Model.ProfilePictureURL" class="img-thumbnail rounded-circle" alt="Student Photo" style="max-width: 200px; max-height: 200px;"> *@
+@*                 } *@
+@*                 else *@
+@*                 { *@
+@*                     <div class="bg-light rounded-circle d-flex align-items-center justify-content-center" style="width: 200px; height: 200px; margin: 0 auto;"> *@
+@*                         <i class="bi bi-person fs-1 text-secondary"></i> *@
+@*                     </div> *@
+@*                 } *@
+@*                 <h3 class="mt-3">@Model.FullName</h3> *@
+@*                 <div class="d-flex justify-content-center"> *@
+@*                     <div class="form-group mb-3 "> *@
+@*                         <form asp-action="UploadPhoto" method="post" enctype="multipart/form-data"> *@
+@*                             <div class="form-group"> *@
+@*                                 <input type="file" name="File" class="form-control" required /> *@
+@*                             </div> *@
+@*                             <button type="submit" class="btn btn-light mt-2">Upload Photo</button> *@
+@*                         </form> *@
+@*                     </div> *@
+@*                 </div> *@
+@*             </div> *@
+@*                 <p class="text-muted">Student Number: @Model.StudentNumber</p> *@
+@*             </div> *@
+
+@*             <div class="col-md-8"> *@
+@*                 <h5 class="mb-3">Student Details</h5> *@
+@*                 <dl class="row"> *@
+@*                     <dt class="col-sm-4">Date of Birth</dt> *@
+@*                     <dd class="col-sm-8">@Model.DateOfBirth.ToString("dd MMM yyyy")</dd> *@
+
+@*                     <dt class="col-sm-4">Gender</dt> *@
+@*                     <dd class="col-sm-8">@Model.Gender</dd> *@
+
+@*                     <dt class="col-sm-4">Admission Date</dt> *@
+@*                     <dd class="col-sm-8">@Model.AdmissionDate.ToString("dd MMM yyyy")</dd> *@
+
+@*                     <dt class="col-sm-4">Emergency Contact</dt> *@
+@*                     <dd class="col-sm-8">@Model.EmergencyContact</dd> *@
+
+@*                     <dt class="col-sm-4">Grade Level</dt> *@
+@*                     <dd class="col-sm-8">@Model.GradeLevel</dd> *@
+
+@*                     <dt class="col-sm-4">Class Number</dt> *@
+@*                     <dd class="col-sm-8">@Model.ClassNumber</dd> *@
+
+@*                     <dt class="col-sm-4">Address</dt> *@
+@*                     <dd class="col-sm-8">@Model.Address</dd> *@
+
+@*                     <dt class="col-sm-4">Bus Number</dt> *@
+@*                     <dd class="col-sm-8">@Model.BusNumber</dd> *@
+@*                 </dl> *@
+@*             </div> *@
+@*         </div> *@
+@*     </div> *@
+@* </div> *@
+
+
+@model StudentProfileViewModel
 
 @{
     ViewBag.Title = "Student Profile";
     ViewBag.CardTitle = "Your Profile";
 }
 
-<div class="container mt-5">
-    <div class="card shadow-lg rounded p-4">
-        <div class="row">
-            <div class="col-md-4 text-center">
-                @if (!string.IsNullOrEmpty(Model.ProfilePictureURL))
-                {
-                    <img src="@Model.ProfilePictureURL" class="img-fluid rounded-circle mb-3" style="max-height: 200px;" alt="Profile Picture" />
-                }
-                else
-                {
-                    <img src="~/images/default-profile.png" class="img-fluid rounded-circle mb-3" style="max-height: 200px;" alt="Default Profile" />
-                }
+<div class="profile-container">
+    <div class="profile-header">
+        <div class="header-content">
+            <h1><i class="bi bi-person-vcard"></i> @ViewBag.CardTitle</h1>
+            <p class="text-accent">Student Dashboard</p>
+        </div>
+    </div>
 
-                <h4 class="text-primary">@Model.FullName</h4>
-                <p class="text-muted">Student Number: @Model.StudentNumber</p>
+    <div class="profile-card glassmorphism">
+        <div class="row g-4">
+            <!-- Profile Picture Column -->
+            <div class="col-lg-4">
+                <div class="profile-picture-section">
+                    <div class="avatar-container">
+                        @if (!string.IsNullOrEmpty(Model.ProfilePictureURL))
+                        {
+                            <img src="@Model.ProfilePictureURL" class="profile-avatar" alt="Student Photo">
+                            <div class="avatar-overlay" data-bs-toggle="modal" data-bs-target="#uploadPhotoModal">
+                                <i class="bi bi-camera-fill"></i>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="avatar-placeholder">
+                                <i class="bi bi-person-fill"></i>
+                            </div>
+                            <div class="avatar-overlay" data-bs-toggle="modal" data-bs-target="#uploadPhotoModal">
+                                <i class="bi bi-camera-fill"></i>
+                            </div>
+                        }
+                    </div>
+
+                    <div class="profile-info">
+                        <h2>@Model.FullName</h2>
+                        <p class="student-id"><i class="bi bi-123"></i> @Model.StudentNumber</p>
+                        <div class="badge-container">
+                            <span class="badge bg-primary">Grade @Model.GradeLevel</span>
+                            <span class="badge bg-secondary">Class @Model.ClassNumber</span>
+                        </div>
+                    </div>
+                </div>
             </div>
 
-            <div class="col-md-8">
-                <h5 class="mb-3">Student Details</h5>
-                <dl class="row">
-                    <dt class="col-sm-4">Date of Birth</dt>
-                    <dd class="col-sm-8">@Model.DateOfBirth.ToString("dd MMM yyyy")</dd>
+            <!-- Details Column -->
+            <div class="col-lg-8">
+                <div class="profile-details">
+                    <div class="details-header">
+                        <h3><i class="bi bi-info-circle-fill"></i> Student Information</h3>
+                        <a asp-controller="Dashboard" asp-action="Index" class="btn btn-outline-primary me-2">
+                             Back Home
+                        </a>
+                    </div>
 
-                    <dt class="col-sm-4">Gender</dt>
-                    <dd class="col-sm-8">@Model.Gender</dd>
+                    <div class="details-grid">
+                        <div class="detail-item">
+                            <div class="detail-icon bg-primary">
+                                <i class="bi bi-calendar-event"></i>
+                            </div>
+                            <div>
+                                <small>Date of Birth</small>
+                                <p>@Model.DateOfBirth.ToString("dd MMMM yyyy")</p>
+                            </div>
+                        </div>
 
-                    <dt class="col-sm-4">Admission Date</dt>
-                    <dd class="col-sm-8">@Model.AdmissionDate.ToString("dd MMM yyyy")</dd>
+                        <div class="detail-item">
+                            <div class="detail-icon bg-success">
+                                <i class="bi bi-gender-ambiguous"></i>
+                            </div>
+                            <div>
+                                <small>Gender</small>
+                                <p>@Model.Gender</p>
+                            </div>
+                        </div>
 
-                    <dt class="col-sm-4">Emergency Contact</dt>
-                    <dd class="col-sm-8">@Model.EmergencyContact</dd>
+                        <div class="detail-item">
+                            <div class="detail-icon bg-info">
+                                <i class="bi bi-calendar-check"></i>
+                            </div>
+                            <div>
+                                <small>Admission Date</small>
+                                <p>@Model.AdmissionDate.ToString("dd MMMM yyyy")</p>
+                            </div>
+                        </div>
 
-                    <dt class="col-sm-4">Grade Level</dt>
-                    <dd class="col-sm-8">@Model.GradeLevel</dd>
+                        <div class="detail-item">
+                            <div class="detail-icon bg-warning">
+                                <i class="bi bi-telephone-plus"></i>
+                            </div>
+                            <div>
+                                <small>Emergency Contact</small>
+                                <p>@Model.EmergencyContact</p>
+                            </div>
+                        </div>
 
-                    <dt class="col-sm-4">Class Number</dt>
-                    <dd class="col-sm-8">@Model.ClassNumber</dd>
+                        <div class="detail-item">
+                            <div class="detail-icon bg-danger">
+                                <i class="bi bi-geo-alt"></i>
+                            </div>
+                            <div>
+                                <small>Address</small>
+                                <p>@Model.Address</p>
+                            </div>
+                        </div>
 
-                    <dt class="col-sm-4">Address</dt>
-                    <dd class="col-sm-8">@Model.Address</dd>
-
-                    <dt class="col-sm-4">Bus Number</dt>
-                    <dd class="col-sm-8">@Model.BusNumber</dd>
-                </dl>
+                        <div class="detail-item">
+                            <div class="detail-icon bg-secondary">
+                                <i class="bi bi-bus-front"></i>
+                            </div>
+                            <div>
+                                <small>Bus Number</small>
+                                <p>@Model.BusNumber</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </div>
+
+<!-- Upload Photo Modal -->
+<div class="modal fade" id="uploadPhotoModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content glassmorphism">
+            <div class="modal-header border-0">
+                <h5 class="modal-title"><i class="bi bi-camera-fill me-2"></i>Update Profile Picture</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form asp-action="UploadPhoto" method="post" enctype="multipart/form-data" id="uploadForm">
+                    <div class="file-upload-wrapper">
+                        <input type="file" name="File" id="profileUpload" class="file-upload-input" accept="image/*" required>
+                        <label for="profileUpload" class="file-upload-label">
+                            <div class="file-upload-design">
+                                <i class="bi bi-cloud-arrow-up fs-1"></i>
+                                <p>Drag & drop your photo here</p>
+                                <p class="small">or click to browse</p>
+                            </div>
+                        </label>
+                        <div class="preview-container mt-3 text-center" id="previewContainer" style="display:none;">
+                            <img id="imagePreview" class="img-thumbnail rounded-circle" style="width:150px;height:150px;object-fit:cover;">
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-end mt-4">
+                        <button type="button" class="btn btn-outline-secondary me-2" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="bi bi-upload me-1"></i> Upload Photo
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    :root {
+        --primary-color: #4361ee;
+        --secondary-color: #3f37c9;
+        --accent-color: #4895ef;
+        --light-bg: #f8f9fa;
+        --glass-bg: rgba(255, 255, 255, 0.15);
+        --glass-border: 1px solid rgba(255, 255, 255, 0.18);
+    }
+
+    .profile-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+
+    .profile-header {
+        background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+        color: white;
+        padding: 2rem;
+        border-radius: 15px;
+        margin-bottom: -50px;
+        position: relative;
+        z-index: 1;
+        box-shadow: 0 10px 30px rgba(67, 97, 238, 0.3);
+    }
+
+    .profile-card {
+        background: white;
+        border-radius: 15px;
+        padding: 2rem;
+        position: relative;
+        z-index: 2;
+        box-shadow: 0 8px 32px rgba(31, 38, 135, 0.1);
+    }
+
+    .glassmorphism {
+        background: var(--light-bg);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border: var(--glass-border);
+    }
+
+    .avatar-container {
+        position: relative;
+        width: 200px;
+        height: 200px;
+        margin: 0 auto;
+    }
+
+    .profile-avatar {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 50%;
+        border: 5px solid white;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .avatar-placeholder {
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(135deg, #e0e0e0, #f5f5f5);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 5rem;
+        color: #adb5bd;
+        border: 5px solid white;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .avatar-overlay {
+        position: absolute;
+        bottom: 10px;
+        right: 10px;
+        background: var(--primary-color);
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        border: 3px solid white;
+    }
+
+        .avatar-overlay:hover {
+            transform: scale(1.1);
+            background: var(--secondary-color);
+        }
+
+    .profile-info {
+        text-align: center;
+        margin-top: 1.5rem;
+    }
+
+        .profile-info h2 {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+    .student-id {
+        color: #6c757d;
+        font-size: 0.9rem;
+    }
+
+    .badge-container {
+        margin-top: 1rem;
+        display: flex;
+        gap: 0.5rem;
+        justify-content: center;
+    }
+
+    .details-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1.5rem;
+        padding-bottom: 0.75rem;
+        border-bottom: 1px solid #eee;
+    }
+
+    .details-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 1.5rem;
+    }
+
+    .detail-item {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        padding: 1rem;
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        transition: transform 0.3s ease;
+    }
+
+        .detail-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+    .detail-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        flex-shrink: 0;
+    }
+
+    .detail-item small {
+        color: #6c757d;
+        font-size: 0.8rem;
+    }
+
+    .detail-item p {
+        margin-bottom: 0;
+        font-weight: 500;
+    }
+
+    .file-upload-wrapper {
+        position: relative;
+        margin-bottom: 1.5rem;
+    }
+
+    .file-upload-input {
+        position: absolute;
+        left: 0;
+        top: 0;
+        opacity: 0;
+        width: 100%;
+        height: 100%;
+        cursor: pointer;
+    }
+
+    .file-upload-label {
+        display: block;
+        padding: 2rem;
+        border: 2px dashed #dee2e6;
+        border-radius: 10px;
+        text-align: center;
+        transition: all 0.3s ease;
+    }
+
+        .file-upload-label:hover {
+            border-color: var(--primary-color);
+            background: rgba(67, 97, 238, 0.05);
+        }
+
+    .file-upload-design i {
+        color: var(--primary-color);
+        margin-bottom: 0.5rem;
+    }
+
+    .file-upload-design p {
+        margin-bottom: 0;
+    }
+
+    @@media (max-width: 768px) {
+        .details-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .profile-header {
+            padding: 1.5rem;
+        }
+
+        .avatar-container {
+            width: 150px;
+            height: 150px;
+        }
+    }
+</style>
+
+@section Scripts {
+    <script>
+        // Image preview for upload
+        document.getElementById('profileUpload').addEventListener('change', function(e) {
+            const previewContainer = document.getElementById('previewContainer');
+            const imagePreview = document.getElementById('imagePreview');
+
+            if (this.files && this.files[0]) {
+                const reader = new FileReader();
+
+                reader.onload = function(e) {
+                    imagePreview.src = e.target.result;
+                    previewContainer.style.display = 'block';
+                }
+
+                reader.readAsDataURL(this.files[0]);
+            }
+        });
+
+        // Drag and drop functionality
+        const fileUploadLabel = document.querySelector('.file-upload-label');
+
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            fileUploadLabel.addEventListener(eventName, preventDefaults, false);
+        });
+
+        function preventDefaults(e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+
+        ['dragenter', 'dragover'].forEach(eventName => {
+            fileUploadLabel.addEventListener(eventName, highlight, false);
+        });
+
+        ['dragleave', 'drop'].forEach(eventName => {
+            fileUploadLabel.addEventListener(eventName, unhighlight, false);
+        });
+
+        function highlight() {
+            fileUploadLabel.classList.add('highlight');
+        }
+
+        function unhighlight() {
+            fileUploadLabel.classList.remove('highlight');
+        }
+
+        fileUploadLabel.addEventListener('drop', handleDrop, false);
+
+        function handleDrop(e) {
+            const dt = e.dataTransfer;
+            const files = dt.files;
+            document.getElementById('profileUpload').files = files;
+
+            // Trigger change event for preview
+            const event = new Event('change');
+            document.getElementById('profileUpload').dispatchEvent(event);
+        }
+    </script>
+}

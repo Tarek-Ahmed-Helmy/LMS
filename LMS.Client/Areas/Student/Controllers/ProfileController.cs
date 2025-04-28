@@ -2,6 +2,7 @@
 using LMS.Utilities;
 using LMS.Web.ViewModels;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
@@ -12,9 +13,11 @@ namespace LMS.Web.Areas.StudentArea.Controllers;
 public class ProfileController : Controller
 {
     private readonly IUnitOfWork _unitOfWork;
-    public ProfileController(IUnitOfWork unitOfWork)
+    private readonly IWebHostEnvironment _webHostEnvironment;
+    public ProfileController(IUnitOfWork unitOfWork, IWebHostEnvironment webHostEnvironment)
     {
         _unitOfWork = unitOfWork;
+        _webHostEnvironment = webHostEnvironment;
     }
 
     [HttpGet]
@@ -209,5 +212,52 @@ public class ProfileController : Controller
         };
 
         return View(vm);
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> UploadPhoto(IFormFile File)
+    {
+        var id = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+        var student = await _unitOfWork.Student.FindAsync(t => t.StudentId == id, ["ApplicationUser"]);
+        if (student == null) return NotFound();
+
+        // Handle file upload only if the file is not null and has content
+        if (File != null && File.Length > 0)
+        {
+            // Delete old image if exists
+            if (!string.IsNullOrEmpty(student.ApplicationUser?.ProfilePictureURL))
+            {
+                var oldImagePath = Path.Combine(_webHostEnvironment.WebRootPath,
+                    student.ApplicationUser.ProfilePictureURL.TrimStart('/'));
+                if (System.IO.File.Exists(oldImagePath))
+                {
+                    System.IO.File.Delete(oldImagePath);
+                }
+            }
+
+            // Save new image
+            var uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "uploads", "profile-images");
+            var fileName = Guid.NewGuid() + Path.GetExtension(File.FileName);
+            var filePath = Path.Combine(uploadsFolder, fileName);
+
+            var uploadDirectory = Path.GetDirectoryName(filePath);
+            if (!Directory.Exists(uploadDirectory))
+            {
+                Directory.CreateDirectory(uploadDirectory);
+            }
+
+            using (var stream = new FileStream(filePath, FileMode.Create))
+            {
+                await File.CopyToAsync(stream);
+            }
+
+            student.ApplicationUser.ProfilePictureURL = $"/uploads/profile-images/{fileName}";
+        }
+        await _unitOfWork.ApplicationUser.UpdateAsync(student.ApplicationUser);
+        await _unitOfWork.SaveChangesAsync();
+
+        return RedirectToAction("Index");
     }
 }
