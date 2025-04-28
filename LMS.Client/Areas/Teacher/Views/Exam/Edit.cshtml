@@ -2,13 +2,10 @@
 
 @{
     ViewData["Title"] = "Edit Exam";
+    ViewBag.CardTitle = $"Edit exam – {@Model.ExamType}";
 }
 
 <div class="card shadow-sm">
-    <div class="card-header bg-success text-white fw-semibold">
-        Edit exam – @Model.ExamType
-    </div>
-
     <div class="card-body">
         <form asp-action="Edit"
               asp-route-examId="@Model.ExamId"

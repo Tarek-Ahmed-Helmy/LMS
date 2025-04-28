@@ -4,7 +4,6 @@ using LMS.Utilities;
 using LMS.Web.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using NuGet.DependencyResolver;
 using System.Security.Claims;
 
 namespace LMS.Web.Areas.TeacherArea.Controllers;

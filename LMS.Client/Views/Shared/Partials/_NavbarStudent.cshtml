@@ -1,95 +1,97 @@
-﻿<li class="nav-item">
-	<a asp-area="Student" asp-controller="Dashboard" asp-action="Index" class="nav-link">
-		<i class="nav-icon bi bi-circle-fill"></i>
-		<p>
-			Dashboard
-		</p>
-	</a>
-</li>
-<li class="nav-item menu-open">
-	<a href="#" class="nav-link">
-		<i class="nav-icon bi bi-circle-fill"></i>
-		<p>
-			Profile
-			<i class="nav-arrow bi bi-chevron-right"></i>
-		</p>
-	</a>
-	<ul class="nav nav-treeview" style="box-sizing: border-box; display: block;">
-		<li class="nav-item">
-			<a asp-area="Student" asp-controller="Profile" asp-action="Index" class="nav-link">
-				<i class="nav-icon bi bi-circle"></i>
-				<p>My Profile</p>
-			</a>
-		</li>
-		<li class="nav-item">
-			<a asp-area="Student" asp-controller="Profile" asp-action="ReceivedNotifications" class="nav-link">
-				<i class="nav-icon bi bi-circle"></i>
-				<p>Notifications</p>
-			</a>
-		</li>
-		<li class="nav-item">
-			<a asp-area="Student" asp-controller="Profile" asp-action="Payments" class="nav-link">
-				<i class="nav-icon bi bi-circle"></i>
-				<p>Payments</p>
-			</a>
-		</li>
-		<li class="nav-item">
-			<a asp-area="Student" asp-controller="Profile" asp-action="ClassSchedule" class="nav-link">
-				<i class="nav-icon bi bi-circle"></i>
-				<p>Class Schedule</p>
-			</a>
-		</li>
-	</ul>
-</li>
-<li class="nav-item menu-open">
-	<a href="#" class="nav-link">
-		<i class="nav-icon bi bi-circle-fill"></i>
-		<p>
-			Academics
-			<i class="nav-arrow bi bi-chevron-right"></i>
-		</p>
-	</a>
-	<ul class="nav nav-treeview" style="box-sizing: border-box; display: block;">
-		<li class="nav-item">
-			<a asp-area="Student" asp-controller="Profile" asp-action="ExamResults" class="nav-link">
-				<i class="nav-icon bi bi-circle"></i>
-				<p>Exam Results</p>
-			</a>
-		</li>
-		<li class="nav-item">
-			<a asp-area="Student" asp-controller="Profile" asp-action="ExamSchedule" class="nav-link">
-				<i class="nav-icon bi bi-circle"></i>
-				<p>Exam Schedule</p>
-			</a>
-		</li>
-		<li class="nav-item">
-			<a asp-area="Student" asp-controller="Assignment" asp-action="Index" class="nav-link">
-				<i class="nav-icon bi bi-circle"></i>
-				<p>Assignments</p>
-			</a>
-		</li>
-		<li class="nav-item">
-			<a asp-area="Student" asp-controller="Quiz" asp-action="Index" class="nav-link">
-				<i class="nav-icon bi bi-circle"></i>
-				<p>My Quizzes</p>
-			</a>
-		</li>
-	</ul>
-</li>
-<li class="nav-item menu-open">
-	<a href="#" class="nav-link">
-		<i class="nav-icon bi bi-circle-fill"></i>
-		<p>
-			Resources & Tools
-			<i class="nav-arrow bi bi-chevron-right"></i>
-		</p>
-	</a>
-	<ul class="nav nav-treeview" style="box-sizing: border-box; display: block;">
-		<li class="nav-item">
-			<a asp-area="Student" asp-controller="Resource" asp-action="Index" class="nav-link">
-				<i class="nav-icon bi bi-circle"></i>
-				<p>Course Materials</p>
-			</a>
-		</li>
-	</ul>
-</li>
+﻿<!-- Student Sidebar -->
+<nav class="mt-2">
+    <ul class="nav nav-pills nav-sidebar flex-column"
+        data-widget="treeview"
+        data-accordion="false">
+
+        <!-- Dashboard -->
+        <li class="nav-item">
+            <a asp-controller="Dashboard" asp-action="Index" class="nav-link">
+                <i class="nav-icon bi bi-speedometer2"></i>
+                <p>Dashboard</p>
+            </a>
+        </li>
+
+        <!-- Profile -->
+        <li class="nav-item has-treeview">
+            <a href="#" class="nav-link">
+                <i class="nav-icon bi bi-person"></i>
+                <p>
+                    Profile
+                    <i class="bi bi-chevron-down float-end nav-arrow"></i>
+                </p>
+            </a>
+            <ul class="nav nav-treeview">
+                <li class="nav-item">
+                    <a asp-controller="Profile" asp-action="Index" class="nav-link">
+                        <i class="bi bi-person nav-icon"></i>
+                        <p>My Profile</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a asp-controller="Profile" asp-action="ReceivedNotifications" class="nav-link">
+                        <i class="bi bi-bell nav-icon"></i>
+                        <p>Notifications</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a asp-controller="Profile" asp-action="Payments" class="nav-link">
+                        <i class="bi bi-credit-card nav-icon"></i>
+                        <p>Payments</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a asp-controller="Profile" asp-action="ClassSchedule" class="nav-link">
+                        <i class="bi bi-calendar3 nav-icon"></i>
+                        <p>Class Schedule</p>
+                    </a>
+                </li>
+            </ul>
+        </li>
+
+        <!-- Academics -->
+        <li class="nav-item has-treeview">
+            <a href="#" class="nav-link">
+                <i class="nav-icon bi bi-pencil-square"></i>
+                <p>
+                    Academics
+                    <i class="bi bi-chevron-down float-end nav-arrow"></i>
+                </p>
+            </a>
+            <ul class="nav nav-treeview">
+                <li class="nav-item">
+                    <a asp-controller="Profile" asp-action="ExamResults" class="nav-link">
+                        <i class="bi bi-clipboard-data nav-icon"></i>
+                        <p>Exam Results</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a asp-controller="Profile" asp-action="ExamSchedule" class="nav-link">
+                        <i class="bi bi-calendar-check nav-icon"></i>
+                        <p>Exam Schedule</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a asp-controller="Assignment" asp-action="Index" class="nav-link">
+                        <i class="bi bi-list-task nav-icon"></i>
+                        <p>Assignments</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a asp-controller="Quiz" asp-action="Index" class="nav-link">
+                        <i class="bi bi-card-checklist nav-icon"></i>
+                        <p>My Quizzes</p>
+                    </a>
+                </li>
+            </ul>
+        </li>
+
+        <!-- Resources & Tools -->
+        <li class="nav-item">
+            <a asp-controller="Resource" asp-action="Index" class="nav-link">
+                <i class="nav-icon bi bi-folder"></i>
+                <p>Course Materials</p>
+            </a>
+        </li>
+    </ul>
+</nav>

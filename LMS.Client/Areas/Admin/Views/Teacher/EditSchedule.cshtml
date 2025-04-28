@@ -1,4 +1,4 @@
-﻿@model AddScheduleViewModel
+﻿@model EditScheduleViewModel
 
 @{
     ViewBag.Title = "Edit Schedule";
@@ -8,13 +8,13 @@
 <div class="modal-dialog">
     <div class="modal-content">
         <div class="modal-header">
-            <h5 class="modal-title">Edit Schedule</h5>
         </div>
-        <form asp-action="AddSchedule" method="post" id="addScheduleForm">
+        <form asp-action="EditSchedule" method="post" id="addScheduleForm">
             <div class="modal-body">
                 <input type="hidden" asp-for="TeacherId" />
+				<input type="hidden" asp-for="ScheduleId" />
 
-                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div asp-validation-summary="All" class="text-danger"></div>
 
                 <div class="mb-3">
                     <label asp-for="DayOfWeek" class="form-label"></label>
@@ -54,40 +54,9 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <a asp-action="Details" asp-route-id="@Model.TeacherId" class="btn btn-secondary">Cancel</a>
                 <button type="submit" class="btn btn-primary">Save Schedule</button>
             </div>
         </form>
     </div>
 </div>
-
-@section Scripts {
-    <partial name="_ValidationScriptsPartial" />
-    <script>
-        $(document).ready(function() {
-            // Handle form submission via AJAX
-            $('#addScheduleForm').on('submit', function(e) {
-                e.preventDefault();
-
-                $.ajax({
-                    url: $(this).attr('action'),
-                    type: 'POST',
-                    data: $(this).serialize(),
-                    success: function(response) {
-                        if (response.success) {
-                            $('#addScheduleModal').modal('hide');
-                            // Refresh the schedule table or redirect
-                            window.location.reload();
-                        } else {
-                            // Update the modal with validation errors
-                            $('#addScheduleModal .modal-content').html(response);
-                        }
-                    },
-                    error: function(xhr) {
-                        $('#addScheduleModal .modal-content').html(xhr.responseText);
-                    }
-                });
-            });
-        });
-    </script>
-}

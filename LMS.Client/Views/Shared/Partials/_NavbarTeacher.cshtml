@@ -1,2 +1,148 @@
-﻿
+﻿<!-- Teacher Sidebar -->
+<nav class="mt-2">
+    <ul class="nav nav-pills nav-sidebar flex-column"
+        data-widget="treeview"
+        data-accordion="false">
+
+        <!-- Dashboard -->
+        <li class="nav-item">
+            <a asp-area="Teacher" asp-controller="Dashboard" asp-action="Index" class="nav-link">
+                <i class="nav-icon bi bi-speedometer2"></i>
+                <p>Dashboard</p>
+            </a>
+        </li>
+
+        <!-- Profile -->
+        <li class="nav-item has-treeview">
+            <a href="#" class="nav-link">
+                <i class="nav-icon bi bi-person"></i>
+                <p>
+                    Profile
+                    <i class="bi bi-chevron-down float-end nav-arrow"></i>
+                </p>
+            </a>
+            <ul class="nav nav-treeview">
+                <li class="nav-item">
+                    <a asp-area="Teacher" asp-controller="Profile" asp-action="Index" class="nav-link">
+                        <i class="bi bi-person nav-icon"></i>
+                        <p>My Profile</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a asp-area="Teacher" asp-controller="Profile" asp-action="ReceivedNotifications" class="nav-link">
+                        <i class="bi bi-bell nav-icon"></i>
+                        <p>Notifications</p>
+                    </a>
+                </li>
+            </ul>
+        </li>
+
+        <!-- Students Management -->
+        <li class="nav-item">
+            <a asp-area="Teacher" asp-controller="StudentManagement" asp-action="Index" class="nav-link">
+                <i class="nav-icon bi bi-people-fill"></i>
+                <p>Students List</p>
+            </a>
+        </li>
+
+        <!-- Teaching Tasks -->
+        <li class="nav-item has-treeview">
+            <a href="#" class="nav-link">
+                <i class="nav-icon bi bi-pencil-square"></i>
+                <p>
+                    Teaching Tasks
+                    <i class="bi bi-chevron-down float-end nav-arrow"></i>
+                </p>
+            </a>
+            <ul class="nav nav-treeview">
+                <li class="nav-item">
+                    <a asp-area="Teacher" asp-controller="Assignment" asp-action="Index" class="nav-link">
+                        <i class="bi bi-list-task nav-icon"></i>
+                        <p>My Assignments</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a asp-area="Teacher" asp-controller="Assignment" asp-action="Upload" class="nav-link">
+                        <i class="bi bi-plus-circle nav-icon"></i>
+                        <p>Create Assignment</p>
+                    </a>
+                </li>
+            </ul>
+        </li>
+
+        <!-- Exams -->
+        <li class="nav-item has-treeview">
+            <a href="#" class="nav-link">
+                <i class="nav-icon bi bi-journal-text"></i>
+                <p>
+                    Exams
+                    <i class="bi bi-chevron-down float-end nav-arrow"></i>
+                </p>
+            </a>
+            <ul class="nav nav-treeview">
+                <li class="nav-item">
+                    <a asp-area="Teacher" asp-controller="Exam" asp-action="Index" class="nav-link">
+                        <i class="bi bi-list-ul nav-icon"></i>
+                        <p>My Exams</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a asp-area="Teacher" asp-controller="Exam" asp-action="Upload" class="nav-link">
+                        <i class="bi bi-plus-circle nav-icon"></i>
+                        <p>Create Exam</p>
+                    </a>
+                </li>
+            </ul>
+        </li>
+
+        <!-- Quizzes -->
+        <li class="nav-item has-treeview">
+            <a href="#" class="nav-link">
+                <i class="bi bi-highlighter"></i>
+                <p>
+                    Quizzes
+                    <i class="bi bi-chevron-down float-end nav-arrow"></i>
+                </p>
+            </a>
+            <ul class="nav nav-treeview">
+                <li class="nav-item">
+                    <a asp-area="Teacher" asp-controller="Quiz" asp-action="Index" class="nav-link">
+                        <i class="bi bi-list-ul nav-icon"></i>
+                        <p>My Quizzes</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a asp-area="Teacher" asp-controller="Quiz" asp-action="AddQuiz" class="nav-link">
+                        <i class="bi bi-plus-circle nav-icon"></i>
+                        <p>Create Quiz</p>
+                    </a>
+                </li>
+            </ul>
+        </li>
+
+        <!-- Resources -->
+        <li class="nav-item">
+            <a asp-area="Teacher" asp-controller="Resource" asp-action="Index" class="nav-link">
+                <i class="nav-icon bi bi-folder"></i>
+                <p>Course Materials</p>
+            </a>
+        </li>
+    </ul>
+</nav>
+
+<style>
+    .nav-sidebar .nav-link {
+        color: #c2c7d0;
+    }
+
+        .nav-sidebar .nav-link.active {
+            background-color: #007bff;
+            color: #fff;
+        }
+
+    .nav-sidebar .has-treeview .nav-treeview {
+        padding-left: 1rem;
+    }
+</style>
+
 

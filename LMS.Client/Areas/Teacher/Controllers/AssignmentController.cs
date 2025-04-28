@@ -10,7 +10,6 @@ namespace LMS.Web.Areas.TeacherArea.Controllers;
 
 [Area("Teacher")]
 [Authorize(Roles = SD.TeacherRole)]
-[Route("Teacher/[controller]")]
 public class AssignmentController : Controller
 {
     private readonly IUnitOfWork _unitOfWork;
@@ -57,13 +56,13 @@ public class AssignmentController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Upload(CreateAssignmentViewModel model)
     {
+        var teacherId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
         if (!ModelState.IsValid)
         {
-            model.Subjects = await _unitOfWork.Subject.GetAllAsync();
+            model.Subjects = await _unitOfWork.Subject.FindAllAsync(s => s.Schedules.Select(sh => sh.TeacherId).Contains(teacherId));
             return View(model);
         }
-
-        var teacherId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
         var assignment = new Assignment
         {
@@ -90,7 +89,7 @@ public class AssignmentController : Controller
 
         if (assignment is null) return NotFound();
 
-        var subjects = await _unitOfWork.Subject.GetAllAsync();
+        var subjects = await _unitOfWork.Subject.FindAllAsync(s => s.Schedules.Select(sh => sh.TeacherId).Contains(teacherId));
 
         return View(new EditAssignmentViewModel
         {
@@ -109,13 +108,15 @@ public class AssignmentController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(int assignmentId, EditAssignmentViewModel model)
     {
+        var teacherId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
         if (!ModelState.IsValid)
         {
-            model.Subjects = await _unitOfWork.Subject.GetAllAsync();
+            model.Subjects = await _unitOfWork.Subject.FindAllAsync(s => s.Schedules.Select(sh => sh.TeacherId).Contains(teacherId));
             return View(model);
         }
 
-        var teacherId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        
         var assignment = await _unitOfWork.Assignment.FindAsync(
             a => a.AssignmentId == assignmentId && a.TeacherId == teacherId);
 
@@ -179,10 +180,17 @@ public class AssignmentController : Controller
     [HttpGet]
     public async Task<IActionResult> Grade(int submissionId)
     {
-        var submission = await _unitOfWork.Submission.FindAsync(
-            s => s.SubmissionId == submissionId,
-            new[] { "Assignment" });
-        return View();
+        var submission = await _unitOfWork.Submission.FindAsync(s => s.SubmissionId == submissionId, ["Assignment"]);
+        var model = new GradeSubmissionViewModel
+        {
+            SubmissionId = submissionId,
+            AssignmentId = submission?.AssignmentId ?? 0,
+            AssignmentTitle = submission?.Assignment?.Title,
+            AssignmentDescription = submission?.Assignment?.AssignmentDescription,
+            Score = submission?.Score,
+            Feedback = submission?.Feedback
+        };
+        return View(model);
     }
 
     [HttpPost]
@@ -198,7 +206,7 @@ public class AssignmentController : Controller
 
         if (submission is null) return NotFound();
 
-        submission.Score = model.Score;
+        submission.Score = model.Score.Value;
         submission.Feedback = model.Feedback;
         submission.UpdatedAt = DateTime.UtcNow;
 
