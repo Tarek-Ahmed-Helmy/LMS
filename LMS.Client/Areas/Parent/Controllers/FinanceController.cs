@@ -50,36 +50,36 @@ public class FinanceController : Controller
     }
 
     [HttpGet]
-    public async Task<IActionResult> MakePayment()
+    public async Task<IActionResult> MakePayment(int paymentId)
     {
-        var id = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        var payment = await _unitOfWork.Payment.FindAsync(p => p.PaymentId == paymentId, ["Student.ApplicationUser"]);
+        var model = new MakePaymentViewModel
+        {
+            StudentId = payment.StudentId,
+            StudentName = payment.Student!.ApplicationUser.FullName,
+            Amount = payment.Amount,
+            PaymentId = payment.PaymentId,
+        };
 
-        var studentList = (await _unitOfWork.Student.FindAllAsync(s => s.ParentId == id, ["ApplicationUser"]))
-            .Select(s => new SelectListItem
-            {
-                Value = s.StudentId,
-                Text = s.ApplicationUser.FullName
-            });
-
-        ViewBag.Students = studentList;
-
-        return View(new MakePaymentViewModel());
+        return View(model);
     }
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> MakePayment(MakePaymentViewModel model)
+    public async Task<IActionResult> MakePayment(int paymentId, MakePaymentViewModel model)
     {
+        var payment = await _unitOfWork.Payment.FindAsync(p => p.PaymentId == paymentId, ["Student.ApplicationUser"]);
+
         if (!ModelState.IsValid)
         {
-            var id = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            ViewBag.Students = (await _unitOfWork.Student.FindAllAsync(s => s.ParentId == id, ["ApplicationUser"]))
-                .Select(s => new SelectListItem
-                {
-                    Value = s.StudentId,
-                    Text = s.ApplicationUser.FullName
-                });
-            return View(model);
+            var vm = new MakePaymentViewModel
+            {
+                StudentId = payment.StudentId,
+                StudentName = payment.Student!.ApplicationUser.FullName,
+                Amount = payment.Amount,
+                PaymentId = payment.PaymentId,
+            };
+            return View(vm);
         }
 
         var receiptFileName = $"{Guid.NewGuid()}_{model.Receipt.FileName}";
@@ -90,21 +90,14 @@ public class FinanceController : Controller
             await model.Receipt.CopyToAsync(stream);
         }
 
-        var payment = new Payment
-        {
-            StudentId = model.StudentId,
-            ParentId = User.FindFirstValue(ClaimTypes.NameIdentifier),
-            Amount = model.Amount,
-            PaymentDate = DateTime.UtcNow,
-            PaymentMethod = model.PaymentMethod,
-            PaymentStatus = PaymentStatus.Paid,
-            ReceiptPath = "/uploads/receipts/" + receiptFileName
-        };
+        payment.PaymentMethod = model.PaymentMethod;
+        payment.PaymentStatus = PaymentStatus.Paid;
+        payment.ReceiptPath = $"/uploads/receipts/{receiptFileName}";
+        payment.PaymentDate = DateTime.UtcNow;
 
-        await _unitOfWork.Payment.AddAsync(payment);
+        await _unitOfWork.Payment.UpdateAsync(payment);
         await _unitOfWork.SaveChangesAsync();
 
-        TempData["Success"] = "Payment successful.";
         return RedirectToAction("Fees");
     }
 

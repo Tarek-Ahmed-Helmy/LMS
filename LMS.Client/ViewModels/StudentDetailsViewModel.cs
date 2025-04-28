@@ -25,4 +25,5 @@ public class StudentDetailsViewModel
     [StringLength(255)]
     public string? ClassNumber { get; set; }
     public string? BusSubscription { get; set; }
+    public int? BusNumber { get; set; }
 }

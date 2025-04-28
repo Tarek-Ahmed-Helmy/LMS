@@ -13,9 +13,13 @@ namespace LMS.Web.Areas.TeacherArea.Controllers;
 public class ProfileController : Controller
 {
     private readonly IUnitOfWork _unitOfWork;
-    public ProfileController(IUnitOfWork unitOfWork)
+    private readonly IWebHostEnvironment _webHostEnvironment;
+
+    public ProfileController(IUnitOfWork unitOfWork, IWebHostEnvironment webHostEnvironment)
     {
         _unitOfWork = unitOfWork;
+        _webHostEnvironment = webHostEnvironment;
+
     }
 
     [HttpGet]
@@ -79,4 +83,53 @@ public class ProfileController : Controller
         await _unitOfWork.SaveChangesAsync();
         return Json(new { success = true });
     }
+
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> UploadPhoto(IFormFile File)
+    {
+        var id = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+        var teacher = await _unitOfWork.Teacher.FindAsync(t => t.TeacherId == id, ["ApplicationUser"]);
+        if (teacher == null) return NotFound();
+
+        // Handle file upload only if the file is not null and has content
+        if (File != null && File.Length > 0)
+        {
+            // Delete old image if exists
+            if (!string.IsNullOrEmpty(teacher.ApplicationUser?.ProfilePictureURL))
+            {
+                var oldImagePath = Path.Combine(_webHostEnvironment.WebRootPath,
+                    teacher.ApplicationUser.ProfilePictureURL.TrimStart('/'));
+                if (System.IO.File.Exists(oldImagePath))
+                {
+                    System.IO.File.Delete(oldImagePath);
+                }
+            }
+
+            // Save new image
+            var uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "uploads", "profile-images");
+            var fileName = Guid.NewGuid() + Path.GetExtension(File.FileName);
+            var filePath = Path.Combine(uploadsFolder, fileName);
+
+            var uploadDirectory = Path.GetDirectoryName(filePath);
+            if (!Directory.Exists(uploadDirectory))
+            {
+                Directory.CreateDirectory(uploadDirectory);
+            }
+
+            using (var stream = new FileStream(filePath, FileMode.Create))
+            {
+                await File.CopyToAsync(stream);
+            }
+
+            teacher.ApplicationUser.ProfilePictureURL = $"/uploads/profile-images/{fileName}";
+        }
+        await _unitOfWork.ApplicationUser.UpdateAsync(teacher.ApplicationUser);
+        await _unitOfWork.SaveChangesAsync();
+
+        return RedirectToAction("Index");
+    }  
 }
+

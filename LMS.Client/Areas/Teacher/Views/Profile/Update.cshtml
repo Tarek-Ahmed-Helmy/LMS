@@ -1,0 +1,81 @@
+﻿@model ProfileTeacherUpdateViewModel
+
+@{
+    ViewBag.Title = "Teacher Profile";
+    ViewBag.CardTitle = "Update Teacher Profile";
+}
+
+<div class="card shadow-sm">
+    <div class="card-header bg-primary text-white">
+        <h3 class="card-title">@ViewBag.CardTitle</h3>
+    </div>
+    <div class="card-body">
+        <form method="post" >
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group mb-3">
+                        <label asp-for="FullName" class="form-label"></label>
+                        <input asp-for="FullName" class="form-control" />
+                        <span asp-validation-for="FullName" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label asp-for="Address" class="form-label"></label>
+                        <input asp-for="Address" class="form-control" />
+                        <span asp-validation-for="Address" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label asp-for="HireDate" class="form-label"></label>
+                        <input asp-for="HireDate" class="form-control" type="date" />
+                        <span asp-validation-for="HireDate" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-group mb-3">
+                        <label asp-for="ProfilePictureURL" class="form-label"></label>
+                        <div class="input-group">
+                            <input asp-for="ProfilePictureURL" class="form-control" id="profilePictureInput" />
+                            <button class="btn btn-outline-secondary" type="button" id="uploadButton">
+                                <i class="fas fa-upload"></i> Upload
+                            </button>
+                        </div>
+                        <span asp-validation-for="ProfilePictureURL" class="text-danger"></span>
+                        <input type="file" class="d-none" id="fileUpload" accept="image/*" />
+                        @if (!string.IsNullOrEmpty(Model.ProfilePictureURL))
+                        {
+                            <div class="mt-2">
+                                <img src="@Model.ProfilePictureURL" alt="Profile Picture" class="img-thumbnail" style="max-height: 150px;" />
+                            </div>
+                        }
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label asp-for="Qualification" class="form-label"></label>
+                        <input asp-for="Qualification" class="form-control" />
+                        <span asp-validation-for="Qualification" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label asp-for="Experience" class="form-label"></label>
+                        <input asp-for="Experience" class="form-control" type="number" min="0" />
+                        <span asp-validation-for="Experience" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="d-flex justify-content-between mt-4">
+                <a asp-action="Index" class="btn btn-secondary">
+                    <i class="fas fa-arrow-left"></i> Back to List
+                </a>
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-save"></i> Update Profile
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+

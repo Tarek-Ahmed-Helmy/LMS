@@ -2,9 +2,8 @@
 
 @{
     ViewData["Title"] = "Fees & Payments";
+	ViewBag.CardTitle = "My Children's Fee Records";
 }
-
-<h2 class="mb-4">My Children's Fee Records</h2>
 
 @if (!Model.Any())
 {
@@ -20,7 +19,7 @@ else
                 <th>Date</th>
                 <th>Method</th>
                 <th>Status</th>
-                <th>Receipt</th>
+                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -36,13 +35,25 @@ else
                             @p.PaymentStatus
                         </span>
                     </td>
-                    <td>
-                        <a class="btn btn-sm btn-outline-primary"
-                           href="@Url.Action("DownloadReceipt", "Finance", new { paymentId = p.PaymentId })"
-                           target="_blank">
-                            <i class="bi bi-download"></i> Receipt
-                        </a>
-                    </td>
+					@if (p.PaymentStatus == PaymentStatus.Pending)
+					{
+						<td>
+                            <a asp-action="MakePayment" asp-route-paymentId="@p.PaymentId" class="btn btn-warning">
+                                <i class="bi bi-pencil-square me-2"></i> Make Payment
+							</a>
+						</td>
+					}
+					else
+					{
+                        <td>
+                            <a class="btn btn-sm btn-outline-primary"
+                               href="@Url.Action("DownloadReceipt", "Finance", new { paymentId = p.PaymentId })"
+                               target="_blank">
+                                <i class="bi bi-download"></i> Receipt
+                            </a>
+                        </td>
+					}
+					
                 </tr>
             }
         </tbody>

@@ -27,6 +27,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="wwwroot\uploads\profile-images\" />
+    <Folder Include="wwwroot\uploads\profile-image\" />
     <Folder Include="wwwroot\uploads\receipts\" />
   </ItemGroup>
 
