@@ -5,7 +5,7 @@
     public class GradeSubmissionViewModel
     {
         public int SubmissionId { get; set; }
-
+        public int AssignmentId { get; set; }
         public string AssignmentTitle { get; set; } = string.Empty;
         public string AssignmentDescription { get; set; } = string.Empty;
 

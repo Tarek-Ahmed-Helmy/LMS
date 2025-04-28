@@ -1,43 +1,37 @@
-﻿@model LMS.Web.ViewModels.GradeSubmissionViewModel
-
+﻿@model GradeSubmissionViewModel
 @{
-    ViewData["Title"] = "Grade Submission";
+	ViewData["Title"] = "Grade Submission";
+	ViewBag.CardTitle = $"{@Model.AssignmentTitle}";
 }
 
-<h3>@Model.AssignmentTitle</h3>
 @if (!string.IsNullOrEmpty(Model.AssignmentDescription))
 {
-    <p class="text-muted">@Model.AssignmentDescription</p>
+	<p class="text-muted">@Model.AssignmentDescription</p>
+	<hr />
 }
-<hr />
 
-<form asp-action="Grade"
-      asp-route-submissionId="@Model.SubmissionId"
-      method="post">
-    @Html.AntiForgeryToken()
-    <!-- carry the SubmissionId in a hidden field, too -->
-    <input type="hidden" asp-for="SubmissionId" />
 
-    <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+<form asp-action="Grade" method="post">
+	@Html.AntiForgeryToken()
+	<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+	<input type="hidden" asp-for="SubmissionId" />
 
-    <div class="mb-3">
-        <label asp-for="Score" class="form-label"></label>
-        <input asp-for="Score" class="form-control" />
-        <span asp-validation-for="Score" class="text-danger"></span>
-    </div>
+	<div class="mb-3">
+		<label asp-for="Score" class="form-label"></label>
+		<input asp-for="Score" class="form-control" />
+		<span asp-validation-for="Score" class="text-danger"></span>
+	</div>
 
-    <div class="mb-3">
-        <label asp-for="Feedback" class="form-label"></label>
-        <textarea asp-for="Feedback" rows="4" class="form-control"></textarea>
-        <span asp-validation-for="Feedback" class="text-danger"></span>
-    </div>
+	<div class="mb-3">
+		<label asp-for="Feedback" class="form-label"></label>
+		<textarea asp-for="Feedback" rows="4" class="form-control"></textarea>
+		<span asp-validation-for="Feedback" class="text-danger"></span>
+	</div>
 
-    <button type="submit" class="btn btn-primary">Save</button>
-    <a asp-action="Submissions"
-       asp-route-assignmentId="@(ViewBag.AssignmentId)"
-       class="btn btn-secondary ms-2">Back</a>
+	<button type="submit" class="btn btn-primary">Save</button>
+	<a asp-action="Submissions" asp-route-assignmentId="@Model.AssignmentId" class="btn btn-secondary ms-2">Back</a>
 </form>
 
 @section Scripts {
-    <partial name="_ValidationScriptsPartial" />
-}
+	<partial name="_ValidationScriptsPartial" />
+ }

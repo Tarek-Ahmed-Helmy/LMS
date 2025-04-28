@@ -60,7 +60,12 @@
 							return data ? new Date(data).toLocaleDateString() : '';
 						}
 					},
-					{ "data": "gradeLevel" },
+					{ 
+						"data": "gradeLevel",
+						"render": function(data) {
+							return data === 0 ? 'Kindergarten' : `Grade ${data}`;
+						}
+					},
 					{ "data": "classNumber" },
 					{
 						"data": "studentId",

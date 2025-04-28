@@ -16,6 +16,7 @@ public class CreateExamVM
     public int ExamDuration { get; set; }
 
     [Required]
+    [Display(Name = "Subject")]
     public int SubjectId { get; set; }
 
     [Required]

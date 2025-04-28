@@ -12,16 +12,18 @@ namespace LMS.Web.Areas.TeacherArea.Controllers;
 [Authorize(Roles = SD.TeacherRole)]
 public class AssignmentController : Controller
 {
-    private readonly IUnitOfWork _uow;
-    public AssignmentController(IUnitOfWork uow) => _uow = uow;
+    private readonly IUnitOfWork _unitOfWork;
+    public AssignmentController(IUnitOfWork unitOfWork)
+    {
+        _unitOfWork = unitOfWork;
+    }
 
-    /* ===================  Index  =================== */
     [HttpGet]
     public async Task<IActionResult> Index()
     {
         var teacherId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-        var assignments = await _uow.Assignment
+        var assignments = await _unitOfWork.Assignment
             .FindAllAsync(a => a.TeacherId == teacherId, ["Subject"]);
 
         var vm = assignments
@@ -42,12 +44,11 @@ public class AssignmentController : Controller
         return View(vm);
     }
 
-    /* ===================  Upload  =================== */
     [HttpGet]
     public async Task<IActionResult> Upload()
     {
         var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-        var subjects = await _uow.Subject.FindAllAsync(s => s.Schedules.Select(sh => sh.TeacherId).Contains(userId));
+        var subjects = await _unitOfWork.Subject.FindAllAsync(s => s.Schedules.Select(sh => sh.TeacherId).Contains(userId));
         return View(new CreateAssignmentViewModel { Subjects = subjects });
     }
 
@@ -55,13 +56,13 @@ public class AssignmentController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Upload(CreateAssignmentViewModel model)
     {
+        var teacherId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
         if (!ModelState.IsValid)
         {
-            model.Subjects = await _uow.Subject.GetAllAsync();
+            model.Subjects = await _unitOfWork.Subject.FindAllAsync(s => s.Schedules.Select(sh => sh.TeacherId).Contains(teacherId));
             return View(model);
         }
-
-        var teacherId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
         var assignment = new Assignment
         {
@@ -74,22 +75,21 @@ public class AssignmentController : Controller
             TeacherId = teacherId
         };
 
-        await _uow.Assignment.AddAsync(assignment);
-        await _uow.SaveChangesAsync();
+        await _unitOfWork.Assignment.AddAsync(assignment);
+        await _unitOfWork.SaveChangesAsync();
         return RedirectToAction(nameof(Index));
     }
 
-    /* ===================  Edit  =================== */
     [HttpGet]
     public async Task<IActionResult> Edit(int assignmentId)
     {
         var teacherId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-        var assignment = await _uow.Assignment.FindAsync(
+        var assignment = await _unitOfWork.Assignment.FindAsync(
             a => a.AssignmentId == assignmentId && a.TeacherId == teacherId);
 
         if (assignment is null) return NotFound();
 
-        var subjects = await _uow.Subject.GetAllAsync();
+        var subjects = await _unitOfWork.Subject.FindAllAsync(s => s.Schedules.Select(sh => sh.TeacherId).Contains(teacherId));
 
         return View(new EditAssignmentViewModel
         {
@@ -108,14 +108,16 @@ public class AssignmentController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(int assignmentId, EditAssignmentViewModel model)
     {
+        var teacherId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
         if (!ModelState.IsValid)
         {
-            model.Subjects = await _uow.Subject.GetAllAsync();
+            model.Subjects = await _unitOfWork.Subject.FindAllAsync(s => s.Schedules.Select(sh => sh.TeacherId).Contains(teacherId));
             return View(model);
         }
 
-        var teacherId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-        var assignment = await _uow.Assignment.FindAsync(
+        
+        var assignment = await _unitOfWork.Assignment.FindAsync(
             a => a.AssignmentId == assignmentId && a.TeacherId == teacherId);
 
         if (assignment is null) return NotFound();
@@ -128,38 +130,36 @@ public class AssignmentController : Controller
         assignment.SubjectId = model.SubjectId;
         assignment.UpdatedAt = DateTime.UtcNow;
 
-        await _uow.Assignment.UpdateAsync(assignment);
-        await _uow.SaveChangesAsync();
+        await _unitOfWork.Assignment.UpdateAsync(assignment);
+        await _unitOfWork.SaveChangesAsync();
         return RedirectToAction(nameof(Index));
     }
 
-    /* ===================  Delete  =================== */
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Delete(int assignmentId)
     {
         var teacherId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-        var assignment = await _uow.Assignment.FindAsync(
+        var assignment = await _unitOfWork.Assignment.FindAsync(
             a => a.AssignmentId == assignmentId && a.TeacherId == teacherId);
 
         if (assignment is null) return NotFound();
 
-        await _uow.Assignment.DeleteAsync(assignment);
-        await _uow.SaveChangesAsync();
+        await _unitOfWork.Assignment.DeleteAsync(assignment);
+        await _unitOfWork.SaveChangesAsync();
         return RedirectToAction(nameof(Index));
     }
 
-    /* ===================  Submissions  =================== */
     [HttpGet]
     public async Task<IActionResult> Submissions(int assignmentId)
     {
         var teacherId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-        var assignment = await _uow.Assignment.FindAsync(
+        var assignment = await _unitOfWork.Assignment.FindAsync(
             a => a.AssignmentId == assignmentId && a.TeacherId == teacherId);
 
         if (assignment is null) return NotFound();
 
-        var submissions = await _uow.Submission.FindAllAsync(
+        var submissions = await _unitOfWork.Submission.FindAllAsync(
             s => s.AssignmentId == assignmentId,
             new[] { "Student.ApplicationUser" });
 
@@ -177,51 +177,41 @@ public class AssignmentController : Controller
         return View(vm);
     }
 
-    /* ===================  Grade  =================== */
     [HttpGet]
     public async Task<IActionResult> Grade(int submissionId)
     {
-        var teacherId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-
-        var submission = await _uow.Submission.FindAsync(
-            s => s.SubmissionId == submissionId && s.Assignment!.TeacherId == teacherId,
-            new[] { "Assignment" });
-
-        if (submission is null)
-            return NotFound();
-
-        var vm = new GradeSubmissionViewModel
+        var submission = await _unitOfWork.Submission.FindAsync(s => s.SubmissionId == submissionId, ["Assignment"]);
+        var model = new GradeSubmissionViewModel
         {
-            SubmissionId = submission.SubmissionId,
-            Score = submission.Score ,
-            Feedback = submission.Feedback
+            SubmissionId = submissionId,
+            AssignmentId = submission?.AssignmentId ?? 0,
+            AssignmentTitle = submission?.Assignment?.Title,
+            AssignmentDescription = submission?.Assignment?.AssignmentDescription,
+            Score = submission?.Score,
+            Feedback = submission?.Feedback
         };
-
-        ViewBag.AssignmentId = submission.AssignmentId;
-        ViewBag.AssignmentTitle = submission.Assignment!.Title;
-
-        return View(vm);
+        return View(model);
     }
 
-    [HttpPost("Grade/{submissionId:int}")]
+    [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Grade(int submissionId, GradeSubmissionViewModel model)
     {
         if (!ModelState.IsValid) return View(model);
 
         var teacherId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-        var submission = await _uow.Submission.FindAsync(
+        var submission = await _unitOfWork.Submission.FindAsync(
             s => s.SubmissionId == submissionId && s.Assignment!.TeacherId == teacherId,
             new[] { "Assignment" });
 
         if (submission is null) return NotFound();
 
-        submission.Score = submission.Score;
-        submission.Feedback = submission.Feedback;
+        submission.Score = model.Score.Value;
+        submission.Feedback = model.Feedback;
         submission.UpdatedAt = DateTime.UtcNow;
 
-        await _uow.Submission.UpdateAsync(submission);
-        await _uow.SaveChangesAsync();
+        await _unitOfWork.Submission.UpdateAsync(submission);
+        await _unitOfWork.SaveChangesAsync();
 
         return RedirectToAction(nameof(Submissions), new { assignmentId = submission.AssignmentId });
     }

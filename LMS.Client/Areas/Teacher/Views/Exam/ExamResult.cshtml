@@ -1,10 +1,8 @@
 ﻿@model IEnumerable<ExamResultVM>
 @{
     ViewData["Title"] = "Exam Results";
+    ViewBag.CardTitle = $"{@ViewBag.ExamInfo} – Results";
 }
-
-<h3>@ViewBag.ExamInfo – Results</h3>
-<hr />
 
 <table class="table table-striped">
     <thead>
@@ -18,9 +16,10 @@
     <tbody>
         @foreach (var r in Model)
         {
+			var score = r.Score == -1 ? "--" : $"{r.Score}";
             <tr>
                 <td>@r.StudentName</td>
-                <td>@r.Score</td>
+                <td>@score</td>
                 <td>@r.Remarks</td>
                 <td class="text-end">
                     <a asp-action="Grade"

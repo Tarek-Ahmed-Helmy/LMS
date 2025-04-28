@@ -1,12 +1,11 @@
 ﻿@model GradeExamResultVM
 @{
     ViewData["Title"] = "Grade Exam";
+    ViewBag.CardTitle = "Grade / Edit result";
 }
 
-<h3>Grade / Edit result</h3>
-<hr />
-
 <form asp-action="Grade" method="post">
+	<input type="hidden" asp-for="ExamResultId" />
     @Html.AntiForgeryToken()
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
