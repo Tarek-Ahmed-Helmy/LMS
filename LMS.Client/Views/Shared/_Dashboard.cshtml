@@ -2,210 +2,223 @@
 @inject SignInManager<ApplicationUser> SignInManager
 
 @{
-	var role = User.IsInRole(SD.SuperAdminRole) ? SD.SuperAdminRole :
-			   User.IsInRole(SD.AdminRole) ? SD.AdminRole :
-			   User.IsInRole(SD.TeacherRole) ? SD.TeacherRole :
-			   User.IsInRole(SD.StudentRole) ? SD.StudentRole : SD.ParentRole;
+    var role = User.IsInRole(SD.SuperAdminRole) ? SD.SuperAdminRole :
+                       User.IsInRole(SD.AdminRole) ? SD.AdminRole :
+                       User.IsInRole(SD.TeacherRole) ? SD.TeacherRole :
+                       User.IsInRole(SD.StudentRole) ? SD.StudentRole :
+                       User.IsInRole(SD.ParentRole) ? SD.ParentRole : "Default";
 }
 
 <!doctype html>
 <html lang="en">
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<title>@ViewData["Title"]</title>
-	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<meta name="title" content="LMS" />
-	<meta name="author" content="DEPI" />
-	<meta name="description"
-		  content="A comprehensive School Learning and Management System designed to streamline academic operations, enhance collaboration,
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>@ViewData["Title"]</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="title" content="LMS" />
+    <meta name="author" content="DEPI" />
+    <meta name="description"
+          content="A comprehensive School Learning and Management System designed to streamline academic operations, enhance collaboration,
 					and improve learning experiences. Features include course management, attendance tracking, grading, timetable management,
 					and parental engagement tools.." />
-	<meta name="keywords"
-		  content="" />
-	<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap">
-	<link rel="stylesheet"
-		  href="https://cdn.jsdelivr.net/npm/overlayscrollbars@2.10.1/styles/overlayscrollbars.min.css"
-		  integrity="sha256-tZHrRjVqNSRyWg2wbppGnT833E/Ys0DHWGwT04GiqQg="
-		  crossorigin="anonymous" />
-	<link rel="stylesheet"
-		  href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
-		  integrity="sha256-9kPW/n5nn53j4WMRYAxe9c1rCY96Oogo/MKSVdKzPmI="
-		  crossorigin="anonymous" />
-	<link rel="stylesheet" href="~/dist/css/adminlte.css" />
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" />
-	<link rel="stylesheet" href="https://cdn.datatables.net/2.2.1/css/dataTables.dataTables.min.css" />
-	<script src="https://cdn.tiny.cloud/1/590th94qxr6029vlmdi3ankktakf59868g0jusgx5c5x30x4/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
+    <meta name="keywords"
+          content="" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap">
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/overlayscrollbars@2.10.1/styles/overlayscrollbars.min.css"
+          integrity="sha256-tZHrRjVqNSRyWg2wbppGnT833E/Ys0DHWGwT04GiqQg="
+          crossorigin="anonymous" />
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+          integrity="sha256-9kPW/n5nn53j4WMRYAxe9c1rCY96Oogo/MKSVdKzPmI="
+          crossorigin="anonymous" />
+    <link rel="stylesheet" href="~/dist/css/adminlte.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.2.1/css/dataTables.dataTables.min.css" />
+    <script src="https://cdn.tiny.cloud/1/590th94qxr6029vlmdi3ankktakf59868g0jusgx5c5x30x4/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
 </head>
 <body class="sidebar-expand-lg bg-body-tertiary">
-	<div class="app-wrapper">
-		<nav class="app-header navbar navbar-expand bg-body">
-			<div class="container-fluid">
-				<ul class="navbar-nav">
-					<li class="nav-item">
-						<a class="nav-link" data-lte-toggle="sidebar" role="button">
-							<i class="bi bi-list"></i>
-						</a>
-					</li>
-				</ul>
-				<ul class="navbar-nav ms-auto">
-					<li class="nav-item">
-						<a class="nav-link" href="#" data-lte-toggle="fullscreen">
-							<i data-lte-icon="maximize" class="bi bi-arrows-fullscreen"></i>
-							<i data-lte-icon="minimize" class="bi bi-fullscreen-exit" style="display: none"></i>
-						</a>
-					</li>
+    <div class="app-wrapper">
+        <nav class="app-header navbar navbar-expand bg-body">
+            <div class="container-fluid">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" data-lte-toggle="sidebar" role="button">
+                            <i class="bi bi-list"></i>
+                        </a>
+                    </li>
+                </ul>
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" data-lte-toggle="fullscreen">
+                            <i data-lte-icon="maximize" class="bi bi-arrows-fullscreen"></i>
+                            <i data-lte-icon="minimize" class="bi bi-fullscreen-exit" style="display: none"></i>
+                        </a>
+                    </li>
 
-					@* it will be in viewcomponent *@
-					<!--begin::User Menu Dropdown-->
-					<li class="nav-item dropdown user-menu">
-						<a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
-							<img src="~/dist/assets/img/user2-160x160.jpg"
-								 class="user-image rounded-circle shadow"
-								 alt="User Image" />
-							<span class="d-none d-md-inline">@User?.Identity?.Name</span>
-						</a>
-						<ul class="dropdown-menu dropdown-menu-lg dropdown-menu-end">
-							<!--begin::User Image-->
-							<li class="user-header text-bg-primary">
-								<img src="~/dist/assets/img/user2-160x160.jpg"
-									 class="rounded-circle shadow"
-									 alt="User Image" />
-								<p>
-									@User?.Identity?.Name
-								</p>
-							</li>
-							<!--end::User Image-->
-							<!--begin::Menu Footer-->
-							<li class="user-footer">
-								<a href="#" class="btn btn-default btn-flat">Profile</a>
-								<form method="post" asp-area="shared" asp-controller="account" asp-action="logout" class="float-end">
-									<button type="submit" style="width:auto" class="nav-link btn btn-default btn-flat  py-0">
-										Logout
-									</button>
-								</form>
-							</li>
-							<!--end::Menu Footer-->
-						</ul>
-					</li>
-					<!--end::User Menu Dropdown-->
-				</ul>
-			</div>
-		</nav>
-		<aside class="app-sidebar bg-body-secondary shadow" data-bs-theme="dark">
-			<div class="sidebar-brand">
-				<a href="#" class="brand-link">
-					@* add logo *@
-					<img src="~/dist/assets/img/AdminLTELogo.png"
-						 alt="AdminLTE Logo"
-						 class="brand-image opacity-75 shadow" />
-					<span class="brand-text fw-light">Al-Madrasa</span>
-				</a>
-			</div>
-			<div class="sidebar-wrapper">
-				<nav class="mt-2">
-					<ul class="nav sidebar-menu flex-column"
-						data-lte-toggle="treeview"
-						role="menu"
-						data-accordion="false">
-						@switch (role)
-						{
-							case SD.SuperAdminRole:
-								<partial name="Partials/_NavbarSuperAdmin" />
-								break;
-							case SD.AdminRole:
-								<partial name="Partials/_NavbarAdmin" />
-								break;
-							case SD.TeacherRole:
-								<partial name="Partials/_NavbarTeacher" />
-								break;
-							case SD.StudentRole:
-								<partial name="Partials/_NavbarStudent" />
-								break;
-							default:
-								<partial name="Partials/_NavbarParent" />
-								break;
-						}
-					</ul>
-				</nav>
-			</div>
-		</aside>
-		<main class="app-main">
-			<div class="app-content-header">
-				<div class="container-fluid">
-					<div class="row">
-						<div class="col-sm-6"><h3 class="mb-0">@ViewBag.PageTitle</h3></div>
-					</div>
-				</div>
-			</div>
-			<div class="app-content">
-				<div class="container-fluid">
-					<div class="row">
-						<div class="col-12">
-							<div class="card">
-								<div class="card-header">
-									<h3 class="card-title">@ViewBag.CardTitle</h3>
-									<div class="card-tools">
-										<button type="button"
-												class="btn btn-tool"
-												data-lte-toggle="card-collapse"
-												title="Collapse">
-											<i data-lte-icon="expand" class="bi bi-plus-lg"></i>
-											<i data-lte-icon="collapse" class="bi bi-dash-lg"></i>
-										</button>
-									</div>
-								</div>
-								<div class="card-body">
-									<partial name="_Toastr" />
-									@RenderBody()
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</main>
-		<footer class="app-footer">
-			<div class="float-end d-none d-sm-inline">Dashboard</div>
-			<strong>
-				Copyright &copy; 2025&nbsp; <span style="color:sandybrown">DEPI Graduation Project</span> ;
-			</strong>
-			All rights reserved.
-		</footer>
-	</div>
-	<script src="https://cdn.jsdelivr.net/npm/overlayscrollbars@2.10.1/browser/overlayscrollbars.browser.es6.min.js"
-			integrity="sha256-dghWARbRe2eLlIJ56wNB+b760ywulqK3DzZYEpsg2fQ="
-			crossorigin="anonymous">
-	</script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.8/umd/popper.min.js"></script>
-	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"
-			integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy"
-			crossorigin="anonymous">
-	</script>
-	<script src="~/dist/js/adminlte.js"></script>
-	<script>
-		const SELECTOR_SIDEBAR_WRAPPER = '.sidebar-wrapper';
-		const Default = {
-		  scrollbarTheme: 'os-theme-light',
-		  scrollbarAutoHide: 'leave',
-		  scrollbarClickScroll: true,
-		};
-		document.addEventListener('DOMContentLoaded', function () {
-		  const sidebarWrapper = document.querySelector(SELECTOR_SIDEBAR_WRAPPER);
-		  if (sidebarWrapper && typeof OverlayScrollbarsGlobal?.OverlayScrollbars !== 'undefined') {
-			OverlayScrollbarsGlobal.OverlayScrollbars(sidebarWrapper, {
-			  scrollbars: {
-				theme: Default.scrollbarTheme,
-				autoHide: Default.scrollbarAutoHide,
-				clickScroll: Default.scrollbarClickScroll,
-			  },
-			});
-		  }
-		});
-	</script>
-	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-	<script src="https://cdn.datatables.net/2.2.1/js/dataTables.min.js"></script>
-	<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
-	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-	@await RenderSectionAsync("Scripts", required: false)
+                    @* it will be in viewcomponent *@
+                    <!--begin::User Menu Dropdown-->
+                    <li class="nav-item dropdown user-menu">
+
+                        @if (SignInManager.IsSignedIn(User))
+                        {
+                            <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
+                                <img src="~/dist/assets/img/user2-160x160.jpg"
+                                     class="user-image rounded-circle shadow"
+                                     alt="User Image" />
+                                <span class="d-none d-md-inline">@User?.Identity?.Name</span>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-end">
+                                <!--begin::User Image-->
+                                <li class="user-header text-bg-primary">
+                                    <img src="~/dist/assets/img/user2-160x160.jpg"
+                                         class="rounded-circle shadow"
+                                         alt="User Image" />
+                                    <p>
+                                        @User?.Identity?.Name
+                                    </p>
+                                </li>
+                                <!--end::User Image-->
+                                <!--begin::Menu Footer-->
+                                <li class="user-footer">
+                                    <a href="#" class="btn btn-default btn-flat">Profile</a>
+                                    <form method="post" asp-area="shared" asp-controller="account" asp-action="logout" class="float-end">
+                                        <button type="submit" style="width:auto" class="nav-link btn btn-default btn-flat  py-0">
+                                            Logout
+                                        </button>
+                                    </form>
+                                </li>
+                                <!--end::Menu Footer-->
+                            </ul>
+                        }
+                        else
+                        {
+                            <a href="/Shared/Account/Login" class="nav-link btn btn-default btn-flat  py-0">Login</a>
+                        }
+
+                    </li>
+                    <!--end::User Menu Dropdown-->
+                </ul>
+            </div>
+        </nav>
+        <aside class="app-sidebar bg-body-secondary shadow" data-bs-theme="dark">
+            <div class="sidebar-brand">
+                <a href="#" class="brand-link">
+                    @* add logo *@
+                    <img src="~/dist/assets/img/AdminLTELogo.png"
+                         alt="AdminLTE Logo"
+                         class="brand-image opacity-75 shadow" />
+                    <span class="brand-text fw-light">Al-Madrasa</span>
+                </a>
+            </div>
+            <div class="sidebar-wrapper">
+                <nav class="mt-2">
+                    <ul class="nav sidebar-menu flex-column"
+                        data-lte-toggle="treeview"
+                        role="menu"
+                        data-accordion="false">
+                        @switch (role)
+                        {
+                            case SD.SuperAdminRole:
+                                <partial name="Partials/_NavbarSuperAdmin" />
+                                break;
+                            case SD.AdminRole:
+                                <partial name="Partials/_NavbarAdmin" />
+                                break;
+                            case SD.TeacherRole:
+                                <partial name="Partials/_NavbarTeacher" />
+                                break;
+                            case SD.StudentRole:
+                                <partial name="Partials/_NavbarStudent" />
+                                break;
+                            case SD.ParentRole:
+                                <partial name="Partials/_NavbarParent" />
+                                break;
+                            default:
+                                <partial name="Partials/_NavbarDefault" />
+                                break;
+                        }
+                    </ul>
+                </nav>
+            </div>
+        </aside>
+        <main class="app-main">
+            <div class="app-content-header">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-sm-6"><h3 class="mb-0">@ViewBag.PageTitle</h3></div>
+                    </div>
+                </div>
+            </div>
+            <div class="app-content">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h3 class="card-title">@ViewBag.CardTitle</h3>
+                                    <div class="card-tools">
+                                        <button type="button"
+                                                class="btn btn-tool"
+                                                data-lte-toggle="card-collapse"
+                                                title="Collapse">
+                                            <i data-lte-icon="expand" class="bi bi-plus-lg"></i>
+                                            <i data-lte-icon="collapse" class="bi bi-dash-lg"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <partial name="_Toastr" />
+                                    @RenderBody()
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+        <footer class="app-footer">
+            <div class="float-end d-none d-sm-inline">Dashboard</div>
+            <strong>
+                Copyright &copy; 2025&nbsp; <span style="color:sandybrown">DEPI Graduation Project</span> ;
+            </strong>
+            All rights reserved.
+        </footer>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/overlayscrollbars@2.10.1/browser/overlayscrollbars.browser.es6.min.js"
+            integrity="sha256-dghWARbRe2eLlIJ56wNB+b760ywulqK3DzZYEpsg2fQ="
+            crossorigin="anonymous">
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.8/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"
+            integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy"
+            crossorigin="anonymous">
+    </script>
+    <script src="~/dist/js/adminlte.js"></script>
+    <script>
+        const SELECTOR_SIDEBAR_WRAPPER = '.sidebar-wrapper';
+        const Default = {
+          scrollbarTheme: 'os-theme-light',
+          scrollbarAutoHide: 'leave',
+          scrollbarClickScroll: true,
+        };
+        document.addEventListener('DOMContentLoaded', function () {
+          const sidebarWrapper = document.querySelector(SELECTOR_SIDEBAR_WRAPPER);
+          if (sidebarWrapper && typeof OverlayScrollbarsGlobal?.OverlayScrollbars !== 'undefined') {
+            OverlayScrollbarsGlobal.OverlayScrollbars(sidebarWrapper, {
+              scrollbars: {
+                theme: Default.scrollbarTheme,
+                autoHide: Default.scrollbarAutoHide,
+                clickScroll: Default.scrollbarClickScroll,
+              },
+            });
+          }
+        });
+    </script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/2.2.1/js/dataTables.min.js"></script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
