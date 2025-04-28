@@ -1,9 +1,32 @@
-﻿@{
+﻿@model SubjectManagementViewModel
+
+@{
     ViewBag.Title = "Subject Management";
     ViewBag.CardTitle = "View Subjects";
 }
 
-<a asp-action="AddSubject" class="btn btn-success mb-3">Add New Subject</a>
+<a class="btn btn-success mb-3" data-bs-toggle="collapse" href="#addSubjectForm">Add Subject</a>
+
+<div id="addSubjectForm" class="collapse">
+    <form asp-action="AddSubject" method="post">
+        <div class="form-group">
+            <label asp-for="NewSubject.SubjectCode"></label>
+            <input asp-for="NewSubject.SubjectCode" class="form-control" />
+            <span asp-validation-for="NewSubject.SubjectCode" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="NewSubject.SubjectName"></label>
+            <input asp-for="NewSubject.SubjectName" class="form-control" />
+            <span asp-validation-for="NewSubject.SubjectName" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="NewSubject.SubjectDescription"></label>
+            <textarea asp-for="NewSubject.SubjectDescription" class="form-control"></textarea>
+            <span asp-validation-for="NewSubject.SubjectDescription" class="text-danger"></span>
+        </div>
+        <button type="submit" class="btn btn-primary mt-2">Save</button>
+    </form>
+</div>
 
 <table id="subjectsTable" class="table table-hover" width="100%">
     <thead class="text-bold">

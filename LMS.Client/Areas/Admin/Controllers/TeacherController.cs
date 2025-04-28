@@ -282,7 +282,7 @@ public class TeacherController : Controller
 
         await PopulateViewBags();
 
-        var model = new AddScheduleViewModel
+        var model = new EditScheduleViewModel
         {
             TeacherId = teacherId,
             ScheduleId = schedule.ScheduleId,
@@ -298,7 +298,7 @@ public class TeacherController : Controller
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> EditSchedule(AddScheduleViewModel model)
+    public async Task<IActionResult> EditSchedule(EditScheduleViewModel model)
     {
         if (!ModelState.IsValid)
         {

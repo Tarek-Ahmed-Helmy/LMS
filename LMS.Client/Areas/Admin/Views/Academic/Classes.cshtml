@@ -1,9 +1,32 @@
-﻿@{
+﻿@model ClassManagementViewModel
+
+@{
     ViewBag.Title = "Class Management";
     ViewBag.CardTitle = "View Classes";
 }
 
-<a asp-action="AddClass" class="btn btn-success mb-3">Add New Class</a>
+<a class="btn btn-success mb-3" data-bs-toggle="collapse" href="#addClassForm">Add Class</a>
+
+<div id="addClassForm" class="collapse">
+    <form asp-action="AddClass" method="post">
+        <div class="form-group">
+            <label asp-for="NewClass.ClassNumber"></label>
+            <input asp-for="NewClass.ClassNumber" class="form-control" />
+            <span asp-validation-for="NewClass.ClassNumber" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="NewClass.GradeLevel"></label>
+            <select asp-for="NewClass.GradeLevel" class="form-control" asp-items="Html.GetEnumSelectList<GradeLevel>()"></select>
+            <span asp-validation-for="NewClass.GradeLevel" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="NewClass.Capacity"></label>
+            <input asp-for="NewClass.Capacity" class="form-control" />
+            <span asp-validation-for="NewClass.Capacity" class="text-danger"></span>
+        </div>
+        <button type="submit" class="btn btn-primary mt-2">Save</button>
+    </form>
+</div>
 
 <table id="classesTable" class="table table-hover" width="100%">
     <thead class="text-bold">

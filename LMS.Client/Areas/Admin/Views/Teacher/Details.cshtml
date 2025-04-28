@@ -96,7 +96,7 @@
                                         <td>@(schedule.Class?.GradeLevel + " - " + schedule.Class?.ClassNumber)</td>
                                         <td>
                                             <div class="d-flex gap-2">
-                                                <a asp-action="EditSchedule" asp-route-id="@schedule.ScheduleId"
+                                                <a asp-action="EditSchedule" asp-route-id="@schedule.ScheduleId" asp-route-teacherId="@schedule.TeacherId"
                                                    class="btn btn-sm btn-outline-primary">
                                                     <i class="bi bi-pencil"></i>
                                                 </a>

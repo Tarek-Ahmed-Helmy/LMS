@@ -30,19 +30,19 @@ public class ProfileController : Controller
         if (student == null || student.ApplicationUser == null)
             return NotFound();
 
-        var studentProfileVM = new StudentProfileViewModel
+        var studentProfileVM = new StudentDetailsViewModel
         {
+            FullName = student.ApplicationUser?.FullName,
+            Address = student.ApplicationUser?.Address,
+            ProfilePictureURL = student.ApplicationUser?.ProfilePictureURL,
             DateOfBirth = student.DateOfBirth,
             Gender = student.Gender,
             EmergencyContact = student.EmergencyContact,
             AdmissionDate = student.AdmissionDate,
             StudentNumber = student.StudentNumber,
-            FullName = student.ApplicationUser.FullName,
-            Address = student.ApplicationUser.Address,
-            ProfilePictureURL = student.ApplicationUser.ProfilePictureURL,
-            BusNumber = student.BusId?.ToString() ?? "N/A",
-            ClassNumber = student.Class?.ClassNumber ?? "N/A",
-            GradeLevel = student.Class?.GradeLevel
+            GradeLevel = student.Class?.GradeLevel,
+            ClassNumber = student.Class?.ClassNumber,
+            BusSubscription = student.BusId != null ? "Subscriped" : "Unsubscriped"
         };
 
         return View(studentProfileVM);

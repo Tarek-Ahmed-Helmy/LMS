@@ -1,10 +1,10 @@
-﻿using System.Security.Claims;
-using LMS.Entities.Interfaces;
+﻿using LMS.Entities.Interfaces;
 using LMS.Entities.Models;
 using LMS.Utilities;
 using LMS.Web.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace LMS.Web.Areas.TeacherArea.Controllers;
 
@@ -12,206 +12,216 @@ namespace LMS.Web.Areas.TeacherArea.Controllers;
 [Authorize(Roles = SD.TeacherRole)]
 public class ExamController : Controller
 {
-    private readonly IUnitOfWork _uow;
-    public ExamController(IUnitOfWork uow) => _uow = uow;
+    private readonly IUnitOfWork _unitOfWork;
+    public ExamController(IUnitOfWork unitOfWork)
+    {
+        _unitOfWork = unitOfWork;
+    }
 
-        // GET: /Teacher/Exam
-        [HttpGet("")]
-        public async Task<IActionResult> Index()
-        {
-            var teacherId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+    [HttpGet]
+    public async Task<IActionResult> Index()
+    {
+        var teacherId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-            var exams = await _uow.Exam
-                .FindAllAsync(e => e.TeacherID == teacherId, new[] { "Subject" });
+        var exams = await _unitOfWork.Exam.FindAllAsync(e => e.TeacherID == teacherId && e.ExamType != ExamType.Quiz, ["Subject"]);
 
-            var vm = exams
-                .GroupBy(e => e.Subject!.SubjectName)
-                .Select(g => new ExamGroupVM
+        var vm = exams
+            .GroupBy(e => e.Subject!.SubjectName)
+            .Select(g => new ExamGroupVM
+            {
+                SubjectName = g.Key,
+                Exams = g.Select(e => new TeacherExamVM
                 {
-                    SubjectName = g.Key,
-                    Exams = g.Select(e => new TeacherExamVM
-                    {
-                        ExamId = e.ExamID,
-                        Type = e.ExamType.ToString(),
-                        ExamDate = e.ExamDate,
-                        TotalMarks = e.TotalMarks,
-                        Status = e.ExamDate >= DateTime.UtcNow
-                                        ? "Upcoming"
-                                        : "Finished"
-                    }).ToList()
-                })
-                .ToList();
+                    ExamId = e.ExamID,
+                    Type = e.ExamType.ToString(),
+                    ExamDate = e.ExamDate,
+                    TotalMarks = e.TotalMarks,
+                    Status = e.ExamDate >= DateTime.UtcNow ? "Upcoming" : "Finished"
+                }).ToList()
+            })
+            .ToList();
 
-            return View(vm);
+        return View(vm);
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> Upload()
+    {
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        var subjects = await _unitOfWork.Subject.FindAllAsync(s => s.Schedules.Select(sh => sh.TeacherId).Contains(userId));
+        var classes = await _unitOfWork.Class.FindAllAsync(s => s.Schedules.Select(sh => sh.TeacherId).Contains(userId));
+        return View(new CreateExamVM { Subjects = subjects, Classes = classes });
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Upload(CreateExamVM vm)
+    {
+        var teacherId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+        if (!ModelState.IsValid)
+        {
+            var subjects = await _unitOfWork.Subject.FindAllAsync(s => s.Schedules.Select(sh => sh.TeacherId).Contains(teacherId));
+            var classes = await _unitOfWork.Class.FindAllAsync(s => s.Schedules.Select(sh => sh.TeacherId).Contains(teacherId));
+            return View(new CreateExamVM { Subjects = subjects, Classes = classes });
         }
 
-        // GET: /Teacher/Exam/uploadExam
-        [HttpGet("uploadExam")]
-        public async Task<IActionResult> Upload()
+        var exam = new Exam
         {
-            var vm = new CreateExamVM
-            {
-                Subjects = await _uow.Subject.GetAllAsync() ?? new List<Subject>(),
-                Classes = await _uow.Class.GetAllAsync() ?? new List<Class>()
-            };
-            return View(vm);
-        }
+            ExamType = vm.ExamType,
+            ExamDate = vm.ExamDate,
+            TotalMarks = vm.TotalMarks,
+            ExamDuration = vm.ExamDuration,
+            SubjectID = vm.SubjectId,
+            ClassID = vm.ClassId,
+            TeacherID = teacherId
+        };
 
-        // POST: /Teacher/Exam/uploadExam
-        [HttpPost("uploadExam")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Upload(CreateExamVM vm)
+        await _unitOfWork.Exam.AddAsync(exam);
+        await _unitOfWork.SaveChangesAsync();
+
+        var students = await _unitOfWork.Student.FindAllAsync(s => s.ClassId == vm.ClassId);
+        foreach (var student in students)
         {
-            // repopulate for redisplay
-            vm.Subjects = await _uow.Subject.GetAllAsync() ?? new List<Subject>();
-            vm.Classes = await _uow.Class.GetAllAsync() ?? new List<Class>();
-
-            if (!ModelState.IsValid)
-                return View(vm);
-
-            var teacherId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-
-            var exam = new Exam
-            {
-                ExamType = vm.ExamType,
-                ExamDate = vm.ExamDate,
-                TotalMarks = vm.TotalMarks,
-                ExamDuration = vm.ExamDuration,
-                SubjectID = vm.SubjectId,
-                ClassID = vm.ClassId,
-                TeacherID = teacherId
-            };
-
-            await _uow.Exam.AddAsync(exam);
-            await _uow.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
-
-        // GET: /Teacher/Exam/editExam/{examId}
-        [HttpGet("editExam/{examId:int}")]
-        public async Task<IActionResult> Edit(int examId)
-        {
-            var teacherId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var exam = await _uow.Exam.FindAsync(
-                e => e.ExamID == examId && e.TeacherID == teacherId);
-
-            if (exam is null) return NotFound();
-
-            var vm = new EditExamVM
+            var examResult = new ExamResult
             {
                 ExamId = exam.ExamID,
-                ExamType = exam.ExamType,
-                ExamDate = exam.ExamDate,
-                TotalMarks = exam.TotalMarks,
-                ExamDuration = exam.ExamDuration,
-                SubjectId = exam.SubjectID,
-                ClassId = exam.ClassID,
-                Subjects = await _uow.Subject.GetAllAsync() ?? new List<Subject>(),
-                Classes = await _uow.Class.GetAllAsync() ?? new List<Class>()
+                StudentID = student.StudentId,
+                Score = -1,
+                Remarks = string.Empty
             };
-
-            return View(vm);
+            await _unitOfWork.ExamResult.AddAsync(examResult);
         }
+        await _unitOfWork.SaveChangesAsync();
 
-        // POST: /Teacher/Exam/editExam/{examId}
-        [HttpPost("editExam/{examId:int}")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int examId, EditExamVM vm)
-        {
-            // repopulate for redisplay
-            vm.Subjects = await _uow.Subject.GetAllAsync() ?? new List<Subject>();
-            vm.Classes = await _uow.Class.GetAllAsync() ?? new List<Class>();
-
-            if (!ModelState.IsValid)
-                return View(vm);
-
-            var teacherId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var exam = await _uow.Exam.FindAsync(
-                e => e.ExamID == examId && e.TeacherID == teacherId);
-
-            if (exam is null) return NotFound();
-
-            exam.ExamType = vm.ExamType;
-            exam.ExamDate = vm.ExamDate;
-            exam.TotalMarks = vm.TotalMarks;
-            exam.ExamDuration = vm.ExamDuration;
-            exam.SubjectID = vm.SubjectId;
-            exam.ClassID = vm.ClassId;
-            exam.UpdatedAt = DateTime.UtcNow;
-
-            await _uow.Exam.UpdateAsync(exam);
-            await _uow.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
-
-        // POST: /Teacher/Exam/deleteExam/{examId}
-        [HttpPost("deleteExam/{examId:int}")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Delete(int examId)
-        {
-            var teacherId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var exam = await _uow.Exam.FindAsync(
-                e => e.ExamID == examId && e.TeacherID == teacherId);
-
-            if (exam is null) return NotFound();
-
-            await _uow.Exam.DeleteAsync(exam);
-            await _uow.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
-
-        // GET: /Teacher/ExamResult/{examId}
-        [HttpGet("ExamResult/{examId:int}")]
-        public async Task<IActionResult> ExamResult(int examId)
-        {
-            var teacherId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-
-            // include Subject so it's never null
-            var exam = await _uow.Exam.FindAsync(
-                e => e.ExamID == examId && e.TeacherID == teacherId,
-                new[] { "Subject" });
-
-            if (exam is null) return NotFound();
-
-            var results = await _uow.ExamResult.FindAllAsync(
-                r => r.ExamId == examId,
-                new[] { "Student.ApplicationUser" });
-
-            var vm = results.Select(r => new ExamResultVM
-            {
-                ExamResultId = r.ExamResultID,
-                StudentName = r.Student!.ApplicationUser!.FullName,
-                Score = r.Score,
-                Remarks = r.Remarks
-            }).ToList();
-
-            ViewBag.ExamInfo = $"{exam.ExamType} – {exam.Subject!.SubjectName}";
-            return View(vm);
-        }
-
-        // POST: /Teacher/ExamResult/{examResultId}
-        [HttpPost("ExamResult/{examResultId:int}")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Grade(int examResultId, GradeExamResultVM vm)
-        {
-            if (!ModelState.IsValid)
-                return View(vm);
-
-            var teacherId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var result = await _uow.ExamResult.FindAsync(
-                r => r.ExamResultID == examResultId && r.Exam!.TeacherID == teacherId,
-                new[] { "Exam" });
-
-            if (result is null) return NotFound();
-
-            result.Score = vm.Score;
-            result.Remarks = vm.Remarks;
-            result.UpdatedAt = DateTime.UtcNow;
-
-            await _uow.ExamResult.UpdateAsync(result);
-            await _uow.SaveChangesAsync();
-
-            return RedirectToAction(nameof(ExamResult), new { examId = result.ExamId });
-        }
+        return RedirectToAction(nameof(Index));
     }
+
+    [HttpGet]
+    public async Task<IActionResult> Edit(int examId)
+    {
+        var teacherId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        var exam = await _unitOfWork.Exam.FindAsync(
+            e => e.ExamID == examId && e.TeacherID == teacherId);
+
+        if (exam is null) return NotFound();
+
+        var vm = new EditExamVM
+        {
+            ExamId = exam.ExamID,
+            ExamType = exam.ExamType,
+            ExamDate = exam.ExamDate,
+            TotalMarks = exam.TotalMarks,
+            ExamDuration = exam.ExamDuration,
+            SubjectId = exam.SubjectID,
+            Subjects = await _unitOfWork.Subject.FindAllAsync(s => s.Schedules.Select(sh => sh.TeacherId).Contains(teacherId)),
+            Classes = await _unitOfWork.Class.FindAllAsync(s => s.Schedules.Select(sh => sh.TeacherId).Contains(teacherId))
+        };
+        return View(vm);
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Edit(int examId, EditExamVM vm)
+    {
+        var teacherId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        // repopulate for redisplay
+        vm.Subjects = await _unitOfWork.Subject.FindAllAsync(s => s.Schedules.Select(sh => sh.TeacherId).Contains(teacherId));
+        vm.Classes = await _unitOfWork.Class.FindAllAsync(s => s.Schedules.Select(sh => sh.TeacherId).Contains(teacherId));
+        if (!ModelState.IsValid)
+            return View(vm);
+
+        var exam = await _unitOfWork.Exam.FindAsync(e => e.ExamID == examId && e.TeacherID == teacherId);
+
+        if (exam is null) return NotFound();
+
+        exam.ExamType = vm.ExamType;
+        exam.ExamDate = vm.ExamDate;
+        exam.TotalMarks = vm.TotalMarks;
+        exam.ExamDuration = vm.ExamDuration;
+        exam.SubjectID = vm.SubjectId;
+        exam.ClassID = vm.ClassId;
+        exam.UpdatedAt = DateTime.UtcNow;
+
+        await _unitOfWork.Exam.UpdateAsync(exam);
+        await _unitOfWork.SaveChangesAsync();
+        return RedirectToAction(nameof(Index));
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Delete(int examId)
+    {
+        var teacherId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        var exam = await _unitOfWork.Exam.FindAsync(
+            e => e.ExamID == examId && e.TeacherID == teacherId);
+
+        if (exam is null) return NotFound();
+
+        await _unitOfWork.Exam.DeleteAsync(exam);
+        await _unitOfWork.SaveChangesAsync();
+        return RedirectToAction(nameof(Index));
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> ExamResult(int examId)
+    {
+        var teacherId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+        // include Subject so it's never null
+        var exam = await _unitOfWork.Exam.FindAsync(e => e.ExamID == examId && e.TeacherID == teacherId, ["Subject"]);
+
+        if (exam is null) return NotFound();
+
+        var results = await _unitOfWork.ExamResult.FindAllAsync( r => r.ExamId == examId, ["Student.ApplicationUser"]);
+
+        var vm = results.Select(r => new ExamResultVM
+        {
+            ExamResultId = r.ExamResultID,
+            StudentName = r.Student!.ApplicationUser!.FullName,
+            Score = r.Score,
+            Remarks = r.Remarks
+        }).ToList();
+
+        ViewBag.ExamInfo = $"{exam.ExamType} – {exam.Subject!.SubjectName}";
+        return View(vm);
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> Grade(int examResultId)
+    {
+        var examResult = await _unitOfWork.ExamResult.FindAsync(s => s.ExamResultID == examResultId, ["Exam", "Student.ApplicationUser"]);
+        var model = new GradeExamResultVM
+        {
+            ExamResultId = examResult.ExamResultID,
+            ExamId = examResult.ExamId,
+            StudentName = examResult.Student!.ApplicationUser!.FullName,
+            Score = examResult.Score,
+            Remarks = examResult.Remarks
+        };
+        return View();
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Grade(int examResultId, GradeExamResultVM vm)
+    {
+        if (!ModelState.IsValid)
+            return View(vm);
+
+        var teacherId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        var result = await _unitOfWork.ExamResult.FindAsync(r => r.ExamResultID == examResultId && r.Exam!.TeacherID == teacherId, ["Exam"]);
+
+        if (result is null) return NotFound();
+
+        result.Score = vm.Score;
+        result.Remarks = vm.Remarks;
+        result.UpdatedAt = DateTime.UtcNow;
+
+        await _unitOfWork.ExamResult.UpdateAsync(result);
+        await _unitOfWork.SaveChangesAsync();
+
+        return RedirectToAction(nameof(ExamResult), new { examId = result.ExamId });
+    }
+}
 

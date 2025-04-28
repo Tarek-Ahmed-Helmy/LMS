@@ -1,9 +1,8 @@
 ﻿@model IEnumerable<QuizListViewModel>
 @{
     ViewData["Title"] = "My Quizzes";
+	ViewBag.CardTitle = "My Quizzes";
 }
-<h2>@ViewData["Title"]</h2>
-
 <a asp-action="AddQuiz" class="btn btn-success mb-3">+ Add New Quiz</a>
 
 <table class="table table-striped">

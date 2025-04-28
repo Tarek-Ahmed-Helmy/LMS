@@ -1,22 +1,22 @@
 ﻿@model MakePaymentViewModel
 @{
     ViewBag.Title = "Make Payment";
+	ViewBag.CardTitle = "Make Payment";
 }
 
-<h2>Make Payment</h2>
-
 <form asp-action="MakePayment" enctype="multipart/form-data" method="post">
+
+    <input type="hidden" asp-for="StudentId" />
+	<input type="hidden" asp-for="PaymentId" />
     <div class="form-group">
-        <label asp-for="StudentId"></label>
-        <select asp-for="StudentId" class="form-control" asp-items="ViewBag.Students">
-            <option value="">Select a student</option>
-        </select>
-        <span asp-validation-for="StudentId" class="text-danger"></span>
+        <label asp-for="StudentName"></label>
+        <input asp-for="StudentName" class="form-control" disabled />
+        <span asp-validation-for="StudentName" class="text-danger"></span>
     </div>
 
     <div class="form-group">
         <label asp-for="Amount"></label>
-        <input asp-for="Amount" class="form-control" />
+        <input asp-for="Amount" class="form-control" disabled/>
         <span asp-validation-for="Amount" class="text-danger"></span>
     </div>
 

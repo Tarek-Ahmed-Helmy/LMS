@@ -25,12 +25,13 @@ else
     <tbody>
         @foreach (var item in Model)
         {
+                var score = item.Score == -1 ? "--" : $"{item.Score}";
             <tr>
                 <td>@item.StudentName</td>
                 <td>@item.Subject</td>
                 <td>@item.ExamType</td>
                 <td>@item.ExamDate.ToString("yyyy-MM-dd")</td>
-                <td>@item.Score</td>
+                <td>@score</td>
                 <td>@item.TotalMarks</td>
             </tr>
         }

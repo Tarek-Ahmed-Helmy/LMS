@@ -7,10 +7,12 @@ public class MakePaymentViewModel
 {
     [Required]
     public string StudentId { get; set; }
+    public int PaymentId { get; set; }
 
-    [Required]
-    [Range(1, double.MaxValue, ErrorMessage = "Amount must be greater than 0")]
-    public decimal Amount { get; set; }
+    [Display(Name = "Student Name")]
+    public string? StudentName { get; set; }
+
+    public decimal? Amount { get; set; }
 
     [Required]
     [Display(Name = "Payment Method")]

@@ -1,8 +1,10 @@
 ﻿using LMS.Entities.Interfaces;
+using LMS.Entities.Models;
 using LMS.Utilities;
 using LMS.Web.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using NuGet.Protocol.Core.Types;
 using System.Security.Claims;
 
 namespace LMS.Web.Areas.ParentArea.Controllers;
@@ -129,21 +131,53 @@ public class StudentController : Controller
     {
         var id = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-        var schedules = await _unitOfWork.Schedule.FindAllAsync(
-            s => s.Class.Students.Select(s => s.ParentId).Contains(id),
-            ["Subject", "Teacher.ApplicationUser", "Class"]
-        );
+        var Childrens = await _unitOfWork.Student.FindAllAsync(st => st.ParentId == id, ["ApplicationUser", "Class"]);
 
-        var scheduleVMs = schedules.Select(s => new ScheduleViewModel
+        var schedules = new List<ScheduleViewModel>();
+        foreach (var child in Childrens)
         {
-            ClassName = s.Class?.ClassNumber ?? "N/A",
-            Subject = s.Subject?.SubjectName ?? "N/A",
-            Teacher = s.Teacher?.ApplicationUser?.FullName ?? "N/A",
-            DayOfWeek = s.DayOfWeek.ToString(),
-            StartTime = s.StartTime,
-            EndTime = s.EndTime
-        }).ToList();
 
-        return View(scheduleVMs);
+            var studentName = child.ApplicationUser?.FullName ?? "N/A";
+            var className = $"{child.Class?.GradeLevel} - {child.Class?.ClassNumber}" ?? "N/A";
+            var schedule = await _unitOfWork.Schedule.FindAllAsync(s => s.ClassId == child.ClassId, ["Subject", "Teacher.ApplicationUser"]);
+            if (schedule == null || !schedule.Any())
+                continue;
+            var childSchedules = schedule
+                .Select(s => new ScheduleViewModel
+                {
+                    Student = studentName,
+                    ClassName = className,
+                    Subject = s.Subject?.SubjectName ?? "N/A",
+                    Teacher = s.Teacher?.ApplicationUser?.FullName ?? "N/A",
+                    DayOfWeek = s.DayOfWeek.ToString(),
+                    StartTime = s.StartTime,
+                    EndTime = s.EndTime
+                })
+                .ToList();
+            schedules.AddRange(childSchedules);
+        }
+        return View(schedules);
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> Details(string id)
+    {
+        var student = await _unitOfWork.Student.FindAsync(s => s.StudentId == id, includes: new string[] { "ApplicationUser", "Class" });
+        if (student == null) return NotFound();
+        var model = new StudentDetailsViewModel
+        {
+            FullName = student.ApplicationUser?.FullName,
+            Address = student.ApplicationUser?.Address,
+            ProfilePictureURL = student.ApplicationUser?.ProfilePictureURL,
+            DateOfBirth = student.DateOfBirth,
+            Gender = student.Gender,
+            EmergencyContact = student.EmergencyContact,
+            AdmissionDate = student.AdmissionDate,
+            StudentNumber = student.StudentNumber,
+            GradeLevel = student.Class?.GradeLevel,
+            ClassNumber = student.Class?.ClassNumber,
+            BusSubscription = student.BusId != null ? "Subscriped" : "Unsubscriped"
+        };
+        return View(model);
     }
 }
